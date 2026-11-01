@@ -622,7 +622,7 @@ button {
 /* avatar orb */
 .hero-orb {
   position: relative;
-  width: clamp(190px, 23vw, 292px);
+  width: clamp(220px, 26vw, 340px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -1873,7 +1873,7 @@ button {
 
   .hero-orb {
     order: -1;
-    width: 172px;
+    width: 200px;
     margin-bottom: 4px;
   }
 
