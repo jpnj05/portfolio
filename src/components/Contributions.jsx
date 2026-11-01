@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { site } from '../data/site.js';
 import { loadContributions } from '../lib/github.js';
-import { useInView } from './Reveal.jsx';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -115,7 +114,6 @@ export default function Contributions({ contributions }) {
   const [tip, setTip] = useState(null);
   const [activeIndex, setActiveIndex] = useState(null);
   const [pinnedDate, setPinnedDate] = useState(null);
-  const { ref: gridRef, inView } = useInView({ threshold: 0.05, rootMargin: '0px' });
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -296,8 +294,7 @@ export default function Contributions({ contributions }) {
                       ))}
                     </div>
                     <div
-                      ref={gridRef}
-                      className={`heat-grid ${inView ? 'is-in' : ''}`}
+                      className="heat-grid"
                       role="grid"
                       aria-label="Contribution activity, use arrow keys to move and Enter to pin a day"
                       tabIndex={0}
@@ -328,7 +325,6 @@ export default function Contributions({ contributions }) {
                               data-pinned={pinnedDate === day.date}
                               role="gridcell"
                               aria-label={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${formatDate(day.date)}`}
-                              style={{ '--i': `${Math.min(weekIndex * 16 + dayIndex * 5, 1000)}ms` }}
                               title={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${formatDate(day.date)}`}
                               onPointerMove={(event) => showTip(event, day)}
                               onPointerLeave={() => setTip(null)}
