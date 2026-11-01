@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-01T13:25:11.533Z",
+  "fetchedAt": "2026-11-01T13:57:18.688Z",
   "profile": {
     "login": "jpnj05",
     "name": null,
@@ -9,11 +9,24 @@
     "blog": "",
     "followers": 0,
     "following": 0,
-    "publicRepos": 1,
+    "publicRepos": 3,
     "createdAt": "2026-04-06T17:38:13Z",
     "url": "https://github.com/jpnj05"
   },
   "repos": [
+    {
+      "name": "portfolio",
+      "fullName": "jpnj05/portfolio",
+      "description": "Personal portfolio: React + Vite front end with a Node function that pulls GitHub projects and a live contribution graph.",
+      "language": "JavaScript",
+      "stars": 0,
+      "forks": 0,
+      "homepage": "",
+      "topics": [],
+      "url": "https://github.com/jpnj05/portfolio",
+      "pushedAt": "2026-11-01T13:55:54Z",
+      "updatedAt": "2026-11-01T13:55:57Z"
+    },
     {
       "name": "Web-Budget-Tracker",
       "fullName": "jpnj05/Web-Budget-Tracker",
@@ -26,6 +39,19 @@
       "url": "https://github.com/jpnj05/Web-Budget-Tracker",
       "pushedAt": "2026-10-03T06:21:00Z",
       "updatedAt": "2026-10-03T06:21:03Z"
+    },
+    {
+      "name": "Budgetero",
+      "fullName": "jpnj05/Budgetero",
+      "description": "AI-powered budgeting app built with Flutter",
+      "language": "HTML",
+      "stars": 0,
+      "forks": 0,
+      "homepage": "",
+      "topics": [],
+      "url": "https://github.com/jpnj05/Budgetero",
+      "pushedAt": "2026-04-20T10:16:28Z",
+      "updatedAt": "2026-11-01T13:42:27Z"
     }
   ],
   "contributions": {

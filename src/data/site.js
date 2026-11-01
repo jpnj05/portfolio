@@ -29,6 +29,10 @@ export const site = {
       items: ['React', 'JavaScript', 'HTML', 'CSS', 'Responsive layout', 'Motion'],
     },
     {
+      group: 'Mobile',
+      items: ['Flutter', 'Dart'],
+    },
+    {
       group: 'Backend',
       items: ['Node.js', 'Python', 'REST APIs', 'Serverless functions'],
     },
@@ -59,11 +63,20 @@ export const site = {
       // Drop a screenshot in public/projects/ and point this at it, e.g.
       // preview: '/projects/your-screenshot.png',
       // Without a screenshot the card uses the same dark cover as the other repos.
-      tags: ['Python', 'Dashboard', 'Vercel'],
+      tags: ['Python', 'HTML', 'Dashboard'],
+      language: 'Python',
       role: 'Design & development',
       // The deployment is currently down, so the card links to the source only.
       // Set a URL here to bring the "Live demo" link back.
       live: '',
+    },
+
+    Budgetero: {
+      title: 'Budgetero',
+      // GitHub reports HTML because the Flutter web build outweighs the
+      // sources; the app itself is written in Dart.
+      language: 'Dart',
+      tags: ['Flutter', 'Dart', 'AI'],
     },
   },
 

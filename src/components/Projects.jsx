@@ -75,6 +75,9 @@ function buildProjects(data) {
     .map((repo) => {
       const override = overrides[repo.name] || {};
       const year = repo.pushedAt ? new Date(repo.pushedAt).getFullYear() : null;
+      // GitHub picks a language by byte count, which misreads bundled web
+      // output (Flutter/React builds) — an override always wins.
+      const language = override.language || repo.language;
 
       return {
         key: repo.fullName || repo.name,
@@ -82,13 +85,13 @@ function buildProjects(data) {
         description: override.blurb || repo.description || 'No description yet — the code speaks for itself.',
         // Only real screenshots are used; repos without one get a generated cover.
         preview: override.preview || '',
-        tags: (override.tags || [...(repo.topics || []), repo.language].filter(Boolean)).slice(0, 4),
+        tags: (override.tags || [...(repo.topics || []), language].filter(Boolean)).slice(0, 4),
         live: Object.prototype.hasOwnProperty.call(override, 'live')
           ? override.live
           : repo.homepage || '',
         source: repo.url,
         stars: repo.stars,
-        language: repo.language,
+        language,
         year,
         featured: Boolean(override.featured),
       };
