@@ -8,6 +8,8 @@ const LINKS = [
   { id: 'contact', label: 'Contact', index: '04' },
 ];
 
+const INITIAL = site.name.trim().charAt(0).toUpperCase();
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -61,7 +63,7 @@ export default function Nav() {
       <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="nav-inner">
           <a className="nav-brand" href="#top" onClick={() => setOpen(false)}>
-            <span className="nav-mark">J</span>
+            <span className="nav-mark">{INITIAL}</span>
             <span>{site.name}</span>
           </a>
 

@@ -7,7 +7,7 @@ export const site = {
   githubUser: 'jpnj05',
 
   // Shown in the hero, nav and footer.
-  name: 'Jpnj',
+  name: 'Nizon Jeorgie Pison II',
   role: 'Full-Stack Developer',
   roles: ['Full-Stack Developer', 'React + Node.js', 'Interface Tinkerer', 'Problem Solver'],
 

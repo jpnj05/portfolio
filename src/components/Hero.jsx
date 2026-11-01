@@ -9,7 +9,15 @@ const ArrowUpRight = () => (
   </svg>
 );
 
-const LETTERS = site.name.split('');
+// Split into words, then letters, so a long name wraps between words instead
+// of breaking mid-word — the stagger index runs across the whole name.
+const WORDS = (() => {
+  let index = 0;
+  return site.name
+    .trim()
+    .split(/\s+/)
+    .map((word) => [...word].map((char) => ({ char, index: index++ })));
+})();
 
 export default function Hero({ data }) {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -41,14 +49,18 @@ export default function Hero({ data }) {
           <div>
             <p className="hero-hello">Hey, I&apos;m</p>
             <h1 className="hero-name" aria-label={site.name}>
-              {LETTERS.map((letter, index) => (
-                <span
-                  key={`${letter}-${index}`}
-                  className={`hero-letter ${index === LETTERS.length - 1 ? 'accent' : ''}`}
-                  style={{ '--i': index }}
-                  aria-hidden="true"
-                >
-                  {letter}
+              {WORDS.map((word, wordIndex) => (
+                <span className="hero-word" key={wordIndex}>
+                  {word.map(({ char, index }) => (
+                    <span
+                      key={`${char}-${index}`}
+                      className={`hero-letter ${wordIndex === WORDS.length - 1 ? 'accent' : ''}`}
+                      style={{ '--i': index }}
+                      aria-hidden="true"
+                    >
+                      {char}
+                    </span>
+                  ))}
                 </span>
               ))}
             </h1>
