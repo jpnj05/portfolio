@@ -37,6 +37,10 @@ export const site = {
       items: ['Node.js', 'Python', 'REST APIs', 'Serverless functions'],
     },
     {
+      group: 'AI',
+      items: ['OpenAI', 'Claude', 'Gemini', 'FreeBuff'],
+    },
+    {
       group: 'Workflow',
       items: ['Git', 'Vite', 'Vercel', 'Firebase', 'Figma'],
     },
