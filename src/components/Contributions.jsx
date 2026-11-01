@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { site } from '../data/site.js';
 import { loadContributions } from '../lib/github.js';
-import { useCountUp } from '../hooks/useCountUp.js';
 import { useInView } from './Reveal.jsx';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const DAY_LABEL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// GitHub's grid runs Sunday → Saturday; only these three get an axis label.
+const DAY_ROWS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
 /** Pads the first and last week so every column is a full Sun → Sat run. */
 function toWeeks(days) {
@@ -101,7 +102,6 @@ export default function Contributions({ contributions }) {
   const weeks = useMemo(() => toWeeks(data?.days), [data]);
   const labels = useMemo(() => monthLabels(weeks), [weeks]);
   const stats = useMemo(() => summarize(data), [data]);
-  const [totalRef, totalValue] = useCountUp(data?.total ?? null, { duration: 1500 });
 
   const years = useMemo(() => {
     const now = new Date().getFullYear();
@@ -130,9 +130,6 @@ export default function Contributions({ contributions }) {
     });
   };
 
-  const from = data?.days?.[0]?.date;
-  const to = data?.days?.[data.days.length - 1]?.date;
-
   return (
     <section className="section" id="activity">
       <div className="wrap">
@@ -152,15 +149,10 @@ export default function Contributions({ contributions }) {
         <div className="contrib-card">
           <div className="contrib-head">
             <div>
-              <div className="contrib-total" ref={totalRef}>
-                {data ? totalValue.toLocaleString() : '—'}
-                <small>{year === 'last' ? 'in the last year' : `in ${year}`}</small>
+              <div className="contrib-total">
+                {data ? data.total.toLocaleString() : '—'}
+                <small>{year === 'last' ? 'contributions in the last year' : `contributions in ${year}`}</small>
               </div>
-              {from && to && (
-                <p className="mono" style={{ marginTop: 10 }}>
-                  {formatDate(from)} → {formatDate(to)}
-                </p>
-              )}
             </div>
 
             <div className="contrib-tabs" role="tablist" aria-label="Contribution window">
@@ -185,37 +177,49 @@ export default function Contributions({ contributions }) {
           ) : (
             <>
               <div className="heat-scroll">
-                <div className="heat-months" aria-hidden="true">
-                  {labels.map((label, index) => (
-                    <span key={index}>{label}</span>
-                  ))}
-                </div>
-                <div ref={gridRef} className={`heat-grid ${inView ? 'is-in' : ''}`}>
-                  {weeks.map((week, weekIndex) =>
-                    week.map((day, dayIndex) => {
-                      if (!day) {
-                        return (
-                          <span
-                            className="heat-cell is-empty"
-                            key={`empty-${weekIndex}-${dayIndex}`}
-                            aria-hidden="true"
-                          />
-                        );
-                      }
+                <div className="heat-frame">
+                  <div className="heat-months-row" aria-hidden="true">
+                    <span className="heat-corner" />
+                    <div className="heat-months">
+                      {labels.map((label, index) => (
+                        <span key={index}>{label}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="heat-body">
+                    <div className="heat-days" aria-hidden="true">
+                      {DAY_ROWS.map((label, index) => (
+                        <span key={index}>{label}</span>
+                      ))}
+                    </div>
+                    <div ref={gridRef} className={`heat-grid ${inView ? 'is-in' : ''}`}>
+                      {weeks.map((week, weekIndex) =>
+                        week.map((day, dayIndex) => {
+                          if (!day) {
+                            return (
+                              <span
+                                className="heat-cell is-empty"
+                                key={`empty-${weekIndex}-${dayIndex}`}
+                                aria-hidden="true"
+                              />
+                            );
+                          }
 
-                      return (
-                        <span
-                          key={day.date}
-                          className="heat-cell"
-                          data-level={day.level}
-                          style={{ '--i': `${Math.min(weekIndex * 16 + dayIndex * 5, 1000)}ms` }}
-                          title={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${formatDate(day.date)}`}
-                          onPointerMove={(event) => showTip(event, day)}
-                          onPointerLeave={() => setTip(null)}
-                        />
-                      );
-                    }),
-                  )}
+                          return (
+                            <span
+                              key={day.date}
+                              className="heat-cell"
+                              data-level={day.level}
+                              style={{ '--i': `${Math.min(weekIndex * 16 + dayIndex * 5, 1000)}ms` }}
+                              title={`${day.count} contribution${day.count === 1 ? '' : 's'} on ${formatDate(day.date)}`}
+                              onPointerMove={(event) => showTip(event, day)}
+                              onPointerLeave={() => setTip(null)}
+                            />
+                          );
+                        }),
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

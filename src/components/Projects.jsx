@@ -84,7 +84,9 @@ function buildProjects(data) {
           override.preview ||
           `https://opengraph.githubassets.com/1/${site.githubUser}/${repo.name}`,
         tags: (override.tags || [...(repo.topics || []), repo.language].filter(Boolean)).slice(0, 4),
-        live: override.live || repo.homepage || '',
+        live: Object.prototype.hasOwnProperty.call(override, 'live')
+          ? override.live
+          : repo.homepage || '',
         source: repo.url,
         stars: repo.stars,
         language: repo.language,
@@ -147,12 +149,10 @@ function ProjectCard({ project, featured = false }) {
         </ul>
 
         <div className="project-links">
-          {project.live ? (
+          {project.live && (
             <a className="link-arrow" href={project.live} target="_blank" rel="noreferrer">
               Live demo <ArrowUpRight />
             </a>
-          ) : (
-            <span className="link-arrow is-muted">Repo only</span>
           )}
           <a className="link-arrow" href={project.source} target="_blank" rel="noreferrer">
             <CodeIcon /> Source

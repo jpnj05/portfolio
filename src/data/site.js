@@ -41,7 +41,6 @@ export const site = {
   socials: [
     { label: 'GitHub', handle: '@jpnj05', href: 'https://github.com/jpnj05' },
     { label: 'Email', handle: 'nizonjeorgiepison66@gmail.com', href: 'mailto:nizonjeorgiepison66@gmail.com' },
-    { label: 'Live project', handle: 'web-budget-tracker', href: 'https://web-budget-tracker.vercel.app' },
   ],
 
   // Repos to keep off the grid (this site's own repo, forks of other people's work…).
@@ -62,7 +61,9 @@ export const site = {
       // Until then GitHub's generated repo card is used.
       tags: ['Python', 'Dashboard', 'Vercel'],
       role: 'Design & development',
-      live: 'https://web-budget-tracker.vercel.app',
+      // The deployment is currently down, so the card links to the source only.
+      // Set a URL here to bring the "Live demo" link back.
+      live: '',
     },
   },
 
