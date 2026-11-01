@@ -1,0 +1,103 @@
+# Portfolio — React · Vite · Node
+
+A personal portfolio that reads its own content from GitHub: projects come from the
+GitHub API, and the contribution calendar is live data rather than a screenshot.
+
+Live URL: _add your Vercel URL here once deployed_
+
+## What is inside
+
+- **Kinetic hero** — letter-by-letter entrance, rotating role line, orbiting ring around the
+  GitHub avatar, magnetic buttons, and a pointer-following accent light on desktop.
+- **Work** — one card per public repo, with a preview image, description, language, tags and
+  links to the live build and the source. The featured project gets a full-width layout.
+- **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
+  scroll, hover/tap tooltip, year switcher, plus current streak, longest streak, active days
+  and best day computed from the real API payload.
+- **About** — bio, facts and a grouped toolbox, with scroll-reveal animations.
+- **Contact** — big mailto CTA with a copy-to-clipboard button and social links.
+- Responsive from 320 px upward: single-column layouts, a full-screen mobile menu, horizontally
+  scrollable heatmap, tilt/pointer effects disabled on touch, and `prefers-reduced-motion`
+  respected everywhere.
+
+## Stack
+
+| Layer     | Choice                                                           |
+| --------- | ---------------------------------------------------------------- |
+| UI        | React 19, hand-written CSS (no UI framework)                     |
+| Bundler   | Vite 7                                                           |
+| Backend   | Node serverless function at `api/github.js` (Vercel runtime)     |
+| Data      | GitHub REST API + GitHub contributions API                       |
+| Hosting   | Vercel (static build + one function)                             |
+
+The browser asks `/api/github` for everything at once. The Node function adds an optional
+token, aggregates the three upstream calls and sets a 30-minute cache header. If that route is
+unavailable — for example a plain static host — the client falls back to the public APIs
+directly, and finally to the committed snapshot in `src/data/snapshot.json`, so the page never
+renders empty.
+
+## Local development
+
+```bash
+npm install
+npm run dev        # http://127.0.0.1:5173
+```
+
+`vite.config.js` mounts `api/github.js` as dev middleware, so the Node route works locally
+without `vercel dev`.
+
+Optional environment variables (copy `.env.example` to `.env`):
+
+```bash
+GITHUB_TOKEN=      # read-only token, only needed for rate limits
+GITHUB_USER=jpnj05
+```
+
+Refresh the offline fallback after pushing new repos:
+
+```bash
+npm run snapshot
+```
+
+## Editing content
+
+Almost everything personal lives in **`src/data/site.js`**:
+
+- `githubUser` — whose repos and calendar are shown
+- `name`, `role`, `roles`, `tagline`, `about`, `skills`, `socials`
+- `projectOverrides` — nicer titles, copy, tags and preview images per repo
+- `hiddenRepos` — repos to leave off the grid (this site's own repo is already listed)
+- `extraProjects` — work that is not on GitHub
+
+New public repos show up automatically; add an override only when you want custom copy or a
+screenshot. Drop a screenshot into `public/projects/` and set `preview: '/projects/name.png'`.
+
+## Deploy to Vercel
+
+1. Push this repo to GitHub.
+2. On Vercel: **Add New → Project**, import the repo. The Vite preset is detected from
+   `vercel.json`; build command `npm run build`, output `dist`.
+3. Optional: **Settings → Environment Variables →** add `GITHUB_TOKEN` (a read-only token) to
+   raise the API rate limit above 60 requests/hour.
+4. Deploy. `api/github.js` is picked up automatically as a Node function.
+
+Or from the CLI:
+
+```bash
+npm i -g vercel
+vercel          # preview deployment
+vercel --prod   # production
+```
+
+## Project structure
+
+```
+api/github.js            Node function: profile + repos + contributions
+scripts/fetch-snapshot.mjs  Regenerates the offline fallback
+src/data/site.js         All personal content and per-project copy
+src/data/snapshot.json   Offline GitHub fallback
+src/lib/github.js        Data loading + normalisation + fallbacks
+src/hooks/useCountUp.js  Count-up-on-scroll helper
+src/components/          Nav, Hero, Projects, Contributions, About, Contact…
+src/styles/global.css    Design tokens, layout, motion, responsive rules
+```
