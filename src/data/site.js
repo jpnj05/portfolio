@@ -26,7 +26,7 @@ export const site = {
   skills: [
     {
       group: 'Frontend',
-      items: ['React', 'JavaScript', 'HTML', 'CSS', 'Responsive layout', 'Motion'],
+      items: ['React', 'JavaScript', 'HTML', 'CSS'],
     },
     {
       group: 'Mobile',
@@ -34,11 +34,15 @@ export const site = {
     },
     {
       group: 'Backend',
-      items: ['Node.js', 'Python', 'REST APIs', 'Serverless functions'],
+      items: ['Node.js', 'Python', 'REST APIs'],
     },
     {
       group: 'AI',
       items: ['OpenAI', 'Claude', 'Gemini', 'FreeBuff'],
+    },
+    {
+      group: 'Practices',
+      items: ['Responsive layout', 'Motion', 'Serverless functions'],
     },
     {
       group: 'Workflow',
