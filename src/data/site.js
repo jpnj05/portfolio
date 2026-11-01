@@ -10,7 +10,7 @@ export const site = {
   name: 'Nizon Jeorgie Pison II',
   role: 'Full-Stack Developer',
   // Rotates under the name in the hero — one per line, keep them short.
-  roles: ['Full-Stack Developer', 'React & Node.js', 'Flutter & Dart', 'AI-Assisted Builder'],
+  roles: ['Full-Stack Developer', 'React & Node.js', 'Flutter & Dart'],
 
   location: 'Philippines',
   email: 'nizonjeorgiepison66@gmail.com',
