@@ -15,6 +15,10 @@ export const site = {
   location: 'Philippines',
   email: 'nizonjeorgiepison66@gmail.com',
 
+  // Save your photo as public/profile.jpg (square, 512×512 is plenty).
+  // If the file is missing the GitHub avatar is used instead.
+  avatar: '/profile.jpg',
+
   tagline:
     'I build fast, tactile web apps — clean interfaces on the surface, steady Node.js behind them.',
 

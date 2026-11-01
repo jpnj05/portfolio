@@ -21,6 +21,7 @@ const WORDS = (() => {
 
 export default function Hero({ data }) {
   const [roleIndex, setRoleIndex] = useState(0);
+  const [photoFailed, setPhotoFailed] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -36,6 +37,8 @@ export default function Hero({ data }) {
   const [repoRef, repoCount] = useCountUp(repos, { duration: 1100 });
   const [contribRef, contribCount] = useCountUp(contributions, { duration: 1400 });
   const [starRef, starCount] = useCountUp(stars, { duration: 900 });
+
+  const avatar = site.avatar && !photoFailed ? site.avatar : data?.profile?.avatar;
 
   return (
     <section className="hero" id="top">
@@ -98,8 +101,14 @@ export default function Hero({ data }) {
               </text>
             </svg>
             <div className="orb-avatar">
-              {data?.profile?.avatar ? (
-                <img src={data.profile.avatar} alt={`${site.name} on GitHub`} width="240" height="240" />
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt={site.name}
+                  width="512"
+                  height="512"
+                  onError={() => setPhotoFailed(true)}
+                />
               ) : (
                 <span>{site.name.slice(0, 1)}</span>
               )}
