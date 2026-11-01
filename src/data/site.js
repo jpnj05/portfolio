@@ -9,7 +9,8 @@ export const site = {
   // Shown in the hero, nav and footer.
   name: 'Nizon Jeorgie Pison II',
   role: 'Full-Stack Developer',
-  roles: ['Full-Stack Developer', 'React + Node.js', 'Interface Tinkerer', 'Problem Solver'],
+  // Rotates under the name in the hero — one per line, keep them short.
+  roles: ['Full-Stack Developer', 'React & Node.js', 'Flutter & Dart', 'AI-Assisted Builder'],
 
   location: 'Philippines',
   email: 'nizonjeorgiepison66@gmail.com',

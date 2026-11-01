@@ -93,7 +93,7 @@ export default function Hero({ data }) {
               </defs>
               <text>
                 <textPath href="#orb-circle" startOffset="0%">
-                  {site.role} · Based in {site.location} · Open to work ·
+                  {site.role} · {site.location} · React · Node · Flutter ·
                 </textPath>
               </text>
             </svg>
