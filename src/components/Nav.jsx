@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site.js';
+import ThemeToggle from './ThemeToggle.jsx';
 
 const LINKS = [
   { id: 'work', label: 'Work', index: '01' },
@@ -79,18 +80,22 @@ export default function Nav() {
             ))}
           </nav>
 
-          <button
-            type="button"
-            className={`nav-burger ${open ? 'is-open' : ''}`}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            onClick={() => setOpen((value) => !value)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+          <div className="nav-actions">
+            <ThemeToggle />
+
+            <button
+              type="button"
+              className={`nav-burger ${open ? 'is-open' : ''}`}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              onClick={() => setOpen((value) => !value)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </header>
 
