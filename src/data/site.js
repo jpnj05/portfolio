@@ -58,8 +58,7 @@ export const site = {
         'A clean budgeting dashboard: log income and expenses, watch the balance update instantly, and read the month at a glance. Built as a single-page app and deployed on Vercel.',
       // Drop a screenshot in public/projects/ and point this at it, e.g.
       // preview: '/projects/your-screenshot.png',
-      // This one is GitHub's repo card with its stats strip removed, served locally.
-      preview: '/projects/budget-tracker.png',
+      // Without a screenshot the card uses the same dark cover as the other repos.
       tags: ['Python', 'Dashboard', 'Vercel'],
       role: 'Design & development',
       // The deployment is currently down, so the card links to the source only.
