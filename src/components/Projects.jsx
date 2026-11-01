@@ -80,9 +80,8 @@ function buildProjects(data) {
         key: repo.fullName || repo.name,
         title: override.title || repo.name.replace(/[-_]/g, ' '),
         description: override.blurb || repo.description || 'No description yet — the code speaks for itself.',
-        preview:
-          override.preview ||
-          `https://opengraph.githubassets.com/1/${site.githubUser}/${repo.name}`,
+        // Only real screenshots are used; repos without one get a generated cover.
+        preview: override.preview || '',
         tags: (override.tags || [...(repo.topics || []), repo.language].filter(Boolean)).slice(0, 4),
         live: Object.prototype.hasOwnProperty.call(override, 'live')
           ? override.live
@@ -116,14 +115,24 @@ function ProjectCard({ project, featured = false }) {
           <span className="lang-dot" />
           {project.language || project.tags[0] || 'Code'}
         </span>
-        <img
-          src={project.preview}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          width="1280"
-          height="800"
-        />
+        {project.preview ? (
+          <img
+            src={project.preview}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width="1280"
+            height="800"
+          />
+        ) : (
+          <div className="project-cover">
+            <span className="project-cover-mark">Repository</span>
+            <span className="project-cover-name">{project.title}</span>
+            <span className="project-cover-meta">
+              github.com/{site.githubUser} · {project.language || 'code'}
+            </span>
+          </div>
+        )}
       </a>
 
       <div className="project-body">

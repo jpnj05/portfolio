@@ -1447,6 +1447,60 @@ button {
   filter: saturate(1.05);
 }
 
+.project-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: clamp(22px, 3vw, 34px);
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(255, 90, 54, 0.22), transparent 58%),
+    linear-gradient(158deg, #16161d 0%, #0a0a0d 62%);
+}
+
+.project-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(243, 240, 233, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(243, 240, 233, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 70% 0%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse 90% 90% at 70% 0%, #000 10%, transparent 72%);
+}
+
+.project-cover-mark {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ember-soft);
+}
+
+.project-cover-name {
+  position: relative;
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.project-cover-meta {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
 .project-badge {
   position: absolute;
   left: 14px;
