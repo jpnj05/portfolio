@@ -79,10 +79,6 @@ export default function Nav() {
             ))}
           </nav>
 
-          <a className="nav-cta" href={`mailto:${site.email}`}>
-            Hire me
-          </a>
-
           <button
             type="button"
             className={`nav-burger ${open ? 'is-open' : ''}`}

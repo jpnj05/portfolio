@@ -40,11 +40,6 @@ export default function Hero({ data }) {
   return (
     <section className="hero" id="top">
       <div className="hero-inner">
-        <p className="hero-badge">
-          <span className="pulse" />
-          {site.availability}
-        </p>
-
         <div className="hero-main">
           <div>
             <p className="hero-hello">Hey, I&apos;m</p>

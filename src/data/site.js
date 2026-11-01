@@ -13,7 +13,6 @@ export const site = {
 
   location: 'Philippines',
   email: 'nizonjeorgiepison66@gmail.com',
-  availability: 'Open to internships & freelance work',
 
   tagline:
     'I build fast, tactile web apps — clean interfaces on the surface, steady Node.js behind them.',
