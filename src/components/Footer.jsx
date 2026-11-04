@@ -12,6 +12,9 @@ export default function Footer() {
           <a href={`https://github.com/${site.githubUser}`} target="_blank" rel="noreferrer">
             GitHub
           </a>
+          <a href={site.linkedin} target="_blank" rel="noreferrer">
+            LinkedIn
+          </a>
           <a href={`mailto:${site.email}`}>Email</a>
           <a className="back-top" href="#top">
             Back to top ↑

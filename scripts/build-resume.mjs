@@ -86,10 +86,14 @@ text(site.name, M, y, { size: 22, bold: true });
 y -= 16;
 text(site.role.toUpperCase(), M, y, { size: 9, bold: true, color: ACCENT, track: 1.3 });
 y -= 15;
-text(`${site.email}   |   github.com/${site.githubUser}   |   ${site.location}`, M, y, {
-  size: 8.4,
-  color: MUTED,
-});
+text(
+  [site.email, `github.com/${site.githubUser}`, site.linkedinLabel, site.location]
+    .filter(Boolean)
+    .join('   |   '),
+  M,
+  y,
+  { size: 8.4, color: MUTED },
+);
 y -= 14;
 rule(y, INK, 1);
 
@@ -155,7 +159,7 @@ for (const project of Object.values(site.projectOverrides)) {
 /* ------------------------------------------------------------------ footer */
 const footerY = 46;
 rule(footerY + 12);
-text(`github.com/${site.githubUser}`, M, footerY, { size: 8, color: FAINT });
+text(`github.com/${site.githubUser}   ·   ${site.linkedinLabel}`, M, footerY, { size: 8, color: FAINT });
 const page = 'Portfolio — résumé';
 text(page, RIGHT - measure(page, 8), footerY, { size: 8, color: FAINT });
 

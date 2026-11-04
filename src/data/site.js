@@ -2,6 +2,9 @@
  * Everything personal lives here. Edit this file and the whole site updates —
  * no component changes needed.
  */
+const LINKEDIN_URL = 'https://www.linkedin.com/in/njpison';
+const LINKEDIN_LABEL = 'linkedin.com/in/njpison';
+
 export const site = {
   // GitHub account the projects + contribution graph are pulled from.
   githubUser: 'jpnj05',
@@ -14,6 +17,8 @@ export const site = {
 
   location: 'Philippines',
   email: 'nizonjeorgiepison66@gmail.com',
+  linkedin: LINKEDIN_URL,
+  linkedinLabel: LINKEDIN_LABEL,
 
   // Save your photo as public/profile.jpg (square, 512×512 is plenty).
   // If the file is missing the GitHub avatar is used instead.
@@ -98,7 +103,7 @@ export const site = {
 
   socials: [
     { label: 'GitHub', handle: '@jpnj05', href: 'https://github.com/jpnj05' },
-    { label: 'LinkedIn', handle: '/in/njpison', href: 'https://www.linkedin.com/in/njpison' },
+    { label: 'LinkedIn', handle: '/in/njpison', href: LINKEDIN_URL },
     { label: 'Email', handle: 'nizonjeorgiepison66@gmail.com', href: 'mailto:nizonjeorgiepison66@gmail.com' },
   ],
 
