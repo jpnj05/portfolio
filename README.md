@@ -3,7 +3,7 @@
 A personal portfolio that reads its own content from GitHub: projects come from the
 GitHub API, and the contribution calendar is live data rather than a screenshot.
 
-Live URL: _add your Vercel URL here once deployed_
+Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 
 ## What is inside
 
