@@ -19,8 +19,9 @@ Live URL: _add your Vercel URL here once deployed_
 - **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
   scroll, hover/tap tooltip, year switcher, plus current streak, longest streak, active days
   and best day computed from the real API payload.
-- **About** — biography with quick facts, a downloadable one-page résumé (inline PDF preview +
-  button), an experience & education timeline, and a six-group skills matrix.
+- **About** — biography with quick facts, a résumé card (designed preview that opens the PDF in
+  an in-page viewer, plus a download button), an experience & education timeline, and a six-group
+  skills matrix.
 - **Contact** — big mailto CTA with a copy-to-clipboard button and social links.
 - Responsive from 320 px upward: single-column layouts, a full-screen mobile menu, horizontally
   scrollable heatmap, tilt/pointer effects disabled on touch, and `prefers-reduced-motion`

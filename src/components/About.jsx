@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
 
@@ -29,19 +31,96 @@ function DownloadIcon() {
   );
 }
 
+function CloseIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M4 4l8 8M12 4l-8 8"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function ResumeCard() {
   const { file, updated, note } = site.resume;
   const education = site.timeline.filter((item) => item.kind === 'Education');
   const work = Object.values(site.projectOverrides).filter((project) => project.title).slice(0, 2);
+
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef(null);
+  const panelRef = useRef(null);
+  const closeRef = useRef(null);
+  const wasOpen = useRef(false);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab' || !panelRef.current) return;
+
+      // Keep Tab inside the dialog while it is open. Anything inside the PDF
+      // <object> is its own browsing context, so it is left out of the cycle.
+      const focusable = [
+        ...panelRef.current.querySelectorAll('a[href], button:not([disabled])'),
+      ].filter((element) => !element.closest('object') && element.getClientRects().length > 0);
+      if (!focusable.length) return;
+
+      const index = focusable.indexOf(document.activeElement);
+      const last = focusable.length - 1;
+
+      if (index === -1) {
+        event.preventDefault();
+        (event.shiftKey ? focusable[last] : focusable[0]).focus();
+      } else if (event.shiftKey && index === 0) {
+        event.preventDefault();
+        focusable[last].focus();
+      } else if (!event.shiftKey && index === last) {
+        event.preventDefault();
+        focusable[0].focus();
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+    closeRef.current?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    const closing = wasOpen.current && !open;
+    wasOpen.current = open;
+    if (!closing) return undefined;
+
+    // Wait for the browser's own focus cleanup after the dialog unmounts.
+    const id = window.setTimeout(() => triggerRef.current?.focus({ preventScroll: true }), 0);
+    return () => window.clearTimeout(id);
+  }, [open]);
 
   return (
     <Reveal className="resume-card" delay={120}>
       <a
         className="resume-preview"
         href={file}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Open the résumé PDF"
+        ref={triggerRef}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-label="Open the résumé preview"
+        onClick={(event) => {
+          event.preventDefault();
+          setOpen(true);
+        }}
       >
         <div className="resume-page" aria-hidden="true">
           <p className="rp-name">{site.name}</p>
@@ -94,6 +173,66 @@ function ResumeCard() {
           Download PDF <DownloadIcon />
         </a>
       </div>
+
+      {open &&
+        createPortal(
+          <div
+            className="resume-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Résumé"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setOpen(false);
+            }}
+          >
+            <div className="resume-modal-panel" ref={panelRef}>
+              <div className="resume-modal-bar">
+                <p className="resume-modal-title mono">
+                  Résumé <span>{note}</span>
+                </p>
+
+                <div className="resume-modal-actions">
+                  <a
+                    className="resume-modal-link mono"
+                    href={file}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    New tab <ArrowUpRight />
+                  </a>
+                  <a className="btn resume-download" href={file} download>
+                    Download <DownloadIcon />
+                  </a>
+                  <button
+                    type="button"
+                    className="resume-modal-close"
+                    ref={closeRef}
+                    onClick={() => setOpen(false)}
+                    aria-label="Close résumé"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+
+              <div className="resume-modal-body">
+                <object
+                  data={`${file}#view=FitH&toolbar=0&navpanes=0`}
+                  type="application/pdf"
+                  title="Résumé PDF"
+                >
+                  <div className="resume-modal-fallback">
+                    <p>This browser cannot display PDFs inline.</p>
+                    <a className="btn resume-download" href={file} download>
+                      Download the PDF <DownloadIcon />
+                    </a>
+                  </div>
+                </object>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </Reveal>
   );
 }
