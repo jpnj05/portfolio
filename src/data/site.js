@@ -98,6 +98,7 @@ export const site = {
 
   socials: [
     { label: 'GitHub', handle: '@jpnj05', href: 'https://github.com/jpnj05' },
+    { label: 'LinkedIn', handle: '/in/njpison', href: 'https://www.linkedin.com/in/njpison' },
     { label: 'Email', handle: 'nizonjeorgiepison66@gmail.com', href: 'mailto:nizonjeorgiepison66@gmail.com' },
   ],
 
