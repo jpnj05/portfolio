@@ -19,7 +19,8 @@ Live URL: _add your Vercel URL here once deployed_
 - **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
   scroll, hover/tap tooltip, year switcher, plus current streak, longest streak, active days
   and best day computed from the real API payload.
-- **About** — bio, facts and a grouped toolbox, with scroll-reveal animations.
+- **About** — biography with quick facts, a downloadable one-page résumé (inline PDF preview +
+  button), an experience & education timeline, and a six-group skills matrix.
 - **Contact** — big mailto CTA with a copy-to-clipboard button and social links.
 - Responsive from 320 px upward: single-column layouts, a full-screen mobile menu, horizontally
   scrollable heatmap, tilt/pointer effects disabled on touch, and `prefers-reduced-motion`
@@ -64,12 +65,23 @@ Refresh the offline fallback after pushing new repos:
 npm run snapshot
 ```
 
+Rebuild the résumé PDF from `site.js` after editing the About content:
+
+```bash
+npm run resume
+```
+
+That writes `public/resume.pdf`, which the About section previews and links to. To use a résumé
+you made elsewhere, just replace `public/resume.pdf` and set `resume.updated` in `site.js`.
+
 ## Editing content
 
 Almost everything personal lives in **`src/data/site.js`**:
 
 - `githubUser` — whose repos and calendar are shown
 - `name`, `role`, `roles`, `tagline`, `about`, `skills`, `socials`
+- `timeline` — experience & education entries (`kind`, `when`, `title`, `org`, `note`, `current`)
+- `resume` — the PDF path and the "updated" label shown next to the download button
 - `projectOverrides` — nicer titles, copy, tags and preview images per repo
 - `hiddenRepos` — repos to leave off the grid (this site's own repo is already listed)
 - `extraProjects` — work that is not on GitHub

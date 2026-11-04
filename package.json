@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "snapshot": "node scripts/fetch-snapshot.mjs"
+    "snapshot": "node scripts/fetch-snapshot.mjs",
+    "resume": "node scripts/build-resume.mjs"
   },
   "engines": {
     "node": ">=20.19"

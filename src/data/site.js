@@ -54,6 +54,48 @@ export const site = {
     },
   ],
 
+  /**
+   * About → experience & education timeline, newest first.
+   * `when` is the small label in the left column, `current` highlights the entry.
+   */
+  timeline: [
+    {
+      kind: 'Experience',
+      when: 'Present',
+      title: 'Independent developer',
+      org: 'Personal projects',
+      current: true,
+      note: 'Designing and shipping my own web and mobile projects end to end — interface, motion, API and deployment. The finished builds live in Selected work.',
+    },
+    {
+      kind: 'Education',
+      when: 'Present',
+      title: 'University of San Agustin',
+      org: 'Iloilo City',
+      current: true,
+      note: 'Currently enrolled, shipping small projects alongside coursework.',
+    },
+    {
+      kind: 'Education',
+      when: 'Completed',
+      title: 'Jaro National High School',
+      org: 'Jaro, Iloilo City',
+    },
+    {
+      kind: 'Education',
+      when: 'Completed',
+      title: 'Jaro 1 Elementary School',
+      org: 'Jaro, Iloilo City',
+    },
+  ],
+
+  /** The résumé previewed in About. Replace public/resume.pdf with your own file. */
+  resume: {
+    file: '/resume.pdf',
+    updated: 'November 2026',
+    note: 'One page — background, skills and selected work.',
+  },
+
   socials: [
     { label: 'GitHub', handle: '@jpnj05', href: 'https://github.com/jpnj05' },
     { label: 'Email', handle: 'nizonjeorgiepison66@gmail.com', href: 'mailto:nizonjeorgiepison66@gmail.com' },
