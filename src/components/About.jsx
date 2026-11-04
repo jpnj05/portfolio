@@ -31,24 +31,57 @@ function DownloadIcon() {
 
 function ResumeCard() {
   const { file, updated, note } = site.resume;
+  const education = site.timeline.filter((item) => item.kind === 'Education');
+  const work = Object.values(site.projectOverrides).filter((project) => project.title).slice(0, 2);
 
   return (
     <Reveal className="resume-card" delay={120}>
-      <div className="resume-preview">
-        <object
-          data={`${file}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-          type="application/pdf"
-          title="Résumé preview"
-        >
-          <div className="resume-fallback">
-            <span className="resume-fallback-tag mono">PDF</span>
-            <p>This browser cannot preview PDFs inline, but the file is one tap away.</p>
-            <a className="link-arrow" href={file} target="_blank" rel="noreferrer">
-              Open the résumé <ArrowUpRight />
-            </a>
-          </div>
-        </object>
-      </div>
+      <a
+        className="resume-preview"
+        href={file}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Open the résumé PDF"
+      >
+        <div className="resume-page" aria-hidden="true">
+          <p className="rp-name">{site.name}</p>
+          <p className="rp-role">{site.role}</p>
+          <p className="rp-contact">
+            {site.email} · github.com/{site.githubUser} · {site.location}
+          </p>
+
+          <span className="rp-rule" />
+
+          <p className="rp-label">Profile</p>
+          <p className="rp-body">{site.tagline}</p>
+
+          <p className="rp-label">Education</p>
+          {education.map((item) => (
+            <span className="rp-row" key={item.title}>
+              <span className="rp-row-title">{item.title}</span>
+              <span className="rp-row-meta">{item.when}</span>
+              <span className="rp-row-sub">{item.org}</span>
+            </span>
+          ))}
+
+          <p className="rp-label">Skills</p>
+          <p className="rp-body">
+            {site.skills.map((group) => group.items.join(', ')).join('   ·   ')}
+          </p>
+
+          <p className="rp-label">Selected work</p>
+          {work.map((project) => (
+            <p className="rp-body" key={project.title}>
+              <b>{project.title}</b>
+              {project.tags?.length ? ` — ${project.tags.join(', ')}` : ''}
+            </p>
+          ))}
+        </div>
+
+        <span className="resume-open">
+          Open PDF <ArrowUpRight />
+        </span>
+      </a>
 
       <div className="resume-meta">
         <div className="resume-meta-text">
