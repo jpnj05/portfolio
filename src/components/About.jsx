@@ -260,23 +260,27 @@ export default function About({ data }) {
 
         <div className="about-top">
           <Reveal className="about-copy">
-            <p className="kicker">Biography</p>
             {site.about.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+              <p className={index === 0 ? 'about-lead' : undefined} key={index}>
+                {paragraph}
+              </p>
             ))}
-            <div className="about-facts">
-              <span className="fact">
-                Based in <b>{site.location}</b>
-              </span>
+            <dl className="about-facts">
+              <div className="fact-row">
+                <dt>Based in</dt>
+                <dd>{site.location}</dd>
+              </div>
               {joined && (
-                <span className="fact">
-                  On GitHub since <b>{joined}</b>
-                </span>
+                <div className="fact-row">
+                  <dt>On GitHub since</dt>
+                  <dd>{joined}</dd>
+                </div>
               )}
-              <span className="fact">
-                Focus <b>React + Node</b>
-              </span>
-            </div>
+              <div className="fact-row">
+                <dt>Focus</dt>
+                <dd>React + Node</dd>
+              </div>
+            </dl>
           </Reveal>
 
           <ResumeCard />
@@ -296,13 +300,13 @@ export default function About({ data }) {
                 key={`${item.kind}-${item.title}`}
               >
                 <span className="timeline-dot" aria-hidden="true" />
-                <span className="timeline-when mono">{item.when}</span>
                 <div className="timeline-body">
                   <p className="timeline-kind mono">{item.kind}</p>
                   <h4>{item.title}</h4>
                   <p className="timeline-org">{item.org}</p>
                   {item.note && <p className="timeline-note">{item.note}</p>}
                 </div>
+                <span className="timeline-when mono">{item.when}</span>
               </li>
             ))}
           </ol>
