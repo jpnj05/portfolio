@@ -14,7 +14,8 @@ Live URL: _add your Vercel URL here once deployed_
   button that expands every repository from GitHub into a compact list.
 - **Light/dark theme** — a nav toggle with a circular reveal that expands from the button, a
   stored preference, and a light palette that repaints the whole site (surfaces, glass, heatmap).
-  The dark palette is a warm charcoal with a muted copper accent.
+  Dark is a midnight iris (violet-tinted ink, periwinkle accent), light is lilac paper with
+  deep violet accents.
 - **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
   scroll, hover/tap tooltip, year switcher, plus current streak, longest streak, active days
   and best day computed from the real API payload.

@@ -25,7 +25,7 @@ export default function ThemeToggle() {
       /* ignore */
     }
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f5f2ea' : '#08080a');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#f6f4fc' : '#131120');
   }, [theme]);
 
   const toggle = () => {
