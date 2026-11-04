@@ -1,6 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
+
+const TOP_COUNT = 5;
 
 const ArrowUpRight = () => (
   <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -20,6 +22,18 @@ const CodeIcon = () => (
       d="M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5"
       stroke="currentColor"
       strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const Chevron = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <path
+      d="M2.5 4.5 6 8l3.5-3.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -178,10 +192,59 @@ function ProjectCard({ project, featured = false }) {
   );
 }
 
+/** Dense directory view of every repository, opened from the toggle below the grid. */
+function RepoList({ projects, id }) {
+  return (
+    <ul className="repo-list" id={id}>
+      {projects.map((project, index) => (
+        <li className="repo-row" key={project.key} style={{ '--i': index }}>
+          <span className="repo-index">{String(index + 1).padStart(2, '0')}</span>
+
+          <div className="repo-main">
+            <a
+              className="repo-name"
+              href={project.source}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {project.title}
+            </a>
+            <p className="repo-blurb">{project.description}</p>
+          </div>
+
+          <span className="repo-meta">
+            {(project.language || project.tags[0]) && (
+              <span>
+                <span className="lang-dot" />
+                {project.language || project.tags[0]}
+              </span>
+            )}
+            {project.year && <span>{project.year}</span>}
+          </span>
+
+          <a
+            className="repo-open"
+            href={project.live || project.source}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${project.live ? 'Open' : 'Open source of'} ${project.title}`}
+            title={project.live ? 'Live demo' : 'View source'}
+          >
+            <ArrowUpRight />
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function Projects({ data }) {
+  const [showAll, setShowAll] = useState(false);
   const projects = buildProjects(data);
   const ordered = [...projects.filter((p) => p.featured), ...projects.filter((p) => !p.featured)];
+  const top = ordered.slice(0, TOP_COUNT);
   const loading = !data;
+  const listId = 'all-repositories';
 
   return (
     <section className="section" id="work">
@@ -194,8 +257,8 @@ export default function Projects({ data }) {
             </h2>
           </div>
           <p className="section-lead">
-            Pulled from GitHub, so it stays current. Each card links to the running build and the
-            source.
+            The five builds I would hand you first, pulled from GitHub so they stay current. The
+            rest of the repos are one click away.
           </p>
         </div>
 
@@ -204,7 +267,7 @@ export default function Projects({ data }) {
             [0, 1].map((index) => <div className="skeleton-card" key={index} aria-hidden="true" />)}
 
           {!loading &&
-            ordered.map((project, index) => {
+            top.map((project, index) => {
               const featured = project.featured || (ordered.length === 1 && index === 0);
               return (
                 <Reveal
@@ -222,6 +285,24 @@ export default function Projects({ data }) {
           <div className="empty-note">
             Repos are still loading from GitHub. If this sticks, check the network tab or run{' '}
             <code>npm run snapshot</code> to refresh the offline copy.
+          </div>
+        )}
+
+        {!loading && ordered.length > 0 && (
+          <div className="repos-more">
+            <button
+              type="button"
+              className="repos-toggle"
+              aria-expanded={showAll}
+              aria-controls={listId}
+              onClick={() => setShowAll((value) => !value)}
+            >
+              {showAll ? 'Hide the full list' : 'See all work'}
+              <span className="repos-count">{ordered.length} repos</span>
+              <Chevron />
+            </button>
+
+            {showAll && <RepoList projects={ordered} id={listId} />}
           </div>
         )}
 

@@ -1,14 +1,15 @@
 :root {
-  --ink: #08080a;
-  --ink-2: #0d0d11;
-  --panel: #101015;
-  --panel-2: #14141a;
-  --text: #f3f0e9;
-  --muted: #918f9d;
-  --muted-2: #6d6b78;
-  --ember: #ff5a36;
-  --ember-soft: #ff7d5c;
-  --mint: #b8f2c9;
+  --ink: #131211;
+  --ink-2: #171614;
+  --panel: #1b1a18;
+  --panel-2: #211f1c;
+  --text: #e9e5dd;
+  --muted: #a29c92;
+  --muted-2: #8b857b;
+  --ember: #e08a63;
+  --ember-rgb: 224, 138, 99;
+  --ember-soft: #eda98b;
+  --mint: #b7dcc1;
   --line: rgba(var(--fg-rgb), 0.11);
   --line-strong: rgba(var(--fg-rgb), 0.22);
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
@@ -21,21 +22,21 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --nav-h: 74px;
   /* theme tokens — the light block below flips these */
-  --fg-rgb: 243, 240, 233;
-  --on-solid: #120806;
-  --btn-hover-fg: #1a0703;
-  --mark-fg: #180702;
-  --selection-fg: #150703;
-  --glass-bg: rgba(8, 8, 10, 0.72);
-  --glass-bg-strong: rgba(8, 8, 10, 0.85);
-  --menu-bg: rgba(8, 8, 10, 0.96);
-  --chip-bg: rgba(8, 8, 10, 0.45);
-  --tabs-bg: rgba(8, 8, 10, 0.5);
-  --media-bg: #0a0a0d;
-  --cover-a: #16161d;
-  --heat-1: #4a2419;
-  --heat-2: #8b3720;
-  --heat-3: #c94526;
+  --fg-rgb: 233, 229, 221;
+  --on-solid: #201410;
+  --btn-hover-fg: #1e130e;
+  --mark-fg: #1f130e;
+  --selection-fg: #191310;
+  --glass-bg: rgba(19, 18, 17, 0.72);
+  --glass-bg-strong: rgba(19, 18, 17, 0.86);
+  --menu-bg: rgba(19, 18, 17, 0.97);
+  --chip-bg: rgba(19, 18, 17, 0.55);
+  --tabs-bg: rgba(10, 9, 8, 0.5);
+  --media-bg: #161513;
+  --cover-a: #232120;
+  --heat-1: #3b2a23;
+  --heat-2: #7a4a33;
+  --heat-3: #b06a4a;
 }
 
 * {
@@ -268,7 +269,7 @@ button {
   transition: opacity 0.6s ease;
   background: radial-gradient(
     340px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(255, 90, 54, 0.13),
+    rgba(var(--ember-rgb), 0.13),
     transparent 65%
   );
 }
@@ -306,7 +307,7 @@ button {
 .progress-bar {
   height: 100%;
   width: var(--p, 0%);
-  background: linear-gradient(90deg, var(--ember), #ffb59f);
+  background: linear-gradient(90deg, var(--ember), var(--ember-soft));
   transform-origin: left;
 }
 
@@ -359,7 +360,7 @@ button {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 13px;
-  box-shadow: 0 6px 20px rgba(255, 90, 54, 0.3);
+  box-shadow: 0 6px 20px rgba(var(--ember-rgb), 0.3);
 }
 
 .nav-links {
@@ -881,7 +882,7 @@ button {
   height: 240px;
   right: -90px;
   top: -110px;
-  background: radial-gradient(circle, rgba(255, 90, 54, 0.24), transparent 65%);
+  background: radial-gradient(circle, rgba(var(--ember-rgb), 0.24), transparent 65%);
   pointer-events: none;
 }
 
@@ -944,7 +945,7 @@ button {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
-    radial-gradient(120% 140% at 85% -20%, rgba(255, 90, 54, 0.11), transparent 60%),
+    radial-gradient(120% 140% at 85% -20%, rgba(var(--ember-rgb), 0.11), transparent 60%),
     var(--panel);
   padding: clamp(20px, 3.4vw, 34px);
   position: relative;
@@ -1117,7 +1118,7 @@ button {
 
 .heat-cell[data-level='4'] {
   background: var(--ember);
-  box-shadow: 0 0 12px rgba(255, 90, 54, 0.45);
+  box-shadow: 0 0 12px rgba(var(--ember-rgb), 0.45);
 }
 
 .heat-cell:hover {
@@ -1150,7 +1151,7 @@ button {
   padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(255, 90, 54, 0.06);
+  background: rgba(var(--ember-rgb), 0.06);
   font-family: var(--font-mono);
   font-size: 10.5px;
   letter-spacing: 0.1em;
@@ -1426,7 +1427,7 @@ button {
   height: 100%;
   padding: clamp(22px, 3vw, 34px);
   background:
-    radial-gradient(120% 120% at 100% 0%, rgba(255, 90, 54, 0.22), transparent 58%),
+    radial-gradient(120% 120% at 100% 0%, rgba(var(--ember-rgb), 0.22), transparent 58%),
     linear-gradient(158deg, var(--cover-a) 0%, var(--media-bg) 62%);
 }
 
@@ -2110,6 +2111,7 @@ button {
   --muted-2: #77757f;
   --ember: #e0451f;
   --ember-soft: #c1350f;
+  --ember-rgb: 224, 69, 31;
   --mint: #1c6b46;
   --line: rgba(21, 21, 26, 0.12);
   --line-strong: rgba(21, 21, 26, 0.26);
@@ -2213,8 +2215,8 @@ body {
   transform: translateY(-2px) scale(1.08) rotate(-8deg);
   border-color: var(--ember);
   box-shadow:
-    0 10px 26px -10px rgba(255, 90, 54, 0.65),
-    0 0 0 4px rgba(255, 90, 54, 0.14);
+    0 10px 26px -10px rgba(var(--ember-rgb), 0.65),
+    0 0 0 4px rgba(var(--ember-rgb), 0.14);
 }
 
 .theme-toggle:hover::before {
@@ -2270,6 +2272,211 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle::before {
+    animation: none;
+  }
+}
+
+
+/* --------------------------------------------------- all repositories list */
+.repos-more {
+  margin-top: clamp(20px, 3vw, 28px);
+}
+
+.repos-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px 12px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(var(--fg-rgb), 0.03);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition:
+    border-color 0.3s var(--ease),
+    background 0.3s var(--ease),
+    color 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.repos-toggle:hover {
+  border-color: var(--ember);
+  background: rgba(var(--ember-rgb), 0.08);
+  color: var(--ember);
+  transform: translateY(-2px);
+}
+
+.repos-toggle:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+}
+
+.repos-toggle svg {
+  transition: transform 0.4s var(--ease);
+}
+
+.repos-toggle[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.repos-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted-2);
+}
+
+.repo-list {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  animation: repoListIn 0.4s var(--ease) both;
+}
+
+.repo-row {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  padding: 16px 6px;
+  border-bottom: 1px solid var(--line);
+  animation: repoRowIn 0.5s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+  transition:
+    background 0.35s var(--ease),
+    padding 0.35s var(--ease);
+}
+
+.repo-row:hover {
+  background: rgba(var(--fg-rgb), 0.035);
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.repo-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-2);
+}
+
+.repo-main {
+  min-width: 0;
+}
+
+.repo-name {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-decoration: none;
+  background-image: linear-gradient(var(--ember), var(--ember));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s var(--ease), color 0.3s var(--ease);
+}
+
+.repo-name:hover {
+  color: var(--ember);
+  background-size: 100% 1px;
+}
+
+.repo-blurb {
+  margin: 3px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.repo-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+.repo-meta .lang-dot {
+  margin-right: 5px;
+}
+
+.repo-open {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+  transition:
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    background 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.repo-row:hover .repo-open {
+  border-color: var(--ember);
+  background: rgba(var(--ember-rgb), 0.1);
+  color: var(--ember);
+  transform: translate(1px, -1px);
+}
+
+@keyframes repoListIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes repoRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 720px) {
+  .repo-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 12px;
+    padding: 14px 2px;
+  }
+
+  .repo-index,
+  .repo-meta {
+    display: none;
+  }
+
+  .repo-open {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 30px;
+    height: 30px;
+  }
+
+  .repo-blurb {
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repo-list,
+  .repo-row {
     animation: none;
   }
 }

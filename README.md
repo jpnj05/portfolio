@@ -9,8 +9,12 @@ Live URL: _add your Vercel URL here once deployed_
 
 - **Kinetic hero** — letter-by-letter entrance, rotating role line, orbiting ring around the
   GitHub avatar, magnetic buttons, and a pointer-following accent light on desktop.
-- **Work** — one card per public repo, with a preview image, description, language, tags and
-  links to the live build and the source. The featured project gets a full-width layout.
+- **Work** — the five strongest builds as cards (preview, description, language, tags, links to
+  the live build and source; the featured one gets a full-width layout), then a **See all work**
+  button that expands every repository from GitHub into a compact list.
+- **Light/dark theme** — a nav toggle with a circular reveal that expands from the button, a
+  stored preference, and a light palette that repaints the whole site (surfaces, glass, heatmap).
+  The dark palette is a warm charcoal with a muted copper accent.
 - **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
   scroll, hover/tap tooltip, year switcher, plus current streak, longest streak, active days
   and best day computed from the real API payload.
