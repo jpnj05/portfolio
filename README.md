@@ -8,7 +8,8 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 ## What is inside
 
 - **Kinetic hero** — letter-by-letter entrance, rotating role line, orbiting ring around the
-  GitHub avatar and magnetic buttons.
+  GitHub avatar and magnetic buttons, over a fixed background layer of slowly drifting particles
+  that take their colour from the theme's accent and mint tokens.
 - **Work** — the five strongest builds as cards (preview, description, language, tags, links to
   the live build and source; the featured one gets a full-width layout), then a **See all work**
   button that expands every repository from GitHub into a compact list.
