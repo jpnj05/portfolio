@@ -1,4 +1,7 @@
-const WORDS = ['React', 'Node.js', 'Interfaces', 'Motion', 'APIs', 'Details'];
+// The strip that runs under the hero: what he actually builds with, in the same
+// order the skills matrix lists it. Keep it to a handful of concrete tools, the
+// vague ones ("Details", "Interfaces") read as filler at this size.
+const WORDS = ['React', 'Node.js', 'Flutter', 'Python', 'REST APIs', 'Firebase'];
 
 /** Roughly how long one word takes to cross, so longer lists do not race. */
 const SECONDS_PER_WORD = 4.4;
