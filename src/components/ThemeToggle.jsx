@@ -15,7 +15,7 @@ function readInitialTheme() {
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState(readInitialTheme);
-  const buttonRef = useRef(null);
+  const switchTimer = useRef(0);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -28,52 +28,27 @@ export default function ThemeToggle() {
     if (meta) meta.setAttribute('content', theme === 'light' ? '#f6f4fc' : '#131120');
   }, [theme]);
 
+  useEffect(() => () => window.clearTimeout(switchTimer.current), []);
+
   const toggle = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const rect = buttonRef.current?.getBoundingClientRect();
-    const x = rect ? rect.left + rect.width / 2 : window.innerWidth - 60;
-    const y = rect ? rect.top + rect.height / 2 : 60;
+    const root = document.documentElement;
 
-    // Without the View Transitions API (or with reduced motion) just swap.
-    if (!document.startViewTransition || reduce) {
-      setTheme(next);
-      return;
-    }
+    // One instant palette swap. `.theme-switch` parks running animations and
+    // suppresses per-element colour transitions, so nothing repaints for the
+    // length of a tween and the swap costs a single frame.
+    root.classList.add('theme-switch');
+    root.dataset.theme = next;
+    setTheme(next);
 
-    const transition = document.startViewTransition(() => {
-      document.documentElement.dataset.theme = next;
-      setTheme(next);
-    });
-
-    transition.ready
-      .then(() => {
-        const radius = Math.hypot(
-          Math.max(x, window.innerWidth - x),
-          Math.max(y, window.innerHeight - y),
-        );
-
-        document.documentElement.animate(
-          {
-            clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`],
-          },
-          {
-            duration: 720,
-            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-            pseudoElement: '::view-transition-new(root)',
-          },
-        );
-      })
-      .catch(() => {
-        /* transition cancelled — the theme already applied */
-      });
+    window.clearTimeout(switchTimer.current);
+    switchTimer.current = window.setTimeout(() => root.classList.remove('theme-switch'), 140);
   };
 
   const label = `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`;
 
   return (
     <button
-      ref={buttonRef}
       type="button"
       className="theme-toggle"
       onClick={toggle}

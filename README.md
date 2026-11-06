@@ -8,12 +8,13 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 ## What is inside
 
 - **Kinetic hero** — letter-by-letter entrance, rotating role line, orbiting ring around the
-  GitHub avatar, magnetic buttons, and a pointer-following accent light on desktop.
+  GitHub avatar and magnetic buttons.
 - **Work** — the five strongest builds as cards (preview, description, language, tags, links to
   the live build and source; the featured one gets a full-width layout), then a **See all work**
   button that expands every repository from GitHub into a compact list.
-- **Light/dark theme** — a nav toggle with a circular reveal that expands from the button, a
-  stored preference, and a light palette that repaints the whole site (surfaces, glass, heatmap).
+- **Light/dark theme** — a nav toggle that swaps the palette in one frame (no page snapshot,
+  no blurred layer re-raster), a stored preference, and a light palette that repaints the whole
+  site (surfaces, glass, heatmap).
   Dark is a midnight iris (violet-tinted ink, periwinkle accent), light is lilac paper with
   deep violet accents.
 - **Activity** — a hand-built contribution heatmap: 53 weeks × 7 days, staggered reveal on
@@ -33,6 +34,7 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 | --------- | ---------------------------------------------------------------- |
 | UI        | React 19, hand-written CSS (no UI framework)                     |
 | Bundler   | Vite 7                                                           |
+| Scroll    | Lenis (inertial wheel scrolling, native fallback)                |
 | Backend   | Node serverless function at `api/github.js` (Vercel runtime)     |
 | Data      | GitHub REST API + GitHub contributions API                       |
 | Hosting   | Vercel (static build + one function)                             |

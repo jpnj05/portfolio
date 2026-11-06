@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { site } from './data/site.js';
 import { loadPortfolio } from './lib/github.js';
 import Nav from './components/Nav.jsx';
-import Cursor, { ScrollProgress } from './components/Cursor.jsx';
+import ScrollProgress from './components/ScrollProgress.jsx';
+import useSmoothScroll from './hooks/useSmoothScroll.js';
 import Hero from './components/Hero.jsx';
 import Marquee from './components/Marquee.jsx';
 import About from './components/About.jsx';
@@ -13,6 +14,8 @@ import Footer from './components/Footer.jsx';
 
 export default function App() {
   const [data, setData] = useState(null);
+
+  useSmoothScroll();
 
   useEffect(() => {
     let alive = true;
@@ -26,7 +29,6 @@ export default function App() {
 
   return (
     <>
-      <Cursor />
       <ScrollProgress />
 
       <div className="bg-canvas" aria-hidden="true">

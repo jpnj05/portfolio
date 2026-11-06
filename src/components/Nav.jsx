@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site.js';
+import { getLenis } from '../hooks/useSmoothScroll.js';
 import ThemeToggle from './ThemeToggle.jsx';
 
 const LINKS = [
@@ -44,9 +45,13 @@ export default function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
+    // Park the smooth-scroll loop while the menu owns the screen.
+    if (open) getLenis()?.stop();
+    else getLenis()?.start();
     openedAt.current = open ? Date.now() : 0;
     return () => {
       document.body.style.overflow = '';
+      getLenis()?.start();
     };
   }, [open]);
 
