@@ -42,7 +42,7 @@ export default function ParticleDrift() {
     let frameId = 0;
     let lastTime = 0;
     let elapsed = 0;
-    let palette = { accent: '179, 164, 255', mint: '159, 227, 201', strength: 1 };
+    let palette = { accent: '179, 164, 255', mint: '159, 227, 201', strength: 1, radius: 1 };
 
     const readPalette = () => {
       const styles = getComputedStyle(document.documentElement);
@@ -52,8 +52,11 @@ export default function ParticleDrift() {
       palette = {
         accent: accent || '179, 164, 255',
         mint: mint.join(', '),
-        // Light paper needs a lighter hand or the dots turn into specks of dust.
-        strength: isLight ? 0.72 : 1,
+        // Pale dots vanish against paper, so light mode gets a heavier mix and
+        // slightly larger dots to land at the same apparent weight as the dark
+        // field, where bright dots sit on near-black ink.
+        strength: isLight ? 1.35 : 1,
+        radius: isLight ? 1.22 : 1,
       };
     };
 
@@ -113,7 +116,7 @@ export default function ParticleDrift() {
 
         ctx.fillStyle = `rgba(${particle.mint ? palette.mint : palette.accent}, ${(fade * palette.strength).toFixed(3)})`;
         ctx.beginPath();
-        ctx.arc(x, y, particle.r, 0, Math.PI * 2);
+        ctx.arc(x, y, particle.r * palette.radius, 0, Math.PI * 2);
         ctx.fill();
       }
     }
