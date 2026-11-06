@@ -36,12 +36,12 @@ export default function Contact() {
     <section className="section contact" id="contact">
       <div className="wrap">
         <Reveal className="contact-inner">
-          <p className="contact-eyebrow">04 — Contact</p>
+          <p className="contact-eyebrow">04 · Contact</p>
           <h2 className="contact-title">
             Got something worth <em>building</em>?
           </h2>
           <p className="section-lead" style={{ textAlign: 'center', maxWidth: '46ch' }}>
-            I read everything. Send a project, a role, or just a question — I usually reply within a
+            I read everything. Send a project, a role, or just a question. I usually reply within a
             day.
           </p>
 

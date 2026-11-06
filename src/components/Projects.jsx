@@ -96,7 +96,7 @@ function buildProjects(data) {
       return {
         key: repo.fullName || repo.name,
         title: override.title || repo.name.replace(/[-_]/g, ' '),
-        description: override.blurb || repo.description || 'No description yet — the code speaks for itself.',
+        description: override.blurb || repo.description || 'No description yet. The code speaks for itself.',
         // Only real screenshots are used; repos without one get a generated cover.
         preview: override.preview || '',
         tags: (override.tags || [...(repo.topics || []), language].filter(Boolean)).slice(0, 4),
@@ -251,7 +251,7 @@ export default function Projects({ data }) {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <p className="kicker">01 — Selected work</p>
+            <p className="kicker">01 · Selected work</p>
             <h2 className="section-title">
               Things I shipped, <em>live</em> and readable.
             </h2>

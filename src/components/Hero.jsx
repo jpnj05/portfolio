@@ -118,15 +118,15 @@ export default function Hero({ data }) {
 
         <div className="hero-stats">
           <div className="stat" ref={repoRef}>
-            <div className="stat-value">{repos === null ? '—' : repoCount}</div>
+            <div className="stat-value">{repos === null ? '···' : repoCount}</div>
             <div className="stat-label">Public repos</div>
           </div>
           <div className="stat" ref={contribRef}>
-            <div className="stat-value">{contributions === null ? '—' : contribCount}</div>
+            <div className="stat-value">{contributions === null ? '···' : contribCount}</div>
             <div className="stat-label">Contributions</div>
           </div>
           <div className="stat" ref={starRef}>
-            <div className="stat-value">{stars === null ? '—' : starCount}</div>
+            <div className="stat-value">{stars === null ? '···' : starCount}</div>
             <div className="stat-label">Repo stars</div>
           </div>
         </div>

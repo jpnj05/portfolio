@@ -152,7 +152,7 @@ function ResumeCard() {
           {work.map((project) => (
             <p className="rp-body" key={project.title}>
               <b>{project.title}</b>
-              {project.tags?.length ? ` — ${project.tags.join(', ')}` : ''}
+              {project.tags?.length ? ` · ${project.tags.join(', ')}` : ''}
             </p>
           ))}
         </div>
@@ -247,7 +247,7 @@ export default function About({ data }) {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <p className="kicker">02 — About</p>
+            <p className="kicker">02 · About</p>
             <h2 className="section-title">
               A developer with a <em>detail problem</em>.
             </h2>
@@ -290,7 +290,7 @@ export default function About({ data }) {
           <div className="about-subhead">
             <p className="kicker">Background</p>
             <h3 className="about-h3">Experience &amp; education</h3>
-            <p className="about-subnote">Newest first — where I am now, and how I got here.</p>
+            <p className="about-subnote">Newest first: where I am now, and how I got here.</p>
           </div>
 
           <ol className="timeline">
@@ -318,7 +318,7 @@ export default function About({ data }) {
             <h3 className="about-h3">Skills &amp; tools</h3>
             <p className="about-subnote">
               {site.skills.reduce((total, group) => total + group.items.length, 0)} tools across{' '}
-              {site.skills.length} groups — the stack I actually build with.
+              {site.skills.length} groups in the stack I actually build with.
             </p>
           </div>
 

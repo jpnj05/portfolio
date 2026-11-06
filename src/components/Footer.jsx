@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="wrap footer-inner">
         <span>
-          © {new Date().getFullYear()} {site.name} — built with React, Vite &amp; a small Node
+          © {new Date().getFullYear()} {site.name}. Built with React, Vite and a small Node
           function.
         </span>
         <div className="footer-meta">

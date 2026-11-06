@@ -226,7 +226,7 @@ export default function Contributions({ contributions }) {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <p className="kicker">03 — Activity</p>
+            <p className="kicker">03 · Activity</p>
             <h2 className="section-title">
               Commit <em>weather</em>.
             </h2>
@@ -248,7 +248,7 @@ export default function Contributions({ contributions }) {
         <div className="contrib-card">
           <div className="contrib-head">
             <div className="contrib-total">
-              {data ? data.total.toLocaleString() : '—'}
+              {data ? data.total.toLocaleString() : '···'}
               <small>
                 {year === 'last'
                   ? 'contributions in the last 12 months'
@@ -380,7 +380,7 @@ export default function Contributions({ contributions }) {
           <div className="metric-card">
             <span className="metric-label">Total_commits</span>
             <b className="metric-value">
-              {data ? data.total.toLocaleString() : '—'}
+              {data ? data.total.toLocaleString() : '···'}
               <span className="metric-unit">{year === 'last' ? 'last 12 mo' : year}</span>
             </b>
           </div>
