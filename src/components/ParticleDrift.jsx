@@ -53,10 +53,10 @@ export default function ParticleDrift() {
         accent: accent || '179, 164, 255',
         mint: mint.join(', '),
         // Pale dots vanish against paper, so light mode gets a heavier mix and
-        // slightly larger dots to land at the same apparent weight as the dark
-        // field, where bright dots sit on near-black ink.
-        strength: isLight ? 1.35 : 1,
-        radius: isLight ? 1.22 : 1,
+        // slightly larger dots. Kept close to 1: at 1.35 the contrast against
+        // #f6f4fc made the field read busier than the dark one.
+        strength: isLight ? 1.1 : 1,
+        radius: isLight ? 1.15 : 1,
       };
     };
 
