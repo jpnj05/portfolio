@@ -11,6 +11,10 @@ import { useEffect, useRef } from 'react';
  * count.
  */
 
+// Dots travel this many pixels per pixel of page scroll: enough to read as depth
+// under the content, far too little to look like a second scrollbar.
+const PARALLAX = 0.06;
+
 const AREA_PER_PARTICLE = 26000;
 const MIN_PARTICLES = 22;
 const MAX_PARTICLES = 96;
@@ -96,6 +100,11 @@ export default function ParticleDrift() {
     function draw(delta, still) {
       ctx.clearRect(0, 0, width, height);
 
+      // The canvas is fixed, so the field slides against the page by wrapping the
+      // scroll offset through its own height. No transform, no gaps at the edges.
+      let offset = (window.scrollY * PARALLAX) % height;
+      if (offset < 0) offset += height;
+
       for (const particle of particles) {
         if (!still) {
           particle.x += particle.vx * delta;
@@ -111,7 +120,8 @@ export default function ParticleDrift() {
 
         const drift = still ? 0 : Math.sin(elapsed * 0.4 + particle.phase) * particle.wobble;
         const x = particle.x + drift;
-        const y = particle.y;
+        let y = particle.y - offset;
+        if (y < 0) y += height;
         const fade = still ? particle.alpha : particle.alpha * (0.75 + 0.25 * Math.sin(elapsed * 0.6 + particle.phase));
 
         ctx.fillStyle = `rgba(${particle.mint ? palette.mint : palette.accent}, ${(fade * palette.strength).toFixed(3)})`;
