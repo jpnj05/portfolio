@@ -251,7 +251,7 @@ export default function Projects({ data }) {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <p className="kicker">01 · Selected work</p>
+            <p className="kicker">01 · Work</p>
             <h2 className="section-title">
               Things I shipped, <em>live</em> and readable.
             </h2>
