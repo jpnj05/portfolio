@@ -42,8 +42,8 @@ export default function App() {
       <main>
         <Hero data={data} />
         <Marquee />
-        <Projects data={data} />
         <About data={data} />
+        <Projects data={data} />
         <Contributions contributions={data?.contributions ?? null} />
         <Contact />
         <Marquee items={['Let’s build', 'Say hello', 'Ship it', 'React', 'Node.js']} reverse />

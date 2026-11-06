@@ -247,7 +247,7 @@ export default function About({ data }) {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <p className="kicker">02 · About</p>
+            <p className="kicker">01 · About</p>
             <h2 className="section-title">
               A developer with a <em>detail problem</em>.
             </h2>

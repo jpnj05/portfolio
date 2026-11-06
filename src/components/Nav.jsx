@@ -4,8 +4,8 @@ import { getLenis } from '../hooks/useSmoothScroll.js';
 import ThemeToggle from './ThemeToggle.jsx';
 
 const LINKS = [
-  { id: 'work', label: 'Work', index: '01' },
-  { id: 'about', label: 'About', index: '02' },
+  { id: 'about', label: 'About', index: '01' },
+  { id: 'work', label: 'Work', index: '02' },
   { id: 'activity', label: 'Activity', index: '03' },
   { id: 'contact', label: 'Contact', index: '04' },
 ];

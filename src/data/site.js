@@ -70,7 +70,7 @@ export const site = {
       title: 'Independent developer',
       org: 'Personal projects',
       current: true,
-      note: 'Designing and shipping my own web and mobile projects end to end: interface, motion, API and deployment. The finished builds live in Selected work.',
+      note: 'Designing and shipping my own web and mobile projects end to end: interface, motion, API and deployment. The finished builds live in Work.',
     },
     {
       kind: 'Education',
