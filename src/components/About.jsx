@@ -314,7 +314,6 @@ export default function About({ data }) {
 
         <div className="about-part">
           <div className="about-subhead">
-            <p className="kicker">Toolbox</p>
             <h3 className="about-h3">Skills &amp; tools</h3>
             <p className="about-subnote">
               {site.skills.reduce((total, group) => total + group.items.length, 0)} tools across{' '}
