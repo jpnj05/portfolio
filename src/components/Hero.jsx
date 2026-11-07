@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { site } from '../data/site.js';
 import { useCountUp } from '../hooks/useCountUp.js';
 import Magnetic from './Magnetic.jsx';
-import Spaceship from './Spaceship.jsx';
 
 const ArrowUpRight = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -43,8 +42,6 @@ export default function Hero({ data }) {
 
   return (
     <section className="hero" id="top">
-      <Spaceship />
-
       <div className="hero-inner">
         <div className="hero-main">
           <div>

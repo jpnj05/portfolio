@@ -15,6 +15,9 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
   button that expands every repository from GitHub into a compact list.
 - **Skills tooltips** — every chip in the skills matrix explains itself on hover or keyboard
   focus, positioned in the viewport so it never runs off an edge.
+- **Drifting ship** — a small ship floats through the background with the dots and shooting
+  stars. Hover it for thrusters, drag it to steer, let go and it keeps the momentum, and it
+  wraps to the opposite edge once it leaves the screen.
 - **Light/dark theme** — a nav toggle that swaps the palette in one frame (no page snapshot,
   no blurred layer re-raster), a stored preference, and a light palette that repaints the whole
   site (surfaces, glass, heatmap).

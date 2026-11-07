@@ -3,6 +3,7 @@ import { site } from './data/site.js';
 import { loadPortfolio } from './lib/github.js';
 import Nav from './components/Nav.jsx';
 import ParticleDrift from './components/ParticleDrift.jsx';
+import Spaceship from './components/Spaceship.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import useSmoothScroll from './hooks/useSmoothScroll.js';
 import Hero from './components/Hero.jsx';
@@ -34,6 +35,7 @@ export default function App() {
 
       <div className="bg-canvas" aria-hidden="true">
         <ParticleDrift />
+        <Spaceship />
         <div className="grid" />
         <span className="blob a" />
         <span className="blob b" />

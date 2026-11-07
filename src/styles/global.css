@@ -209,13 +209,13 @@ button {
 /* ----------------------------------------------------------- spaceship */
 .ship {
   position: absolute;
-  right: 6%;
-  bottom: 15%;
-  z-index: 0;
-  width: clamp(64px, 7vw, 92px);
+  top: 0;
+  left: 0;
+  width: clamp(52px, 5.4vw, 76px);
   aspect-ratio: 64 / 100;
-  opacity: 0.92;
+  will-change: transform;
   pointer-events: none;
+  opacity: 0.95;
 }
 
 /* A soft halo that only appears when the ship is awake. A gradient that fades in
@@ -235,18 +235,17 @@ button {
   opacity: 1;
 }
 
-.ship-drift {
-  animation: ship-bob 18s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
 .ship-hover {
-  transform-origin: 50% 62%;
-  transition: transform 0.55s var(--ease);
+  transform-origin: 50% 50%;
+  transition: transform 0.4s var(--ease);
 }
 
-.ship.is-hot .ship-hover {
-  transform: translate3d(20px, -18px, 0) rotate(7deg) scale(1.05);
+.ship.is-hover .ship-hover {
+  transform: scale(1.08);
+}
+
+.ship.is-dragging .ship-hover {
+  transform: scale(0.95);
 }
 
 .ship-svg {
@@ -254,7 +253,6 @@ button {
   width: 100%;
   height: auto;
   overflow: visible;
-  transform: rotate(-28deg);
 }
 
 .ship-hull {
@@ -286,7 +284,7 @@ button {
   opacity: 0;
   transform-box: fill-box;
   transform-origin: 50% 0%;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.18s ease;
 }
 
 .flame-outer {
@@ -313,24 +311,6 @@ button {
     transform: scaleY(0.76) scaleX(1.12);
   }
 }
-
-@keyframes ship-bob {
-  from {
-    transform: translate3d(0, 0, 0) rotate(-2deg);
-  }
-  to {
-    transform: translate3d(-26px, -30px, 0) rotate(2.5deg);
-  }
-}
-
-@media (max-width: 1040px) {
-  /* Below this the hero's side column is too narrow to hold the ship without it
-     sitting on the stats, and a phone has no hover to reward anyway. */
-  .ship {
-    display: none;
-  }
-}
-
 @keyframes drift {
   from {
     transform: translate3d(0, 0, 0) scale(1);
