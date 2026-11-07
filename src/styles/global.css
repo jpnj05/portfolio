@@ -1271,6 +1271,9 @@ button {
 .matrix {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Equal rows, so a card that needs two lines of chips does not leave its
+     neighbours in the same row taller than the row above. */
+  grid-auto-rows: 1fr;
   gap: 14px;
 }
 
@@ -2828,6 +2831,9 @@ button {
 @media (max-width: 760px) {
   .matrix {
     grid-template-columns: minmax(0, 1fr);
+    /* One column: equal rows would pad every short card out to the tallest, so
+       let each card size itself. */
+    grid-auto-rows: auto;
   }
 
   .about-subhead {
