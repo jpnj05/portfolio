@@ -684,7 +684,10 @@ button {
 .orb-ring text {
   font-family: var(--font-mono);
   font-size: 9.5px;
-  letter-spacing: 0.32em;
+  /* Tuned against the 490 unit circumference: at 0.32em the label ran 43 units
+     past the path, so its tail overlapped the first letters at the seam and the
+     ring read "FLUTFULL-STACK". 0.24em leaves a few units of gap there. */
+  letter-spacing: 0.24em;
   fill: var(--muted);
   text-transform: uppercase;
 }
