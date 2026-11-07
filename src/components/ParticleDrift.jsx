@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
  * touches layout or input: the canvas is pointer-events: none and sits under the
  * grid. The loop stays off entirely for prefers-reduced-motion and when the tab
  * is hidden, and the particle budget is capped so phones do not pay for a desktop
- * count.
+ * count. Every so often a shooting star crosses the field.
  */
 
 // Dots travel this many pixels per pixel of page scroll: enough to read as depth
@@ -19,6 +19,11 @@ const AREA_PER_PARTICLE = 26000;
 const MIN_PARTICLES = 22;
 const MAX_PARTICLES = 96;
 const MAX_DPR = 2;
+
+// A shooting star is a rare event on purpose: seen once every ten seconds or so
+// it reads as a wink, seen constantly it turns the background into a screensaver.
+const STREAK_FIRST = [2.5, 5.5];
+const STREAK_GAP = [7, 17];
 
 const parseHex = (value) => {
   const hex = value.replace('#', '').trim();
@@ -47,6 +52,8 @@ export default function ParticleDrift() {
     let lastTime = 0;
     let elapsed = 0;
     let palette = { accent: '179, 164, 255', mint: '159, 227, 201', strength: 1, radius: 1 };
+    let streak = null;
+    let nextStreak = STREAK_FIRST[0] + Math.random() * (STREAK_FIRST[1] - STREAK_FIRST[0]);
 
     const readPalette = () => {
       const styles = getComputedStyle(document.documentElement);
@@ -80,6 +87,55 @@ export default function ParticleDrift() {
           mint: index % 5 === 0,
         };
       });
+    };
+
+    const spawnStreak = () => {
+      // Enters high and left of the subject, falling at a shallow angle so it
+      // reads as a meteor rather than a diagonal scratch across the copy.
+      const angle = (20 + Math.random() * 16) * (Math.PI / 180);
+      const speed = 15 + Math.random() * 8;
+      streak = {
+        x: -width * 0.15 + Math.random() * width * 0.95,
+        y: -80 + Math.random() * height * 0.5,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        tail: 130 + Math.random() * 110,
+        width: 1 + Math.random() * 0.8,
+        life: 1 + Math.random() * 0.5,
+        age: 0,
+      };
+      nextStreak = elapsed + STREAK_GAP[0] + Math.random() * (STREAK_GAP[1] - STREAK_GAP[0]);
+    };
+
+    const drawStreak = () => {
+      const progress = streak.age / streak.life;
+      // Fade in fast, out slow, so the head never pops into existence.
+      const envelope = Math.max(0, Math.min(1, Math.min(progress / 0.16, (1 - progress) / 0.4)));
+      if (envelope <= 0) return;
+
+      const speed = Math.hypot(streak.vx, streak.vy) || 1;
+      const tailX = streak.x - (streak.vx / speed) * streak.tail;
+      const tailY = streak.y - (streak.vy / speed) * streak.tail;
+      const alpha = Math.min(0.9, 0.8 * envelope) * palette.strength;
+
+      const gradient = ctx.createLinearGradient(streak.x, streak.y, tailX, tailY);
+      gradient.addColorStop(0, `rgba(${palette.accent}, ${alpha.toFixed(3)})`);
+      gradient.addColorStop(0.55, `rgba(${palette.accent}, ${(alpha * 0.28).toFixed(3)})`);
+      gradient.addColorStop(1, `rgba(${palette.accent}, 0)`);
+
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = streak.width;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(streak.x, streak.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+
+      // A slightly brighter head keeps the streak from ending in a soft blur.
+      ctx.fillStyle = `rgba(${palette.accent}, ${Math.min(1, alpha * 1.15).toFixed(3)})`;
+      ctx.beginPath();
+      ctx.arc(streak.x, streak.y, streak.width * 0.85, 0, Math.PI * 2);
+      ctx.fill();
     };
 
     const resize = () => {
@@ -129,6 +185,21 @@ export default function ParticleDrift() {
         ctx.arc(x, y, particle.r * palette.radius, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      if (still) return;
+
+      if (streak) {
+        streak.age += delta / 60;
+        streak.x += streak.vx * delta;
+        streak.y += streak.vy * delta;
+        if (streak.age > streak.life || streak.x - streak.tail > width || streak.y - streak.tail > height) {
+          streak = null;
+        } else {
+          drawStreak();
+        }
+      }
+
+      if (!streak && elapsed > nextStreak) spawnStreak();
     }
 
     const tick = (time) => {
