@@ -243,6 +243,38 @@ export default function About({ data }) {
     ? new Date(data.profile.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
     : null;
 
+  const [tip, setTip] = useState(null);
+
+  // Pinned to the viewport, so any scroll or resize would leave it pointing at
+  // nothing: dismiss instead of chasing the chip.
+  useEffect(() => {
+    if (!tip) return undefined;
+    const hide = () => setTip(null);
+    const onKey = (event) => {
+      if (event.key === 'Escape') setTip(null);
+    };
+    window.addEventListener('scroll', hide, { passive: true });
+    window.addEventListener('resize', hide);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('scroll', hide);
+      window.removeEventListener('resize', hide);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [tip]);
+
+  const hideTip = () => setTip(null);
+
+  const showTip = (event, item) => {
+    const note = site.skillNotes?.[item];
+    if (!note) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    // Keep the panel on screen when the chip sits near an edge.
+    const half = Math.min(150, window.innerWidth / 2);
+    const x = Math.min(Math.max(rect.left + rect.width / 2, half), window.innerWidth - half);
+    setTip({ item, note, x, y: rect.top });
+  };
+
   return (
     <section className="section" id="about">
       <div className="wrap">
@@ -329,7 +361,16 @@ export default function About({ data }) {
                 <h4>{group.group}</h4>
                 <ul className="chips">
                   {group.items.map((item) => (
-                    <li className="chip" key={item}>
+                    <li
+                      className="chip"
+                      key={item}
+                      tabIndex={site.skillNotes?.[item] ? 0 : undefined}
+                      aria-describedby={tip?.item === item ? 'skill-tip' : undefined}
+                      onMouseEnter={(event) => showTip(event, item)}
+                      onMouseLeave={hideTip}
+                      onFocus={(event) => showTip(event, item)}
+                      onBlur={hideTip}
+                    >
                       {item}
                     </li>
                   ))}
@@ -337,6 +378,18 @@ export default function About({ data }) {
               </Reveal>
             ))}
           </div>
+
+          {tip && (
+            <div
+              className="skill-tip"
+              id="skill-tip"
+              role="tooltip"
+              style={{ left: `${tip.x}px`, top: `${tip.y}px` }}
+            >
+              <span className="skill-tip-name">{tip.item}</span>
+              <span className="skill-tip-note">{tip.note}</span>
+            </div>
+          )}
         </div>
       </div>
     </section>

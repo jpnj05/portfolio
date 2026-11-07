@@ -60,6 +60,37 @@ export const site = {
   ],
 
   /**
+   * One line per skill, shown in the tooltip when a chip is hovered or focused.
+   * Anything without an entry simply shows no tooltip.
+   */
+  skillNotes: {
+    React: 'The UI library behind almost every screen I build.',
+    JavaScript: 'The language under everything else on the page.',
+    HTML: 'Structure and semantics, written to be read by people too.',
+    CSS: 'Layout, colour and the small details that make a screen feel finished.',
+    Flutter: 'Dart toolkit I use for the mobile apps.',
+    Dart: 'Flutter\u2019s language: typed, fast, one codebase for both stores.',
+    'Node.js': 'JavaScript on the server, for APIs and small services.',
+    Python: 'Scripting and data work, including the budget tracker.',
+    'REST APIs': 'Plain HTTP endpoints any client can call.',
+    OpenAI: 'Models behind the assistant features I build.',
+    Claude: 'Long context model I reach for when reading code.',
+    Gemini: 'Google\u2019s model, kept in the mix for comparison.',
+    FreeBuff: 'The agent that helps me build and ship this site.',
+    Git: 'Version control, branches and a history I can read later.',
+    Vite: 'Dev server and bundler this site is built with.',
+    Vercel: 'Where the builds land and get served.',
+    Firebase: 'Auth and small realtime data when a whole backend is overkill.',
+    Figma: 'Where layouts get argued about before anyone writes code.',
+    Responsive: 'Every layout holds from a phone up to a wide screen.',
+    Accessibility: 'Keyboard paths, focus states and colour that stays readable.',
+    Motion: 'Movement that explains what changed, never movement for its own sake.',
+    Performance: 'Fewer bytes, fewer repaints, faster first paint.',
+    States: 'Empty, loading and error screens designed, not discovered.',
+    Serverless: 'Functions that wake per request instead of a server left running.',
+  },
+
+  /**
    * About → experience & education timeline, newest first.
    * `when` is the small label in the left column, `current` highlights the entry.
    */

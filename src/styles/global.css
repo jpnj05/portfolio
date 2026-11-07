@@ -206,6 +206,131 @@ button {
   animation: drift 26s ease-in-out infinite alternate-reverse;
 }
 
+/* ----------------------------------------------------------- spaceship */
+.ship {
+  position: absolute;
+  right: 6%;
+  bottom: 15%;
+  z-index: 0;
+  width: clamp(64px, 7vw, 92px);
+  aspect-ratio: 64 / 100;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+/* A soft halo that only appears when the ship is awake. A gradient that fades in
+   is cheaper than animating a drop-shadow filter. */
+.ship::after {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 66%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  z-index: -1;
+}
+
+.ship.is-hot::after {
+  opacity: 1;
+}
+
+.ship-drift {
+  animation: ship-bob 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.ship-hover {
+  transform-origin: 50% 62%;
+  transition: transform 0.55s var(--ease);
+}
+
+.ship.is-hot .ship-hover {
+  transform: translate3d(20px, -18px, 0) rotate(7deg) scale(1.05);
+}
+
+.ship-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform: rotate(-28deg);
+}
+
+.ship-hull {
+  fill: var(--panel);
+  stroke: var(--line-strong);
+  stroke-width: 1.6;
+}
+
+.ship-fin {
+  fill: var(--accent-soft);
+  opacity: 0.85;
+}
+
+.ship-window {
+  fill: var(--accent);
+}
+
+.ship-glint {
+  fill: rgba(255, 255, 255, 0.85);
+}
+
+.ship-belt {
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.ship-flames {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  transition: opacity 0.22s ease;
+}
+
+.flame-outer {
+  fill: var(--accent);
+  opacity: 0.6;
+}
+
+.flame-inner {
+  fill: var(--text);
+  opacity: 0.9;
+}
+
+.ship.is-hot .ship-flames {
+  opacity: 1;
+  animation: thrust 0.3s ease-in-out infinite;
+}
+
+@keyframes thrust {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(0.76) scaleX(1.12);
+  }
+}
+
+@keyframes ship-bob {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  to {
+    transform: translate3d(-26px, -30px, 0) rotate(2.5deg);
+  }
+}
+
+@media (max-width: 1040px) {
+  /* Below this the hero's side column is too narrow to hold the ship without it
+     sitting on the stats, and a phone has no hover to reward anyway. */
+  .ship {
+    display: none;
+  }
+}
+
 @keyframes drift {
   from {
     transform: translate3d(0, 0, 0) scale(1);
@@ -1331,6 +1456,55 @@ button {
   border-color: var(--accent);
   color: var(--accent-soft);
   transform: translateY(-2px);
+}
+
+.chip[tabindex] {
+  cursor: help;
+}
+
+.chip[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  color: var(--accent-soft);
+}
+
+/* One line about the skill, pinned above whichever chip is hovered or focused. */
+.skill-tip {
+  position: fixed;
+  z-index: 90;
+  display: grid;
+  gap: 5px;
+  width: max-content;
+  max-width: 252px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  box-shadow: 0 20px 44px rgba(8, 6, 20, 0.32);
+  transform: translate(-50%, calc(-100% - 10px));
+  pointer-events: none;
+  animation: tip-in 0.16s var(--ease) both;
+}
+
+.skill-tip-name {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.skill-tip-note {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 2px));
+  }
 }
 
 /* --------------------------------------------------------- contribution */
