@@ -13,8 +13,12 @@ function readInitialTheme() {
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
-const WIPE_MS = 760;
-const WIPE_SWAP_AT = 0.5;
+// Three beats, run in order rather than as one timeline: the disc has to reach
+// the corners before the palette moves, otherwise the swap lands on a half faded
+// veil and the page flickers through the gap.
+const WIPE_GROW_MS = 440;
+const WIPE_HOLD_MS = 80;
+const WIPE_FADE_MS = 220;
 // Matches the --ink values in global.css; the wipe is painted before the swap,
 // so it cannot read the token it is about to reveal.
 const BACKDROP = { dark: '#131120', light: '#f6f4fc' };
@@ -24,6 +28,7 @@ export default function ThemeToggle() {
   const switchTimer = useRef(0);
   const wipeTimer = useRef(0);
   const wipeNode = useRef(null);
+  const wipeAnim = useRef(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -78,7 +83,11 @@ export default function ThemeToggle() {
     const radius =
       Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) + 24;
 
+    // A second click mid-wipe takes over cleanly instead of stacking discs.
+    wipeAnim.current?.cancel();
+    window.clearTimeout(wipeTimer.current);
     wipeNode.current?.remove();
+
     const wipe = document.createElement('div');
     wipe.className = 'theme-wipe';
     wipe.style.cssText = [
@@ -94,19 +103,29 @@ export default function ThemeToggle() {
     document.body.appendChild(wipe);
     wipeNode.current = wipe;
 
-    const animation = wipe.animate(
-      [
-        { transform: 'scale(0)', opacity: 1 },
-        { transform: 'scale(1)', opacity: 1, offset: 0.7 },
-        { transform: 'scale(1)', opacity: 0 },
-      ],
-      { duration: WIPE_MS, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)', fill: 'forwards' },
-    );
+    const grow = wipe.animate([{ transform: 'scale(0)' }, { transform: 'scale(1)' }], {
+      duration: WIPE_GROW_MS,
+      easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+      fill: 'forwards',
+    });
+    wipeAnim.current = grow;
 
-    window.clearTimeout(wipeTimer.current);
-    wipeTimer.current = window.setTimeout(() => commit(next), WIPE_MS * WIPE_SWAP_AT);
-    animation.onfinish = () => wipe.remove();
-    animation.oncancel = () => wipe.remove();
+    grow.onfinish = () => {
+      // The veil now covers every corner, so the swap cannot be seen.
+      commit(next);
+      wipeTimer.current = window.setTimeout(() => {
+        const fade = wipe.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: WIPE_FADE_MS,
+          easing: 'ease-out',
+          fill: 'forwards',
+        });
+        wipeAnim.current = fade;
+        fade.onfinish = () => {
+          wipe.remove();
+          if (wipeNode.current === wipe) wipeNode.current = null;
+        };
+      }, WIPE_HOLD_MS);
+    };
   };
 
   const label = `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`;
