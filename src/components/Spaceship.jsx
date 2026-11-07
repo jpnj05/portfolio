@@ -17,6 +17,11 @@ const IDLE_VX = IDLE_SPEED * 0.7;
 const IDLE_VY = -IDLE_SPEED * 0.55;
 const SETTLE = 0.9; // how fast a fling blends back to the idle drift (per second)
 const MAX_SPEED = 1400;
+const BOOST = 520; // extra launch speed from a click
+const SPIN = 560; // degrees per second of click flourish, decaying
+const SPIN_DAMP = 3.2;
+const TAP_MS = 420; // a press shorter and stiller than this counts as a click
+const TAP_SLOP = 8;
 // Small: the ship sits under the page content, so a generous grab box would
 // swallow clicks meant for whatever happens to be behind it.
 const TOUCH_PAD = 6;
@@ -43,6 +48,10 @@ export default function Spaceship() {
       grabX: 0,
       grabY: 0,
       samples: [],
+      spin: 0,
+      travel: 0,
+      pressT: 0,
+      burstTimer: 0,
       last: 0,
       frame: 0,
     };
@@ -93,8 +102,16 @@ export default function Spaceship() {
         else if (state.y < -state.h) state.y = h;
       }
 
+      // A click adds a burst of spin on top of the heading, so the ship turns
+      // while it leaps and then falls back in line with where it is going.
+      if (state.spin !== 0) {
+        state.angle += state.spin * dt;
+        state.spin *= Math.exp(-dt * SPIN_DAMP);
+        if (Math.abs(state.spin) < 4) state.spin = 0;
+      }
+
       const speed = Math.hypot(state.vx, state.vy);
-      if (speed > 6) {
+      if (speed > 6 && Math.abs(state.spin) < 20) {
         const target = Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
         const diff = ((target - state.angle + 540) % 360) - 180;
         state.angle += diff * Math.min(1, dt * 6);
@@ -116,6 +133,8 @@ export default function Spaceship() {
       state.vx = 0;
       state.vy = 0;
       state.samples = [{ x: event.clientX, y: event.clientY, t: performance.now() }];
+      state.travel = 0;
+      state.pressT = performance.now();
       node.classList.add('is-hover', 'is-dragging', 'is-hot');
       document.documentElement.style.cursor = 'grabbing';
       paint();
@@ -123,6 +142,8 @@ export default function Spaceship() {
 
     const onPointerMove = (event) => {
       if (state.drag) {
+        const prev = state.samples[state.samples.length - 1];
+        if (prev) state.travel += Math.hypot(event.clientX - prev.x, event.clientY - prev.y);
         state.x = event.clientX - state.grabX;
         state.y = event.clientY - state.grabY;
         state.samples.push({ x: event.clientX, y: event.clientY, t: performance.now() });
@@ -139,10 +160,26 @@ export default function Spaceship() {
       document.documentElement.style.cursor = state.hover ? 'grab' : '';
     };
 
+    // A click (press and let go without dragging) launches the ship along its
+    // nose with a spin, which is the only way to tell it what to do on a device
+    // where nothing happens on hover.
+    const burst = () => {
+      const rad = ((state.angle - 90) * Math.PI) / 180;
+      const next = Math.min(MAX_SPEED, Math.max(Math.hypot(state.vx, state.vy), 120) + BOOST);
+      state.vx = Math.cos(rad) * next;
+      state.vy = Math.sin(rad) * next;
+      if (!reduce) state.spin = SPIN;
+
+      node.classList.add('is-burst', 'is-hot');
+      window.clearTimeout(state.burstTimer);
+      state.burstTimer = window.setTimeout(() => node.classList.remove('is-burst'), 460);
+    };
+
     const release = () => {
       if (!state.drag) return;
       state.drag = false;
       node.classList.remove('is-dragging');
+      const tap = performance.now() - state.pressT < TAP_MS && state.travel < TAP_SLOP;
 
       const now = performance.now();
       const recent = state.samples.filter((sample) => now - sample.t < 120);
@@ -156,6 +193,7 @@ export default function Spaceship() {
       }
 
       state.samples = [];
+      if (tap) burst();
       node.classList.toggle('is-hot', state.hover);
       document.documentElement.style.cursor = state.hover ? 'grab' : '';
     };
@@ -184,6 +222,7 @@ export default function Spaceship() {
 
     return () => {
       cancelAnimationFrame(state.frame);
+      window.clearTimeout(state.burstTimer);
       window.removeEventListener('pointerdown', onPointerDown, { capture: true });
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', release);

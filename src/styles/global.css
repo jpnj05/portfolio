@@ -248,6 +248,17 @@ button {
   transform: scale(0.95);
 }
 
+/* Clicking launches it: the halo flares and the thrusters burn harder for a
+   moment, so the kick reads even at the small size the ship lives at. */
+.ship.is-burst .ship-hover {
+  transform: scale(1.12);
+}
+
+.ship.is-burst::after {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.38), transparent 68%);
+}
+
 .ship-svg {
   display: block;
   width: 100%;
@@ -300,6 +311,12 @@ button {
 .ship.is-hot .ship-flames {
   opacity: 1;
   animation: thrust 0.3s ease-in-out infinite;
+}
+
+/* After the rule above so the faster flicker wins the shorthand. */
+.ship.is-burst .ship-flames {
+  opacity: 1;
+  animation: thrust 0.12s ease-in-out infinite;
 }
 
 @keyframes thrust {
