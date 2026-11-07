@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="footer">
       <div className="wrap footer-inner">
         <span>
-          © {new Date().getFullYear()} {site.name}. Built with React, Vite and a small Node
-          function.
+          © {new Date().getFullYear()} {site.name}. Built by hand with React, Vite and one small
+          Node function. No template was harmed.
         </span>
         <div className="footer-meta">
           <a href={`https://github.com/${site.githubUser}`} target="_blank" rel="noreferrer">

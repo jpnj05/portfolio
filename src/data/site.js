@@ -25,11 +25,11 @@ export const site = {
   avatar: '/profile.jpg',
 
   tagline:
-    'I build fast, tactile web apps: clean interfaces on the surface, steady Node.js behind them.',
+    'I build fast, tactile web apps: clean on the surface, steady Node.js underneath, and small details that make you want to click around.',
 
   about: [
     'I am a developer who likes the part of the work where an idea turns into something you can actually click. Most of my time goes into React interfaces, small Node services, and the details that make a screen feel finished: motion, spacing, states, keyboard behaviour.',
-    'Right now I am sharpening the full-stack basics (data modelling, auth, deployment) and shipping something small and real every month instead of reading about it.',
+    'Right now I am sharpening the full-stack basics (data modelling, auth, deployment) and shipping something small and real every month instead of reading about it. If it is not deployed, it is a rumour.',
   ],
 
   skills: [
@@ -98,7 +98,7 @@ export const site = {
   resume: {
     file: '/resume.pdf',
     updated: 'November 2026',
-    note: 'One page: background, skills and selected work.',
+    note: 'One page, no filler: background, skills and selected work.',
   },
 
   socials: [

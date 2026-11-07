@@ -133,7 +133,7 @@ export default function Hero({ data }) {
 
         <div className="hero-scroll">
           <span className="rail" />
-          Scroll to explore
+          Scroll, it gets better
         </div>
       </div>
     </section>

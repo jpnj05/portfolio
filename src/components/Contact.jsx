@@ -41,8 +41,8 @@ export default function Contact() {
             Got something worth <em>building</em>?
           </h2>
           <p className="section-lead" style={{ textAlign: 'center', maxWidth: '46ch' }}>
-            I read everything. Send a project, a role, or just a question. I usually reply within a
-            day.
+            I read every message myself, and I answer the strange ones first. Send a project, a
+            role, or a question nobody has asked me yet. A day, usually less.
           </p>
 
           <div className="contact-actions">
