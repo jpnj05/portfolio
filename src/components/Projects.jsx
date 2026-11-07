@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
+import WordRise from './WordRise.jsx';
 
 const TOP_COUNT = 5;
 
@@ -246,9 +247,9 @@ export default function Projects({ data }) {
         <div className="section-head">
           <div>
             <p className="kicker">02 · Work</p>
-            <h2 className="section-title">
+            <WordRise className="section-title">
               Things I shipped, <em>live</em> and readable.
-            </h2>
+            </WordRise>
           </div>
           <p className="section-lead">
             The five builds I would hand you first, pulled from GitHub so they stay current. The

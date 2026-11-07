@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
+import WordRise from './WordRise.jsx';
 
 const ArrowUpRight = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -37,9 +38,9 @@ export default function Contact() {
       <div className="wrap">
         <Reveal className="contact-inner">
           <p className="contact-eyebrow">04 · Contact</p>
-          <h2 className="contact-title">
+          <WordRise className="contact-title">
             Got something worth <em>building</em>?
-          </h2>
+          </WordRise>
           <p className="section-lead" style={{ textAlign: 'center', maxWidth: '46ch' }}>
             I read everything. Send a project, a role, or just a question. I usually reply within a
             day.

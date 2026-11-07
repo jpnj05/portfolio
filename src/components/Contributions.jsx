@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { site } from '../data/site.js';
 import { loadContributions } from '../lib/github.js';
+import WordRise from './WordRise.jsx';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -227,9 +228,9 @@ export default function Contributions({ contributions }) {
         <div className="section-head">
           <div>
             <p className="kicker">03 · Activity</p>
-            <h2 className="section-title">
+            <WordRise className="section-title">
               Commit <em>weather</em>.
-            </h2>
+            </WordRise>
             <a
               className="contrib-handle"
               href={`https://github.com/${site.githubUser}`}

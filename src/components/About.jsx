@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
+import WordRise from './WordRise.jsx';
 
 function ArrowUpRight() {
   return (
@@ -248,9 +249,9 @@ export default function About({ data }) {
         <div className="section-head">
           <div>
             <p className="kicker">01 · About</p>
-            <h2 className="section-title">
+            <WordRise className="section-title">
               A developer with a <em>detail problem</em>.
-            </h2>
+            </WordRise>
           </div>
           <p className="section-lead">
             Short version: I like building things that load fast, feel responsive, and do not need
