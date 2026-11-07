@@ -18,7 +18,9 @@ const PARALLAX = 0.06;
 const AREA_PER_PARTICLE = 26000;
 const MIN_PARTICLES = 22;
 const MAX_PARTICLES = 96;
-const MAX_DPR = 2;
+// The dots are soft to begin with, so a 2x buffer bought nothing visible and
+// doubled the pixels cleared and filled every frame.
+const MAX_DPR = 1.5;
 
 // A shooting star is a rare event on purpose: seen once every ten seconds or so
 // it reads as a wink, seen constantly it turns the background into a screensaver.
@@ -53,6 +55,8 @@ export default function ParticleDrift() {
     let elapsed = 0;
     let palette = { accent: '179, 164, 255', mint: '159, 227, 201', strength: 1, radius: 1 };
     let streak = null;
+    let frameSkip = 0;
+    let pending = 0;
     let nextStreak = STREAK_FIRST[0] + Math.random() * (STREAK_FIRST[1] - STREAK_FIRST[0]);
 
     const readPalette = () => {
@@ -206,13 +210,25 @@ export default function ParticleDrift() {
       const delta = lastTime ? Math.min((time - lastTime) / 16.667, 3) : 1;
       lastTime = time;
       elapsed += delta / 60;
-      draw(delta, false);
+
+      // Nothing in the idle field moves fast enough to need 60fps, so while no
+      // streak is crossing we repaint every other frame and carry the delta
+      // forward: half the fill rate, identical motion. A streak runs at full
+      // rate because it covers real distance per frame.
+      pending += delta;
+      frameSkip = (frameSkip + 1) % 2;
+      if (streak || frameSkip === 0) {
+        draw(pending, false);
+        pending = 0;
+      }
+
       frameId = requestAnimationFrame(tick);
     };
 
     const start = () => {
       if (frameId || motionQuery.matches || document.hidden) return;
       lastTime = 0;
+      pending = 0;
       frameId = requestAnimationFrame(tick);
     };
 

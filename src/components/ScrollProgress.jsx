@@ -11,7 +11,8 @@ export default function ScrollProgress() {
       frame = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
-      bar.style.setProperty('--p', `${(ratio * 100).toFixed(2)}%`);
+      // A bare number: the bar scales itself, so no layout on every scroll frame.
+      bar.style.setProperty('--p', ratio.toFixed(4));
     };
 
     const onScroll = () => {
