@@ -142,13 +142,7 @@ function ProjectCard({ project, featured = false }) {
             height="800"
           />
         ) : (
-          <div className="project-cover">
-            <span className="project-cover-mark">Repository</span>
-            <span className="project-cover-name">{project.title}</span>
-            <span className="project-cover-meta">
-              github.com/{site.githubUser} · {project.language || 'code'}
-            </span>
-          </div>
+          <div className="project-cover" />
         )}
       </a>
 
