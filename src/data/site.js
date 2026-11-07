@@ -51,7 +51,7 @@ export const site = {
     },
     {
       group: 'Practices',
-      items: ['Responsive layout', 'Motion', 'Serverless'],
+      items: ['Responsive', 'Accessibility', 'Motion'],
     },
     {
       group: 'Workflow',

@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /FR 5 0 R /FB 6 0 R >> >> /Contents 4 0 R >>
 endobj
 4 0 obj
-<< /Length 5371 >>
+<< /Length 5367 >>
 stream
 0.102 0.090 0.149 rg
 BT /FB 22 Tf 0 Tc 1 0 0 1 54.00 777.89 Tm (Nizon Jeorgie Pison II) Tj 0 Tc ET
@@ -86,7 +86,7 @@ BT /FR 9.2 Tf 0 Tc 1 0 0 1 146.00 349.41 Tm (OpenAI | Claude | Gemini | FreeBuff
 0.341 0.322 0.420 rg
 BT /FB 7.4 Tf 0.9 Tc 1 0 0 1 54.00 337.01 Tm (PRACTICES) Tj 0 Tc ET
 0.102 0.090 0.149 rg
-BT /FR 9.2 Tf 0 Tc 1 0 0 1 146.00 336.01 Tm (Responsive layout | Motion | Serverless) Tj 0 Tc ET
+BT /FR 9.2 Tf 0 Tc 1 0 0 1 146.00 336.01 Tm (Responsive | Accessibility | Motion) Tj 0 Tc ET
 0.341 0.322 0.420 rg
 BT /FB 7.4 Tf 0.9 Tc 1 0 0 1 54.00 323.61 Tm (WORKFLOW) Tj 0 Tc ET
 0.102 0.090 0.149 rg
@@ -126,10 +126,10 @@ xref
 0000000064 00000 n 
 0000000121 00000 n 
 0000000263 00000 n 
-0000005686 00000 n 
-0000005783 00000 n 
+0000005682 00000 n 
+0000005779 00000 n 
 trailer
 << /Size 7 /Root 1 0 R >>
 startxref
-5885
+5881
 %%EOF
