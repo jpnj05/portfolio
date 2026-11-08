@@ -368,9 +368,15 @@ export default function Projects({ data }) {
               aria-controls={listId}
               onClick={() => setShowAll((value) => !value)}
             >
-              {showAll ? 'Hide the full list' : 'See all work'}
-              <span className="repos-count">{ordered.length} repos</span>
-              <Chevron />
+              <span className="repos-toggle-main">
+                <span className="repos-title">{showAll ? 'Hide the full list' : 'See all work'}</span>
+                <span className="repos-note">Every public repository, newest first.</span>
+              </span>
+
+              <span className="repos-toggle-meta">
+                <span className="repos-count">{ordered.length} repos</span>
+                <Chevron />
+              </span>
             </button>
 
             {showAll && <RepoList projects={ordered} id={listId} />}
