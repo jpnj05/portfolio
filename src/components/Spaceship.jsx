@@ -375,10 +375,12 @@ export default function Spaceship() {
         }
       }
 
-      // Aim it down the throw and let the loop ease the turn through, so the
-      // hand-off from dragging to coasting is continuous rather than a snap.
-      if (Math.hypot(state.vx, state.vy) > 40) {
-        state.dragHeading = null;
+      // Preserve the heading the ship had when let go, so it coasts in that direction
+      // instead of always reverting to the idle drift.  We only set this when the ship
+      // has a meaningful velocity, so a light tap continues to settle to the idle state.
+      const speed = Math.hypot(state.vx, state.vy);
+      if (speed > 40) {
+        state.dragHeading = Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
       }
 
       state.samples = [];
