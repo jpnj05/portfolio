@@ -420,7 +420,15 @@ export default function Projects({ data }) {
                       {work.when && <span className="school-when">{work.when}</span>}
                     </div>
 
-                    <h4 className="school-name">{work.title}</h4>
+                    <h4 className="school-name">
+                      {work.link ? (
+                        <a href={work.link} target="_blank" rel="noreferrer">
+                          {work.title}
+                        </a>
+                      ) : (
+                        work.title
+                      )}
+                    </h4>
                     {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
                     <p className="school-blurb">{work.blurb}</p>
 

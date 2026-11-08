@@ -189,5 +189,17 @@ export const site = {
       highlights: ['Transaction logging', 'Day-by-day forecasting', 'AI integration', 'Shortfall alerts'],
       team: 'Fiesta · Mercado · Pison · Visitacion · Herrera',
     },
+    {
+      kind: 'Storyboard',
+      title: 'Missed the Bus',
+      subtitle: 'A short comic about the morning rush',
+      blurb:
+        'A student sleeps through the alarm, bolts out of the house half dressed, and reaches the stop just as the bus pulls away, while a classmate cycles past the empty sign. Six panels drawn and captioned as a group exercise in visual storytelling.',
+      highlights: ['Storyboarding', 'Character design', 'Sequential art', 'Group project'],
+      team: 'Pison · Fiesta · Herrera · Visitacion · Mercado',
+      preview: '/projects/missed-the-bus-cover.png',
+      coverAlt: 'First two storyboard panels: a student asleep while the alarm rings, then waking in alarm.',
+      link: '/projects/missed-the-bus-storyboard.pdf',
+    },
   ],
 };
