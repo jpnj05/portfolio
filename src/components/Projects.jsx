@@ -301,6 +301,59 @@ export default function Projects({ data }) {
           </div>
         )}
 
+        {site.schoolWorks?.length > 0 && (
+          <div className="school">
+            <div className="school-head">
+              <h3 className="school-title">School works</h3>
+              <p className="school-note">
+                Coursework and capstone work, with the phases that actually went into them.
+              </p>
+            </div>
+
+            <div className="school-list">
+              {site.schoolWorks.map((work) => (
+                <article className="school-card" key={work.title}>
+                  <div className="school-body">
+                    <div className="school-topline">
+                      <span className="school-kind">{work.kind}</span>
+                      {work.when && <span className="school-when">{work.when}</span>}
+                    </div>
+
+                    <h4 className="school-name">{work.title}</h4>
+                    {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
+                    <p className="school-blurb">{work.blurb}</p>
+
+                    {work.highlights?.length > 0 && (
+                      <ul className="project-tags school-tags">
+                        {work.highlights.map((tag) => (
+                          <li className="tag" key={tag}>
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {work.team && (
+                      <p className="school-team">
+                        <span>Team</span> {work.team}
+                      </p>
+                    )}
+                  </div>
+
+                  <ol className="school-steps">
+                    {work.activities.map((activity) => (
+                      <li className="school-step" key={activity.what}>
+                        <span className="school-week">{activity.when}</span>
+                        <span className="school-what">{activity.what}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="projects-foot">
           <span>
             {data?.repos?.length
