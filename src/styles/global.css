@@ -211,7 +211,7 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  width: clamp(52px, 5.4vw, 76px);
+  width: clamp(40px, 4.2vw, 58px);
   aspect-ratio: 64 / 100;
   will-change: transform;
   pointer-events: none;
