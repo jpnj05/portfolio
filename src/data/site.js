@@ -175,24 +175,17 @@ export const site = {
   extraProjects: [],
 
   /**
-   * Work → "School works": coursework and capstone projects, with the phases
-   * actually worked through. Add an entry and the section grows with it.
+   * Work → "School works": coursework and school projects. Add an entry and
+   * the section grows with it.
    */
   schoolWorks: [
     {
-      kind: 'Capstone',
+      kind: 'Infographic',
       when: '2026',
       title: 'CashFlow AI',
       subtitle: 'Powered cash flow forecaster for small businesses',
       blurb:
         'Small business owners run out of cash while still turning a profit, because the tracking lives in a notebook or in memory. This project answers that with an AI tool that records transactions from any device, forecasts cash day by day, and raises an alert before a shortfall lands.',
-      activities: [
-        { when: 'Wk 0-2', what: 'Requirements and UI' },
-        { when: 'Wk 2-4', what: 'Backend and database setup' },
-        { when: 'Wk 4-9', what: 'Core development' },
-        { when: 'Wk 9-11', what: 'Development and testing' },
-        { when: 'Wk 11-12', what: 'Deployment and final preparation' },
-      ],
       highlights: ['Transaction logging', 'Day-by-day forecasting', 'AI integration', 'Shortfall alerts'],
       team: 'Fiesta · Mercado · Pison · Visitacion · Herrera',
     },
