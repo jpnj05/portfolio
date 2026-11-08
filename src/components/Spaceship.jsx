@@ -23,6 +23,8 @@ const BOOST = 520; // extra launch speed from a click
 const TURN = 10; // how fast the nose swings round to face where it is going
 const DRAG_TURN = 13; // and how eagerly it follows the hand while being pulled
 const DRAG_LEAD = 30; // px/second of hand movement before the nose starts turning
+const HEADING_RATE = 20; // low-pass on the hand's heading, so the nose does not shiver
+const FRAME_STALL = 120; // ms without a frame before events turn the ship instead
 const TAP_MS = 420; // a press shorter and stiller than this counts as a click
 const TAP_SLOP = 8;
 const TRAIL_SPEED = 220; // px/second before the exhaust starts leaving a wake
@@ -66,7 +68,9 @@ export default function Spaceship() {
       puffIndex: 0,
       lastPuff: 0,
       dragHeading: null,
+      headAt: 0,
       turnAt: 0,
+      lastFrameAt: 0,
       last: 0,
       frame: 0,
     };
@@ -173,6 +177,7 @@ export default function Spaceship() {
     const step = (now) => {
       const dt = state.last ? Math.min((now - state.last) / 1000, 0.05) : 0.016;
       state.last = now;
+      state.lastFrameAt = now;
 
       if (!state.drag) {
         // Slow down towards the idle cruising speed while keeping the line it was
@@ -253,6 +258,7 @@ export default function Spaceship() {
       state.vx = 0;
       state.vy = 0;
       state.dragHeading = null;
+      state.headAt = 0;
       state.turnAt = 0;
       state.samples = [{ x: event.clientX, y: event.clientY, t: performance.now() }];
       state.travel = 0;
@@ -281,10 +287,26 @@ export default function Spaceship() {
         state.samples.push({ x: event.clientX, y: event.clientY, t: now });
         if (state.samples.length > 10) state.samples.shift();
 
-        // Turn towards the hand right here rather than only from the animation
-        // loop, so a drag reads as a smooth bank even if frames are thin.
-        if (moveSpeed > DRAG_LEAD) state.dragHeading = moveHeading;
-        if (state.dragHeading !== null) {
+        // Follow the hand, but averaged a little: raw pointer headings are noisy
+        // at speed and would make the nose shiver. Time-based, so the smoothing
+        // is the same whatever rate the pointer reports at.
+        if (moveSpeed > DRAG_LEAD) {
+          if (state.dragHeading === null) {
+            state.dragHeading = moveHeading;
+            state.headAt = now;
+          } else {
+            const gap = state.headAt ? Math.min((now - state.headAt) / 1000, 0.05) : 0.016;
+            state.headAt = now;
+            const diff = ((moveHeading - state.dragHeading + 540) % 360) - 180;
+            state.dragHeading = (state.dragHeading + diff * (1 - Math.exp(-gap * HEADING_RATE)) + 360) % 360;
+          }
+        }
+
+        // The turn itself is integrated in the animation loop, one place only, so
+        // events and frames cannot add up into a double-speed spin. It falls back
+        // to turning here only when frames have stalled, which keeps a drag
+        // responsive in a background tab or on a busy main thread.
+        if (state.dragHeading !== null && now - state.lastFrameAt > FRAME_STALL) {
           const gap = state.turnAt ? Math.min((now - state.turnAt) / 1000, 0.05) : 0.016;
           state.turnAt = now;
           turn(state.dragHeading, gap, DRAG_TURN);
