@@ -20,7 +20,9 @@ const IDLE_VY = Math.sin((IDLE_HEADING * Math.PI) / 180) * IDLE_SPEED;
 const SETTLE = 0.9; // how fast a fling blends back to the idle drift (per second)
 const MAX_SPEED = 1400;
 const BOOST = 520; // extra launch speed from a click
-const TURN = 8; // how fast the nose swings round to face where it is going
+const TURN = 10; // how fast the nose swings round to face where it is going
+const DRAG_TURN = 13; // and how eagerly it follows the hand while being pulled
+const DRAG_LEAD = 30; // px/second of hand movement before the nose starts turning
 const TAP_MS = 420; // a press shorter and stiller than this counts as a click
 const TAP_SLOP = 8;
 const TRAIL_SPEED = 220; // px/second before the exhaust starts leaving a wake
@@ -60,6 +62,8 @@ export default function Spaceship() {
       burstTimer: 0,
       puffIndex: 0,
       lastPuff: 0,
+      dragHeading: null,
+      turnAt: 0,
       last: 0,
       frame: 0,
     };
@@ -106,6 +110,13 @@ export default function Spaceship() {
       const rect = node.getBoundingClientRect();
       state.w = rect.width || 64;
       state.h = rect.height || 100;
+    };
+
+    // Rotate towards a heading the short way round, easing by elapsed time so the
+    // turn looks the same whatever rate the pointer reports at.
+    const turn = (target, dt, rate) => {
+      const diff = ((target - state.angle + 540) % 360) - 180;
+      state.angle += diff * Math.min(1, dt * rate);
     };
 
     const paint = () => {
@@ -158,13 +169,13 @@ export default function Spaceship() {
         else if (state.y < -state.h) state.y = h;
       }
 
-      // The nose always ends up pointing where the ship is actually going, which
-      // is what makes the direction you flung or tapped it read at a glance.
+      // The nose follows the hand while it is held, and where the ship is actually
+      // going once it is let go, swinging round gradually instead of snapping.
       const speed = Math.hypot(state.vx, state.vy);
-      if (speed > 6) {
-        const target = Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
-        const diff = ((target - state.angle + 540) % 360) - 180;
-        state.angle += diff * Math.min(1, dt * TURN);
+      if (state.drag) {
+        if (state.dragHeading !== null) turn(state.dragHeading, dt, DRAG_TURN);
+      } else if (speed > 6) {
+        turn(Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90, dt, TURN);
       }
 
       if (!reduce && speed > TRAIL_SPEED && now - state.lastPuff > TRAIL_GAP) {
@@ -208,6 +219,8 @@ export default function Spaceship() {
       state.grabY = event.clientY - state.y;
       state.vx = 0;
       state.vy = 0;
+      state.dragHeading = null;
+      state.turnAt = 0;
       state.samples = [{ x: event.clientX, y: event.clientY, t: performance.now() }];
       state.travel = 0;
       state.pressT = performance.now();
@@ -234,6 +247,15 @@ export default function Spaceship() {
         state.y = event.clientY - state.grabY;
         state.samples.push({ x: event.clientX, y: event.clientY, t: now });
         if (state.samples.length > 10) state.samples.shift();
+
+        // Turn towards the hand right here rather than only from the animation
+        // loop, so a drag reads as a smooth bank even if frames are thin.
+        if (moveSpeed > DRAG_LEAD) state.dragHeading = moveHeading;
+        if (state.dragHeading !== null) {
+          const gap = state.turnAt ? Math.min((now - state.turnAt) / 1000, 0.05) : 0.016;
+          state.turnAt = now;
+          turn(state.dragHeading, gap, DRAG_TURN);
+        }
 
         // Dragging it fast leaves the same wake a fling does. This runs straight
         // from the pointer event, so the trail keeps up even when animation
@@ -298,11 +320,10 @@ export default function Spaceship() {
         }
       }
 
-      // Face the way it was let go of straight away: a fling that kept its old
-      // heading for a moment would look like it was ignoring the gesture.
+      // Aim it down the throw and let the loop ease the turn through, so the
+      // hand-off from dragging to coasting is continuous rather than a snap.
       if (Math.hypot(state.vx, state.vy) > 40) {
-        state.angle = (Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90 + 360) % 360;
-        paint();
+        state.dragHeading = null;
       }
 
       state.samples = [];
