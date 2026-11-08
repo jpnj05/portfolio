@@ -28,9 +28,12 @@ const TAP_SLOP = 8;
 const TRAIL_SPEED = 220; // px/second before the exhaust starts leaving a wake
 const TRAIL_GAP = 42; // ms between puffs
 const TRAIL_POOL = 14; // reused nodes: no churn while it is flying
-// Small: the ship sits under the page content, so a generous grab box would
-// swallow clicks meant for whatever happens to be behind it.
-const TOUCH_PAD = 6;
+// A couple of pixels of slack on the outline, no more: the ship sits under the
+// page content, so a generous grab area would swallow clicks meant for whatever
+// happens to be behind it.
+const GRAB_SLOP = 2;
+const HOVER_SCALE = 1.08; // must match .ship.is-hover .ship-hover
+const DRAG_SCALE = 0.95; // and .ship.is-dragging .ship-hover
 
 export default function Spaceship() {
   const nodeRef = useRef(null);
@@ -106,10 +109,19 @@ export default function Spaceship() {
       );
     };
 
+    // The drawn outline of the craft, as paths, so the grab area is the ship
+    // itself rather than the empty corners of its box.
+    const ctx = document.createElement('canvas').getContext('2d');
+    let outlines = [];
+
     const measure = () => {
-      const rect = node.getBoundingClientRect();
-      state.w = rect.width || 64;
-      state.h = rect.height || 100;
+      // offsetWidth/Height: the rotated bounding box would otherwise be measured.
+      state.w = node.offsetWidth || 36;
+      state.h = node.offsetHeight || 56;
+      outlines = [...node.querySelectorAll('.ship-hull, .ship-fin')]
+        .map((part) => part.getAttribute('d'))
+        .filter(Boolean)
+        .map((d) => new Path2D(d));
     };
 
     // Rotate towards a heading the short way round, easing by elapsed time so the
@@ -131,11 +143,32 @@ export default function Spaceship() {
       paint();
     };
 
-    const hit = (x, y) =>
-      x >= state.x - TOUCH_PAD &&
-      x <= state.x + state.w + TOUCH_PAD &&
-      y >= state.y - TOUCH_PAD &&
-      y <= state.y + state.h + TOUCH_PAD;
+    // Point against the ship's own rotated, scaled outline: undo the spin about
+    // the centre, then test the pointer against the hull and fin paths.
+    const hit = (x, y) => {
+      if (!outlines.length) return false;
+
+      const rad = (state.angle * Math.PI) / 180;
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+      const dx = x - (state.x + state.w / 2);
+      const dy = y - (state.y + state.h / 2);
+      const scale = state.drag ? DRAG_SCALE : state.hover ? HOVER_SCALE : 1;
+      const u = (dx * cos + dy * sin) / scale;
+      const v = (-dx * sin + dy * cos) / scale;
+
+      // Back into the 64 x 100 viewBox, where the paths live.
+      const k = state.w / 64;
+      const vx = u / k + 32;
+      const vy = v / k + 50;
+      const pad = GRAB_SLOP / k;
+
+      return outlines.some((path) =>
+        [[0, 0], [pad, 0], [-pad, 0], [0, pad], [0, -pad]].some(([ox, oy]) =>
+          ctx.isPointInPath(path, vx + ox, vy + oy),
+        ),
+      );
+    };
 
     const step = (now) => {
       const dt = state.last ? Math.min((now - state.last) / 1000, 0.05) : 0.016;
