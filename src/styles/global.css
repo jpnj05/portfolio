@@ -2179,9 +2179,7 @@ button {
 /* Sits under the repository list as a dropbar: the bar is the section head,
    and the cards only take up room once it is opened. */
 .school {
-  margin-top: clamp(30px, 4.4vw, 46px);
-  padding-top: clamp(22px, 3vw, 32px);
-  border-top: 1px solid var(--line);
+  margin-top: clamp(16px, 2.2vw, 22px);
 }
 
 .school-h {
