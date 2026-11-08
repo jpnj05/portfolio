@@ -2178,38 +2178,116 @@ button {
 }
 
 /* ------------------------------------------------------- school works */
-/* Sits under the repository list: the coursework that never became a repo. */
+/* Sits under the repository list as a dropbar: the bar is the section head,
+   and the cards only take up room once it is opened. */
 .school {
   margin-top: clamp(30px, 4.4vw, 46px);
   padding-top: clamp(22px, 3vw, 32px);
   border-top: 1px solid var(--line);
 }
 
-.school-head {
+.school-h {
+  margin: 0;
+}
+
+.school-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  width: 100%;
+  padding: 15px 18px 15px 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: rgba(var(--fg-rgb), 0.03);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.school-bar:hover {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+.school-bar:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.school-bar-main {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 24px;
-  margin-bottom: 18px;
+  gap: 4px 14px;
+  min-width: 0;
 }
 
 .school-title {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.9vw, 1.25rem);
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text);
 }
 
 .school-note {
-  font-size: 13px;
-  color: var(--muted);
-  max-width: 48ch;
+  font-size: 12.5px;
+  color: var(--muted-2);
 }
 
+.school-bar-meta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+
+.school-bar:hover .school-bar-meta {
+  color: var(--accent);
+}
+
+.school-count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.school-bar svg {
+  transition: transform 0.4s var(--ease);
+}
+
+.school-bar[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+/* Two up: the cards are short enough to read side by side on a wide screen. */
 .school-list {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 16px);
+  margin-top: 14px;
+  animation: schoolListIn 0.35s var(--ease) both;
+}
+
+.school-list[hidden] {
+  display: none;
+}
+
+@keyframes schoolListIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .school-card {
@@ -2383,6 +2461,17 @@ button {
   text-transform: uppercase;
   color: var(--muted-2);
   margin-right: 4px;
+}
+
+@media (max-width: 860px) {
+  .school-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The bar keeps its count and chevron; the sentence would crowd them. */
+  .school-note {
+    display: none;
+  }
 }
 
 .skeleton-card {

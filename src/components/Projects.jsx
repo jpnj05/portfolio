@@ -310,6 +310,7 @@ function RepoList({ projects, id }) {
 
 export default function Projects({ data }) {
   const [showAll, setShowAll] = useState(false);
+  const [schoolOpen, setSchoolOpen] = useState(false);
   const projects = buildProjects(data);
   const ordered = [...projects.filter((p) => p.featured), ...projects.filter((p) => !p.featured)];
   const top = ordered.slice(0, TOP_COUNT);
@@ -378,12 +379,31 @@ export default function Projects({ data }) {
 
         {site.schoolWorks?.length > 0 && (
           <div className="school">
-            <div className="school-head">
-              <h3 className="school-title">School works</h3>
-              <p className="school-note">Coursework and school projects, shown as they were turned in.</p>
-            </div>
+            <h3 className="school-h">
+              <button
+                type="button"
+                className="school-bar"
+                aria-expanded={schoolOpen}
+                aria-controls="school-works"
+                onClick={() => setSchoolOpen((value) => !value)}
+              >
+                <span className="school-bar-main">
+                  <span className="school-title">School works</span>
+                  <span className="school-note">
+                    Coursework and school projects, shown as they were turned in.
+                  </span>
+                </span>
 
-            <div className="school-list">
+                <span className="school-bar-meta">
+                  <span className="school-count">
+                    {site.schoolWorks.length} {site.schoolWorks.length === 1 ? 'project' : 'projects'}
+                  </span>
+                  <Chevron />
+                </span>
+              </button>
+            </h3>
+
+            <div className="school-list" id="school-works" hidden={!schoolOpen}>
               {site.schoolWorks.map((work) => (
                 <article className="school-card" key={work.title}>
                   <SchoolCover work={work} />
