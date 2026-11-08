@@ -377,6 +377,22 @@ export default function Projects({ data }) {
           </div>
         )}
 
+        <div className="projects-foot">
+          <span>
+            {data?.repos?.length
+              ? `${data.repos.length} public repo${data.repos.length === 1 ? '' : 's'} · updated ${data.fetchedAt ? new Date(data.fetchedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'live'}`
+              : 'Loading repository list…'}
+          </span>
+          <a
+            className="link-arrow"
+            href={`https://github.com/${site.githubUser}?tab=repositories`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            All repositories <ArrowUpRight />
+          </a>
+        </div>
+
         {site.schoolWorks?.length > 0 && (
           <div className="school">
             <h3 className="school-h">
@@ -439,22 +455,6 @@ export default function Projects({ data }) {
             </div>
           </div>
         )}
-
-        <div className="projects-foot">
-          <span>
-            {data?.repos?.length
-              ? `${data.repos.length} public repo${data.repos.length === 1 ? '' : 's'} · updated ${data.fetchedAt ? new Date(data.fetchedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'live'}`
-              : 'Loading repository list…'}
-          </span>
-          <a
-            className="link-arrow"
-            href={`https://github.com/${site.githubUser}?tab=repositories`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            All repositories <ArrowUpRight />
-          </a>
-        </div>
       </div>
     </section>
   );
