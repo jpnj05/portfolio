@@ -234,23 +234,6 @@ button {
   opacity: 0.95;
 }
 
-/* A soft halo that only appears when the ship is awake. A gradient that fades in
-   is cheaper than animating a drop-shadow filter. */
-.ship::after {
-  content: '';
-  position: absolute;
-  inset: -45%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 66%);
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  z-index: -1;
-}
-
-.ship.is-hot::after {
-  opacity: 1;
-}
-
 .ship-hover {
   transform-origin: 50% 50%;
   transition: transform 0.4s var(--ease);
@@ -264,15 +247,10 @@ button {
   transform: scale(0.95);
 }
 
-/* Clicking launches it: the halo flares and the thrusters burn harder for a
-   moment, so the kick reads even at the small size the ship lives at. */
+/* Clicking launches it: it grows and the thrusters burn harder for a moment, so
+   the kick reads even at the small size the ship lives at. */
 .ship.is-burst .ship-hover {
   transform: scale(1.12);
-}
-
-.ship.is-burst::after {
-  opacity: 1;
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.38), transparent 68%);
 }
 
 .ship-svg {
