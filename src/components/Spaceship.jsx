@@ -194,6 +194,9 @@ export default function Spaceship() {
         const diff = ((turnTarget - state.angle + 540) % 360) - 180;
         state.angle += diff * Math.min(1, dt * SETTLE);
 
+        // Compute the target speed, blending toward cruise speed.
+        const next = moving + (cruise - moving) * Math.min(1, dt * SETTLE);
+
         if (moving > 0.5) {
           // Scale speed towards cruise, but keep the heading direction.
           const scale = (cruise - moving) * Math.min(1, dt * SETTLE) / moving;
