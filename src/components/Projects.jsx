@@ -43,7 +43,8 @@ const Chevron = () => (
 
 /**
  * Preview slot for a school work. A real screenshot wins; without one the card
- * draws a cash line with its forecast tail, in the same palette as the page.
+ * carries the project's own banner, drawn in vectors so it stays sharp at any
+ * card width.
  */
 function SchoolCover({ work }) {
   if (work.preview) {
@@ -56,58 +57,60 @@ function SchoolCover({ work }) {
 
   return (
     <div className="school-cover">
+      {/* Backdrop only. It is abstract on purpose, so it can stretch to fill
+          whatever width the card happens to be without distorting a shape. */}
       <svg
-        className="school-chart"
-        viewBox="0 0 1200 180"
+        className="school-banner-bg"
+        viewBox="0 0 792 370"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
         <defs>
-          <linearGradient id="school-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" className="school-fill-top" />
-            <stop offset="100%" className="school-fill-bottom" />
+          <linearGradient id="cf-base" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0%" stopColor="#cddfae" />
+            <stop offset="100%" stopColor="#c1d5a1" />
           </linearGradient>
         </defs>
-
-        {/* reference lines, kept faint so the curve does the talking */}
-        <path className="school-rule" d="M0 50H1200M0 90H1200" vectorEffect="non-scaling-stroke" />
+        <rect width="792" height="370" fill="url(#cf-base)" />
         <path
-          className="school-zero"
-          d="M0 130H1200"
-          strokeDasharray="2 7"
-          vectorEffect="non-scaling-stroke"
+          className="cf-sage"
+          d="M104 -20C46 58 20 132 40 202C58 264 112 322 196 392L812 392L812 -20Z"
         />
+        <path className="cf-sheen" d="M-40 -20L160 -20L26 336L-40 342Z" />
+      </svg>
 
-        {/* measured cash: a fortnight of logging, trending up */}
-        <path
-          className="school-area"
-          d="M40 118C90 112 120 88 170 92C220 96 240 68 290 74C340 80 356 104 406 98C452 92 470 62 520 66C566 70 580 96 630 90C668 86 690 60 736 58C748 57 754 56 760 56V130H40Z"
-        />
+      {/* Mark and wordmark, held at the banner's own proportions. */}
+      <svg className="school-banner" viewBox="0 0 792 370" aria-hidden="true">
+        <defs>
+          <radialGradient id="cf-coin" cx="0.38" cy="0.3" r="0.75">
+            <stop offset="0%" stopColor="#ffeda8" />
+            <stop offset="60%" stopColor="#fcd070" />
+            <stop offset="100%" stopColor="#f2b64c" />
+          </radialGradient>
+        </defs>
 
-        <path
-          className="school-line"
-          d="M40 118C90 112 120 88 170 92C220 96 240 68 290 74C340 80 356 104 406 98C452 92 470 62 520 66C566 70 580 96 630 90C668 86 690 60 736 58C748 57 754 56 760 56"
-          vectorEffect="non-scaling-stroke"
-        />
+        <g transform="translate(120 148)">
+          <circle r="76" className="cf-coin-rim" />
+          <circle cx="-3" cy="-2" r="74" fill="url(#cf-coin)" />
+          <circle r="59" className="cf-coin-ring" />
+          <text className="cf-coin-glyph" x="1" y="2" textAnchor="middle" dominantBaseline="central">
+            $
+          </text>
+        </g>
 
-        {/* the forecast, running down through zero to the shortfall */}
-        <path
-          className="school-forecast"
-          d="M760 56C806 60 828 88 874 100C920 112 938 130 984 142C1024 152 1074 155 1130 157"
-          strokeDasharray="5 6"
-          vectorEffect="non-scaling-stroke"
-        />
+        <text className="cf-mark" x="228" y="196">
+          CashFlow
+        </text>
+        <text className="cf-line" x="461" y="256" textAnchor="middle">
+          AI Powered Cash Flow Forecaster
+        </text>
+        <text className="cf-line" x="461" y="296" textAnchor="middle">
+          for Small Businesses
+        </text>
 
-        {/* today: where measured cash stops and the forecast takes over */}
-        <path
-          className="school-now"
-          d="M760 26V164"
-          strokeDasharray="2 6"
-          vectorEffect="non-scaling-stroke"
-        />
-
-        <circle className="school-alert-halo" cx="1130" cy="157" r="11" />
-        <circle className="school-alert" cx="1130" cy="157" r="3.6" vectorEffect="non-scaling-stroke" />
+        <path className="cf-spark" d="M638 76L664 26" />
+        <path className="cf-spark" d="M694 72L697 22" />
+        <path className="cf-spark" d="M750 82L730 38" />
       </svg>
     </div>
   );
