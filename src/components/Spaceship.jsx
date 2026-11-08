@@ -23,12 +23,16 @@ const BOOST = 520; // extra launch speed from a click
 const TURN = 8; // how fast the nose swings round to face where it is going
 const TAP_MS = 420; // a press shorter and stiller than this counts as a click
 const TAP_SLOP = 8;
+const TRAIL_SPEED = 220; // px/second before the exhaust starts leaving a wake
+const TRAIL_GAP = 42; // ms between puffs
+const TRAIL_POOL = 14; // reused nodes: no churn while it is flying
 // Small: the ship sits under the page content, so a generous grab box would
 // swallow clicks meant for whatever happens to be behind it.
 const TOUCH_PAD = 6;
 
 export default function Spaceship() {
   const nodeRef = useRef(null);
+  const trailRef = useRef(null);
 
   useEffect(() => {
     const node = nodeRef.current;
@@ -54,8 +58,48 @@ export default function Spaceship() {
       swallowClick: 0,
       pressT: 0,
       burstTimer: 0,
+      puffIndex: 0,
+      lastPuff: 0,
       last: 0,
       frame: 0,
+    };
+
+    // A small fixed pool of dots left behind the ship: recycled rather than
+    // created and destroyed, so a fast flight does not allocate anything.
+    const trail = trailRef.current;
+    const puffs = [];
+    if (trail) {
+      for (let i = 0; i < TRAIL_POOL; i += 1) {
+        const puff = document.createElement('span');
+        puff.className = 'ship-puff';
+        puff.style.opacity = '0';
+        trail.appendChild(puff);
+        puffs.push(puff);
+      }
+    }
+
+    const puff = (speed, heading = state.angle) => {
+      if (!puffs.length) return;
+      const el = puffs[(state.puffIndex += 1) % puffs.length];
+      const size = Math.min(9, 4 + speed / 260);
+      const rad = ((heading - 90) * Math.PI) / 180;
+      const back = state.h * 0.55;
+      const x = state.x + state.w / 2 - Math.cos(rad) * back + (Math.random() - 0.5) * 3;
+      const y = state.y + state.h / 2 - Math.sin(rad) * back + (Math.random() - 0.5) * 3;
+
+      el.style.left = `${(x - size / 2).toFixed(1)}px`;
+      el.style.top = `${(y - size / 2).toFixed(1)}px`;
+      el.style.width = `${size.toFixed(1)}px`;
+      el.style.height = `${size.toFixed(1)}px`;
+
+      el.getAnimations().forEach((animation) => animation.cancel());
+      el.animate(
+        [
+          { opacity: 0.6, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(0.3)' },
+        ],
+        { duration: 520, easing: 'ease-out' },
+      );
     };
 
     const measure = () => {
@@ -123,6 +167,11 @@ export default function Spaceship() {
         state.angle += diff * Math.min(1, dt * TURN);
       }
 
+      if (!reduce && speed > TRAIL_SPEED && now - state.lastPuff > TRAIL_GAP) {
+        state.lastPuff = now;
+        puff(speed);
+      }
+
       node.classList.toggle('is-hot', state.hover || state.drag || speed > 60);
       paint();
       state.frame = requestAnimationFrame(step);
@@ -170,11 +219,29 @@ export default function Spaceship() {
     const onPointerMove = (event) => {
       if (state.drag) {
         const prev = state.samples[state.samples.length - 1];
-        if (prev) state.travel += Math.hypot(event.clientX - prev.x, event.clientY - prev.y);
+        const now = performance.now();
+        let moveSpeed = 0;
+        let moveHeading = state.angle;
+        if (prev) {
+          const span = Math.max((now - prev.t) / 1000, 0.008);
+          const dx = event.clientX - prev.x;
+          const dy = event.clientY - prev.y;
+          state.travel += Math.hypot(dx, dy);
+          moveSpeed = Math.hypot(dx, dy) / span;
+          moveHeading = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
+        }
         state.x = event.clientX - state.grabX;
         state.y = event.clientY - state.grabY;
-        state.samples.push({ x: event.clientX, y: event.clientY, t: performance.now() });
+        state.samples.push({ x: event.clientX, y: event.clientY, t: now });
         if (state.samples.length > 10) state.samples.shift();
+
+        // Dragging it fast leaves the same wake a fling does. This runs straight
+        // from the pointer event, so the trail keeps up even when animation
+        // frames are being throttled.
+        if (!reduce && moveSpeed > TRAIL_SPEED && now - state.lastPuff > TRAIL_GAP) {
+          state.lastPuff = now;
+          puff(moveSpeed, moveHeading);
+        }
         // Painted straight from the event as well as from the loop, so the ship
         // stays under the cursor even if animation frames are being throttled.
         paint();
@@ -289,11 +356,14 @@ export default function Spaceship() {
       window.removeEventListener('click', onClick, { capture: true });
       document.removeEventListener('pointerleave', onLeave);
       document.documentElement.style.cursor = '';
+      puffs.forEach((el) => el.remove());
     };
   }, []);
 
   return (
-    <div ref={nodeRef} className="ship" aria-hidden="true">
+    <>
+      <div ref={trailRef} className="ship-trail" aria-hidden="true" />
+      <div ref={nodeRef} className="ship" aria-hidden="true">
       <div className="ship-hover">
         <svg viewBox="0 0 64 100" className="ship-svg">
           <g className="ship-flames">
@@ -314,5 +384,6 @@ export default function Spaceship() {
         </svg>
       </div>
     </div>
+    </>
   );
 }

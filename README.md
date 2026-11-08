@@ -18,7 +18,8 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 - **Drifting ship** — a small ship floats through the background with the dots and shooting
   stars. It rests pointing up and to the right; hover it for thrusters, drag it to steer, and
   letting go leaves it heading exactly the way it was thrown, slowing to its cruising pace on
-  that line rather than curving back. Click it to launch it along its nose. It wraps to the
+  that line rather than curving back, and drag it or fling it fast enough and it leaves a short
+  fading exhaust wake behind the nozzle. Click it to launch it along its nose. It wraps to the
   opposite edge once it leaves the screen, and on a touch screen it can be dragged without the
   page scrolling underneath it.
 - **Light/dark theme** — a nav toggle that swaps the palette in one frame (no page snapshot,

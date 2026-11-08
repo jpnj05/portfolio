@@ -207,6 +207,22 @@ button {
 }
 
 /* ----------------------------------------------------------- spaceship */
+/* The wake lives in its own layer so the puffs stay where they were dropped
+   instead of rotating along with the ship. */
+.ship-trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.ship-puff {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.7), rgba(var(--accent-rgb), 0) 70%);
+  opacity: 0;
+}
+
 .ship {
   position: absolute;
   top: 0;
