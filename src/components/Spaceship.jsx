@@ -180,20 +180,50 @@ export default function Spaceship() {
       state.lastFrameAt = now;
 
       if (!state.drag) {
-        // Slow down towards the idle cruising speed while keeping the line it was
-        // let go on. Pulling the velocity back towards the default vector as well
-        // would bend every fling round to the up-right drift within a second.
+        // Slow down towards the idle cruising speed while keeping the heading it was
+        // let go on. The direction of travel is derived from dragHeading (set on release)
+        // rather than from the velocity vector, so the ship keeps drifting in the
+        // direction it was facing even as speed decreases.
         const moving = Math.hypot(state.vx, state.vy);
         const cruise = reduce ? 0 : IDLE_SPEED;
-        const next = moving + (cruise - moving) * Math.min(1, dt * SETTLE);
+
+        // Preserve the heading direction when scaling speed: compute a unit vector
+        // from dragHeading and scale it, rather than scaling vx/vy directly.
+        const preserveHeading = state.dragHeading !== null;
+        const turnTarget = preserveHeading ? state.dragHeading : Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
+        const diff = ((turnTarget - state.angle + 540) % 360) - 180;
+        state.angle += diff * Math.min(1, dt * SETTLE);
 
         if (moving > 0.5) {
-          const scale = next / moving;
-          state.vx *= scale;
-          state.vy *= scale;
+          // Scale speed towards cruise, but keep the heading direction.
+          const scale = (cruise - moving) * Math.min(1, dt * SETTLE) / moving;
+          // Compute speed from current vx/vy, then re-apply direction from angle.
+          const currentSpeed = Math.hypot(state.vx, state.vy);
+          const newSpeed = Math.max(0, currentSpeed + scale * currentSpeed);
+          // Re-apply direction: compute vx/vy from the preserved heading.
+          if (preserveHeading && newSpeed > 0) {
+            const rad = (state.angle * Math.PI) / 180;
+            state.vx = Math.cos(rad) * newSpeed;
+            state.vy = Math.sin(rad) * newSpeed;
+          } else {
+            const scale = next / moving;
+            state.vx *= scale;
+            state.vy *= scale;
+          }
         } else {
-          state.vx = reduce ? 0 : IDLE_VX;
-          state.vy = reduce ? 0 : IDLE_VY;
+          // When speed is very low, keep the heading direction instead of snapping
+          // to the idle drift vector. If dragHeading was set, use it; otherwise slowly
+          // ease the angle toward the idle heading while keeping some forward motion.
+          if (state.dragHeading !== null) {
+            // Re-compute vx/vy from the stored heading at low speed.
+            const rad = (state.dragHeading * Math.PI) / 180;
+            const lowSpeed = 6; // minimum cruising speed
+            state.vx = Math.cos(rad) * lowSpeed;
+            state.vy = Math.sin(rad) * lowSpeed;
+          } else {
+            state.vx = reduce ? 0 : IDLE_VX;
+            state.vy = reduce ? 0 : IDLE_VY;
+          }
         }
 
         state.x += state.vx * dt;
@@ -378,13 +408,10 @@ export default function Spaceship() {
         }
       }
 
-      // Preserve the heading the ship had when let go, so it coasts in that direction
-      // instead of always reverting to the idle drift.  We only set this when the ship
-      // has a meaningful velocity, so a light tap continues to settle to the idle state.
-      const speed = Math.hypot(state.vx, state.vy);
-      if (speed > 40) {
-        state.dragHeading = Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
-      }
+      // Store the ship's current heading so it drifts in that direction when let go.
+      // Use the visual angle (state.angle) so the ship keeps pointing where it was,
+      // regardless of the velocity vector's direction.
+      state.dragHeading = state.angle;
 
       state.samples = [];
       if (tap) {
