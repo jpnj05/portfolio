@@ -213,7 +213,10 @@ export default function Spaceship() {
       if (state.drag) {
         if (state.dragHeading !== null) turn(state.dragHeading, dt, DRAG_TURN);
       } else if (speed > 6) {
-        turn(Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90, dt, TURN);
+        // Use the heading set on release if there was meaningful velocity,
+        // otherwise fall back to the velocity direction.
+        const target = state.dragHeading !== null ? state.dragHeading : Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
+        turn(target, dt, TURN);
       }
 
       if (!reduce && speed > TRAIL_SPEED && now - state.lastPuff > TRAIL_GAP) {
