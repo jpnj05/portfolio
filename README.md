@@ -16,9 +16,10 @@ Live URL: https://portfolio-three-tau-ps4bbnd8b2.vercel.app
 - **Skills tooltips** — every chip in the skills matrix explains itself on hover or keyboard
   focus, positioned in the viewport so it never runs off an edge.
 - **Drifting ship** — a small ship floats through the background with the dots and shooting
-  stars. Hover it for thrusters, drag it to steer, let go and it keeps the momentum and turns
-  to face where it is heading, click it to launch it along its nose, and it wraps to the
-  opposite edge once it leaves the screen. On a touch screen it can be dragged without the
+  stars. It rests pointing up and to the right; hover it for thrusters, drag it to steer, and
+  letting go leaves it heading exactly the way it was thrown, slowing to its cruising pace on
+  that line rather than curving back. Click it to launch it along its nose. It wraps to the
+  opposite edge once it leaves the screen, and on a touch screen it can be dragged without the
   page scrolling underneath it.
 - **Light/dark theme** — a nav toggle that swaps the palette in one frame (no page snapshot,
   no blurred layer re-raster), a stored preference, and a light palette that repaints the whole

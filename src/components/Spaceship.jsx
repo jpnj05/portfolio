@@ -8,13 +8,15 @@ import { useEffect, useRef } from 'react';
  * and grabs the pointer in the capture phase, which lets you drag it out from
  * under the text without the click ever reaching a link.
  *
- * Released with speed it keeps that speed and settles back into its slow drift;
- * leaving one edge brings it back on the opposite one.
+ * Released with speed it keeps that speed and that line of travel, slowing down
+ * to its cruising pace without curving back to the default up-right drift; leaving
+ * one edge brings it back on the opposite one.
  */
 
 const IDLE_SPEED = 13; // px/second when nothing is pushing it
-const IDLE_VX = IDLE_SPEED * 0.7;
-const IDLE_VY = -IDLE_SPEED * 0.55;
+const IDLE_HEADING = -38; // degrees: up and to the right, its resting drift
+const IDLE_VX = Math.cos((IDLE_HEADING * Math.PI) / 180) * IDLE_SPEED;
+const IDLE_VY = Math.sin((IDLE_HEADING * Math.PI) / 180) * IDLE_SPEED;
 const SETTLE = 0.9; // how fast a fling blends back to the idle drift (per second)
 const MAX_SPEED = 1400;
 const BOOST = 520; // extra launch speed from a click
@@ -85,11 +87,21 @@ export default function Spaceship() {
       state.last = now;
 
       if (!state.drag) {
-        // Blend toward the idle drift rather than braking to a stop: a hard fling
-        // keeps most of its speed for a second or so, then settles.
-        const pull = Math.min(1, dt * SETTLE);
-        state.vx += ((reduce ? 0 : IDLE_VX) - state.vx) * pull;
-        state.vy += ((reduce ? 0 : IDLE_VY) - state.vy) * pull;
+        // Slow down towards the idle cruising speed while keeping the line it was
+        // let go on. Pulling the velocity back towards the default vector as well
+        // would bend every fling round to the up-right drift within a second.
+        const moving = Math.hypot(state.vx, state.vy);
+        const cruise = reduce ? 0 : IDLE_SPEED;
+        const next = moving + (cruise - moving) * Math.min(1, dt * SETTLE);
+
+        if (moving > 0.5) {
+          const scale = next / moving;
+          state.vx *= scale;
+          state.vy *= scale;
+        } else {
+          state.vx = reduce ? 0 : IDLE_VX;
+          state.vy = reduce ? 0 : IDLE_VY;
+        }
 
         state.x += state.vx * dt;
         state.y += state.vy * dt;
