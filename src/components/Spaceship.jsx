@@ -199,20 +199,10 @@ export default function Spaceship() {
 
         if (moving > 0.5) {
           // Scale speed towards cruise, but keep the heading direction.
-          const scale = (cruise - moving) * Math.min(1, dt * SETTLE) / moving;
-          // Compute speed from current vx/vy, then re-apply direction from angle.
-          const currentSpeed = Math.hypot(state.vx, state.vy);
-          const newSpeed = Math.max(0, currentSpeed + scale * currentSpeed);
-          // Re-apply direction: compute vx/vy from the preserved heading.
-          if (preserveHeading && newSpeed > 0) {
-            const rad = (state.angle * Math.PI) / 180;
-            state.vx = Math.cos(rad) * newSpeed;
-            state.vy = Math.sin(rad) * newSpeed;
-          } else {
-            const scale = next / moving;
-            state.vx *= scale;
-            state.vy *= scale;
-          }
+          const scale = next / moving;
+          // Scale speed towards cruise.
+          state.vx *= scale;
+          state.vy *= scale;
         } else {
           // When speed is very low, keep the heading direction instead of snapping
           // to the idle drift vector. If dragHeading was set, use it; otherwise slowly
