@@ -41,6 +41,78 @@ const Chevron = () => (
   </svg>
 );
 
+/**
+ * Preview slot for a school work. A real screenshot wins; without one the card
+ * draws a cash line with its forecast tail, in the same palette as the page.
+ */
+function SchoolCover({ work }) {
+  if (work.preview) {
+    return (
+      <div className="school-cover">
+        <img src={work.preview} alt={work.coverAlt || ''} loading="lazy" decoding="async" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="school-cover">
+      <svg
+        className="school-chart"
+        viewBox="0 0 1200 180"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="school-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" className="school-fill-top" />
+            <stop offset="100%" className="school-fill-bottom" />
+          </linearGradient>
+        </defs>
+
+        {/* reference lines, kept faint so the curve does the talking */}
+        <path className="school-rule" d="M0 50H1200M0 90H1200" vectorEffect="non-scaling-stroke" />
+        <path
+          className="school-zero"
+          d="M0 130H1200"
+          strokeDasharray="2 7"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {/* measured cash: a fortnight of logging, trending up */}
+        <path
+          className="school-area"
+          d="M40 118C90 112 120 88 170 92C220 96 240 68 290 74C340 80 356 104 406 98C452 92 470 62 520 66C566 70 580 96 630 90C668 86 690 60 736 58C748 57 754 56 760 56V130H40Z"
+        />
+
+        <path
+          className="school-line"
+          d="M40 118C90 112 120 88 170 92C220 96 240 68 290 74C340 80 356 104 406 98C452 92 470 62 520 66C566 70 580 96 630 90C668 86 690 60 736 58C748 57 754 56 760 56"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {/* the forecast, running down through zero to the shortfall */}
+        <path
+          className="school-forecast"
+          d="M760 56C806 60 828 88 874 100C920 112 938 130 984 142C1024 152 1074 155 1130 157"
+          strokeDasharray="5 6"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {/* today: where measured cash stops and the forecast takes over */}
+        <path
+          className="school-now"
+          d="M760 26V164"
+          strokeDasharray="2 6"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        <circle className="school-alert-halo" cx="1130" cy="157" r="11" />
+        <circle className="school-alert" cx="1130" cy="157" r="3.6" vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
+  );
+}
+
 function tiltHandlers(node) {
   if (!node) return () => {};
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return () => {};
@@ -313,41 +385,45 @@ export default function Projects({ data }) {
             <div className="school-list">
               {site.schoolWorks.map((work) => (
                 <article className="school-card" key={work.title}>
-                  <div className="school-body">
-                    <div className="school-topline">
-                      <span className="school-kind">{work.kind}</span>
-                      {work.when && <span className="school-when">{work.when}</span>}
+                  <SchoolCover work={work} />
+
+                  <div className="school-split">
+                    <div className="school-body">
+                      <div className="school-topline">
+                        <span className="school-kind">{work.kind}</span>
+                        {work.when && <span className="school-when">{work.when}</span>}
+                      </div>
+
+                      <h4 className="school-name">{work.title}</h4>
+                      {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
+                      <p className="school-blurb">{work.blurb}</p>
+
+                      {work.highlights?.length > 0 && (
+                        <ul className="project-tags school-tags">
+                          {work.highlights.map((tag) => (
+                            <li className="tag" key={tag}>
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {work.team && (
+                        <p className="school-team">
+                          <span>Team</span> {work.team}
+                        </p>
+                      )}
                     </div>
 
-                    <h4 className="school-name">{work.title}</h4>
-                    {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
-                    <p className="school-blurb">{work.blurb}</p>
-
-                    {work.highlights?.length > 0 && (
-                      <ul className="project-tags school-tags">
-                        {work.highlights.map((tag) => (
-                          <li className="tag" key={tag}>
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {work.team && (
-                      <p className="school-team">
-                        <span>Team</span> {work.team}
-                      </p>
-                    )}
+                    <ol className="school-steps">
+                      {work.activities.map((activity) => (
+                        <li className="school-step" key={activity.what}>
+                          <span className="school-week">{activity.when}</span>
+                          <span className="school-what">{activity.what}</span>
+                        </li>
+                      ))}
+                    </ol>
                   </div>
-
-                  <ol className="school-steps">
-                    {work.activities.map((activity) => (
-                      <li className="school-step" key={activity.what}>
-                        <span className="school-week">{activity.when}</span>
-                        <span className="school-what">{activity.what}</span>
-                      </li>
-                    ))}
-                  </ol>
                 </article>
               ))}
             </div>

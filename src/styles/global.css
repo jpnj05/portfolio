@@ -2213,10 +2213,7 @@ button {
 }
 
 .school-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(18px, 3vw, 34px);
-  padding: clamp(18px, 2.8vw, 28px);
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
@@ -2227,6 +2224,102 @@ button {
 
 .school-card:hover {
   border-color: var(--line-strong);
+}
+
+/* ------------------------------------------------- school work preview */
+/* No screenshot exists for coursework, so the preview is drawn: a cash line,
+   where measurement ends, and the forecast running down to an alert. */
+.school-cover {
+  position: relative;
+  height: clamp(140px, 14vw, 190px);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(90% 130% at 78% 0%, rgba(var(--accent-rgb), 0.16), transparent 64%),
+    rgba(var(--fg-rgb), 0.015);
+}
+
+.school-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(0.94) contrast(1.02);
+  transition: transform 0.8s var(--ease);
+}
+
+.school-card:hover .school-cover img {
+  transform: scale(1.02);
+}
+
+.school-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.school-chart .school-rule {
+  fill: none;
+  stroke: rgba(var(--fg-rgb), 0.08);
+  stroke-width: 1;
+}
+
+.school-chart .school-zero {
+  fill: none;
+  stroke: rgba(var(--fg-rgb), 0.16);
+  stroke-width: 1;
+}
+
+.school-chart .school-area {
+  fill: url(#school-fill);
+}
+
+.school-fill-top {
+  stop-color: var(--accent);
+  stop-opacity: 0.26;
+}
+
+.school-fill-bottom {
+  stop-color: var(--accent);
+  stop-opacity: 0;
+}
+
+.school-chart .school-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.school-chart .school-forecast {
+  fill: none;
+  stroke: var(--accent-soft);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+.school-chart .school-now {
+  fill: none;
+  stroke: rgba(var(--fg-rgb), 0.22);
+  stroke-width: 1;
+}
+
+.school-chart .school-alert-halo {
+  fill: rgba(var(--accent-rgb), 0.18);
+}
+
+.school-chart .school-alert {
+  fill: var(--accent);
+  stroke: rgba(var(--accent-rgb), 0.4);
+  stroke-width: 1;
+}
+
+.school-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(18px, 3vw, 34px);
+  padding: clamp(18px, 2.8vw, 28px);
 }
 
 .school-body {
@@ -2345,7 +2438,7 @@ button {
 }
 
 @media (max-width: 860px) {
-  .school-card {
+  .school-split {
     grid-template-columns: minmax(0, 1fr);
   }
 
