@@ -165,7 +165,7 @@ function ResumeCard() {
 
       <div className="resume-meta">
         <div className="resume-meta-text">
-          <p className="resume-label mono">Résumé</p>
+          <p className="resume-label mono">Resume</p>
           <p className="resume-note">
             {note} <span className="resume-updated mono">Updated {updated}</span>
           </p>
@@ -189,7 +189,7 @@ function ResumeCard() {
             <div className="resume-modal-panel" ref={panelRef}>
               <div className="resume-modal-bar">
                 <p className="resume-modal-title mono">
-                  Résumé <span>{note}</span>
+                  Resume <span>{note}</span>
                 </p>
 
                 <div className="resume-modal-actions">
