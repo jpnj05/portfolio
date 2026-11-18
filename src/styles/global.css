@@ -2337,12 +2337,14 @@ button {
 }
 
 /* The open panel has to paint over the row underneath, and the card squares
-   off its bottom corners so the panel continues it. */
+   off its bottom corners and drops its bottom edge, so nothing draws a line
+   where the panel picks up from the card. */
 .school-card:hover,
 .school-card:focus-within {
   z-index: 4;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
 }
 
 /* ------------------------------------------------- school work preview */
@@ -2546,7 +2548,9 @@ button {
 .school-details {
   position: absolute;
   inset-inline: -1px;
-  top: 100%;
+  /* Two pixels up so the panel covers the card's bottom edge outright, whatever
+     the subpixel rounding of the card's height does that frame. */
+  top: calc(100% - 2px);
   z-index: 6;
   display: flex;
   flex-direction: column;
@@ -2555,7 +2559,8 @@ button {
   border-top: 0;
   border-radius: 0 0 var(--radius) var(--radius);
   background: var(--panel);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
+  /* Kept under the panel's own edge so it cannot smear across the join. */
+  box-shadow: 0 22px 40px -20px rgba(0, 0, 0, 0.55);
   pointer-events: none;
 }
 
