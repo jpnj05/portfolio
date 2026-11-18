@@ -215,6 +215,19 @@ export const site = {
         'Answer sheet: the listening test table comparing the original track, 22.05 kHz, 8 kHz and 8-bit reduction.',
     },
     {
+      kind: 'Sound design',
+      when: '2026',
+      title: 'Short Clip Sound Design',
+      subtitle: 'A few seconds of picture, rebuilt out of four layers of sound',
+      blurb:
+        'The exercise is the short clip method: strip the audio out of a clip and build it back up in layers. Mine runs on a camper van parked by the sea at dusk, and it is built the way the brief asks for it, ambience underneath, foley on top of that, an impact on the moment that matters, and a music bed for the mood, with every clip faded at both ends so the joins stay silent. Mixed in DaVinci Resolve against the meter as much as by ear.',
+      highlights: ['Sound layering', 'Foley', 'Mixing levels', 'DaVinci Resolve'],
+      preview: '/projects/resolve-sound-design.webp',
+      coverAlt:
+        'DaVinci Resolve timeline for the sound design exercise: the clip on the video track, then rain ambience, foley, waves and a music bed on separate audio tracks.',
+      coverCrop: 'center',
+    },
+    {
       kind: 'Multimedia campaign',
       when: '2026',
       title: 'Tindahan Tycoon',
@@ -225,7 +238,7 @@ export const site = {
       preview: '/projects/tindahan-tycoon.webp',
       coverAlt:
         'Campaign plan cover: Tindahan Tycoon, a sari-sari store loyalty campaign, with its multimedia matrix.',
-      coverCrop: true,
+      coverCrop: 'top',
     },
     {
       kind: 'Storyboard',

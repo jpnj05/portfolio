@@ -2330,10 +2330,14 @@ button {
   background: #ffffff;
 }
 
-/* A tall page, a poster or a plan, fills the slot from its header down
-   instead of floating as a narrow strip in the middle of it. */
+/* A tall page or a poster fills the slot from its header down, and a wide
+   screenshot from the middle, instead of floating as a strip inside it. */
 .school-cover.school-cover--crop img {
   object-fit: cover;
+  object-position: center;
+}
+
+.school-cover.school-cover--crop-top img {
   object-position: top center;
 }
 

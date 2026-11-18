@@ -108,7 +108,13 @@ function AudioBanner({ label }) {
  * card width.
  */
 function SchoolCover({ work }) {
-  const coverClass = ['school-cover', work.plainCover && 'school-cover--plain', work.coverCrop && 'school-cover--crop']
+  const cropClass =
+    work.coverCrop === 'top'
+      ? 'school-cover--crop school-cover--crop-top'
+      : work.coverCrop
+        ? 'school-cover--crop'
+        : null;
+  const coverClass = ['school-cover', work.plainCover && 'school-cover--plain', cropClass]
     .filter(Boolean)
     .join(' ');
 
