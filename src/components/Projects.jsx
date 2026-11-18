@@ -215,6 +215,7 @@ function SchoolCard({ work }) {
 
     const parts = details.querySelectorAll('[data-part]');
     const targets = [details, ...parts];
+    let covered = [];
 
     const ctx = gsap.context(() => {
       // The description hangs under the card as its own panel, so opening it
@@ -222,8 +223,32 @@ function SchoolCard({ work }) {
       gsap.set(details, { opacity: 0, y: 10 });
       gsap.set(parts, { opacity: 0, y: 8 });
 
+      // Cards the open panel covers step back, so a title cut in half by the
+      // panel never competes with the text in it.
+      const shadeCovered = () => {
+        const list = card.closest('.school-list');
+        if (!list) return;
+        const top = card.getBoundingClientRect().top + details.offsetTop;
+        const bottom = top + details.offsetHeight;
+        const box = card.getBoundingClientRect();
+
+        covered = [...list.querySelectorAll('.school-card')].filter((other) => {
+          if (other === card) return false;
+          const rect = other.getBoundingClientRect();
+          return rect.top < bottom && rect.bottom > top && rect.left < box.right && rect.right > box.left;
+        });
+
+        covered.forEach((other) => other.classList.add('is-covered'));
+      };
+
+      const liftCovered = () => {
+        covered.forEach((other) => other.classList.remove('is-covered'));
+        covered = [];
+      };
+
       const show = () => {
         gsap.killTweensOf(targets);
+        shadeCovered();
         gsap.to(details, { opacity: 1, y: 0, duration: 0.34, ease: 'power3.out' });
         gsap.to(parts, {
           opacity: 1,
@@ -237,6 +262,7 @@ function SchoolCard({ work }) {
 
       const hide = () => {
         gsap.killTweensOf(targets);
+        liftCovered();
         gsap.to(parts, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in', stagger: 0.02 });
         gsap.to(details, { opacity: 0, y: 10, duration: 0.24, ease: 'power2.inOut', delay: 0.04 });
       };
@@ -247,6 +273,7 @@ function SchoolCard({ work }) {
       card.addEventListener('focusout', hide);
 
       return () => {
+        liftCovered();
         card.removeEventListener('mouseenter', show);
         card.removeEventListener('mouseleave', hide);
         card.removeEventListener('focusin', show);

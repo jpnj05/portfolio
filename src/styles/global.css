@@ -1068,7 +1068,17 @@ button {
   container-type: inline-size;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  transition: border-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* A card the open panel sits over steps back, so a title cut in half by the
+   panel never competes with the text in it. */
+.school-card.is-covered {
+  opacity: 0.26;
+  filter: saturate(0.4);
 }
 
 .resume-preview:hover {
@@ -2309,17 +2319,30 @@ button {
   background:
     radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
     var(--panel);
-  transition: border-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* A card the open panel sits over steps back, so a title cut in half by the
+   panel never competes with the text in it. */
+.school-card.is-covered {
+  opacity: 0.26;
+  filter: saturate(0.4);
 }
 
 .school-card:hover {
   border-color: var(--line-strong);
 }
 
-/* The open panel has to paint over the row underneath. */
+/* The open panel has to paint over the row underneath, and the card squares
+   off its bottom corners so the panel continues it. */
 .school-card:hover,
 .school-card:focus-within {
   z-index: 4;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 /* ------------------------------------------------- school work preview */
@@ -2517,20 +2540,21 @@ button {
 }
 
 /* The description is a panel under the card rather than part of it, so it opens
-   on hover without the card or the rows around it changing height. */
+   on hover without the card or the rows around it changing height. It starts
+   flush at the card's edge and drops its top border and corners, so the two
+   read as one piece. */
 .school-details {
   position: absolute;
-  inset-inline: 0;
-  top: calc(100% + 10px);
+  inset-inline: -1px;
+  top: 100%;
   z-index: 6;
   display: flex;
   flex-direction: column;
-  padding: 16px 18px;
+  padding: 0 clamp(18px, 2vw, 24px) 20px;
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
-    var(--panel);
+  border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--panel);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
   pointer-events: none;
 }
