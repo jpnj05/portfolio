@@ -128,11 +128,17 @@ export default function Spaceship() {
         .map((d) => new Path2D(d));
     };
 
+    // A heading kept in [0, 360). The plain % keeps the sign of a negative
+    // operand, so an angle that had wound past zero made the diff below land
+    // outside (-180, 180] — the nose then turned the long way, overshot, and kept
+    // turning frame after frame, which is the ship spinning while it flies straight.
+    const wrap = (deg) => ((deg % 360) + 360) % 360;
+    const shortest = (target, current) => wrap(target - current + 180) - 180;
+
     // Rotate towards a heading the short way round, easing by elapsed time so the
     // turn looks the same whatever rate the pointer reports at.
     const turn = (target, dt, rate) => {
-      const diff = ((target - state.angle + 540) % 360) - 180;
-      state.angle += diff * Math.min(1, dt * rate);
+      state.angle = wrap(state.angle + shortest(target, state.angle) * Math.min(1, dt * rate));
     };
 
     const paint = () => {
@@ -191,8 +197,7 @@ export default function Spaceship() {
         // from dragHeading and scale it, rather than scaling vx/vy directly.
         const preserveHeading = state.dragHeading !== null;
         const turnTarget = preserveHeading ? state.dragHeading : Math.atan2(state.vy, state.vx) * (180 / Math.PI) + 90;
-        const diff = ((turnTarget - state.angle + 540) % 360) - 180;
-        state.angle += diff * Math.min(1, dt * SETTLE);
+        state.angle = wrap(state.angle + shortest(turnTarget, state.angle) * Math.min(1, dt * SETTLE));
 
         // Compute the target speed, blending toward cruise speed.
         const next = moving + (cruise - moving) * Math.min(1, dt * SETTLE);
