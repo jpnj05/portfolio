@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
 import WordRise from './WordRise.jsx';
@@ -192,6 +193,112 @@ function SchoolCover({ work }) {
         <path className="cf-spark" d="M750 82L730 38" />
       </svg>
     </div>
+  );
+}
+
+/**
+ * A coursework card. The description block is laid out but held at zero
+ * opacity, and GSAP brings it in on hover or keyboard focus so the row reads
+ * as titles first and opens up under the cursor. Coarse pointers and
+ * reduced-motion never hide it in the first place.
+ */
+function SchoolCard({ work }) {
+  const cardRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const card = cardRef.current;
+    const details = card?.querySelector('.school-details');
+    if (!card || !details) return undefined;
+
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canHover || calm) return undefined;
+
+    const parts = details.querySelectorAll('[data-part]');
+
+    const ctx = gsap.context(() => {
+      gsap.set(parts, { opacity: 0, y: 14 });
+
+      const show = () =>
+        gsap.to(parts, {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: 'power3.out',
+          stagger: 0.06,
+          overwrite: true,
+        });
+
+      const hide = () =>
+        gsap.to(parts, {
+          opacity: 0,
+          y: 14,
+          duration: 0.26,
+          ease: 'power2.in',
+          stagger: 0.03,
+          overwrite: true,
+        });
+
+      card.addEventListener('mouseenter', show);
+      card.addEventListener('mouseleave', hide);
+      card.addEventListener('focusin', show);
+      card.addEventListener('focusout', hide);
+
+      return () => {
+        card.removeEventListener('mouseenter', show);
+        card.removeEventListener('mouseleave', hide);
+        card.removeEventListener('focusin', show);
+        card.removeEventListener('focusout', hide);
+      };
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <article className="school-card" ref={cardRef}>
+      <SchoolCover work={work} />
+
+      <div className="school-body">
+        <div className="school-topline">
+          <span className="school-kind">{work.kind}</span>
+          {work.when && <span className="school-when">{work.when}</span>}
+        </div>
+
+        <h4 className="school-name">
+          {work.link ? (
+            <a href={work.link} target="_blank" rel="noreferrer">
+              {work.title}
+            </a>
+          ) : (
+            work.title
+          )}
+        </h4>
+        {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
+
+        <div className="school-details">
+          <p className="school-blurb" data-part>
+            {work.blurb}
+          </p>
+
+          {work.highlights?.length > 0 && (
+            <ul className="project-tags school-tags" data-part>
+              {work.highlights.map((tag) => (
+                <li className="tag" key={tag}>
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {work.team && (
+            <p className="school-team" data-part>
+              <span>Team</span> {work.team}
+            </p>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -490,44 +597,7 @@ export default function Projects({ data }) {
 
             <div className="school-list" id="school-works" hidden={!schoolOpen}>
               {site.schoolWorks.map((work) => (
-                <article className="school-card" key={work.title}>
-                  <SchoolCover work={work} />
-
-                  <div className="school-body">
-                    <div className="school-topline">
-                      <span className="school-kind">{work.kind}</span>
-                      {work.when && <span className="school-when">{work.when}</span>}
-                    </div>
-
-                    <h4 className="school-name">
-                      {work.link ? (
-                        <a href={work.link} target="_blank" rel="noreferrer">
-                          {work.title}
-                        </a>
-                      ) : (
-                        work.title
-                      )}
-                    </h4>
-                    {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
-                    <p className="school-blurb">{work.blurb}</p>
-
-                    {work.highlights?.length > 0 && (
-                      <ul className="project-tags school-tags">
-                        {work.highlights.map((tag) => (
-                          <li className="tag" key={tag}>
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {work.team && (
-                      <p className="school-team">
-                        <span>Team</span> {work.team}
-                      </p>
-                    )}
-                  </div>
-                </article>
+                <SchoolCard key={work.title} work={work} />
               ))}
             </div>
           </div>
