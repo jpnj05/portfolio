@@ -2300,7 +2300,10 @@ button {
 }
 
 .school-card {
-  overflow: hidden;
+  position: relative;
+  /* The description panel hangs below the card, so the card cannot clip its own
+     children; the cover does its own corner clipping instead. */
+  overflow: visible;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
@@ -2311,6 +2314,12 @@ button {
 
 .school-card:hover {
   border-color: var(--line-strong);
+}
+
+/* The open panel has to paint over the row underneath. */
+.school-card:hover,
+.school-card:focus-within {
+  z-index: 4;
 }
 
 /* ------------------------------------------------- school work preview */
@@ -2324,6 +2333,7 @@ button {
   aspect-ratio: 792 / 370;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
   background: #c9dbab;
 }
 
@@ -2506,9 +2516,23 @@ button {
   color: var(--accent-soft);
 }
 
-/* The description is unfolded on hover; see SchoolCard. */
+/* The description is a panel under the card rather than part of it, so it opens
+   on hover without the card or the rows around it changing height. */
 .school-details {
-  overflow: hidden;
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 10px);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
+    var(--panel);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 
 .school-blurb {

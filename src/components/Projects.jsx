@@ -197,9 +197,9 @@ function SchoolCover({ work }) {
 }
 
 /**
- * A coursework card. The description is folded to zero height until the card
- * is hovered or focused, when GSAP unfolds it and lifts the text in. Coarse
- * pointers and reduced-motion never hide it in the first place.
+ * A coursework card. The description rides in a panel under the card on hover
+ * or focus, so the card keeps its resting height and nothing else moves.
+ * Coarse pointers and reduced-motion get the panel open from the start.
  */
 function SchoolCard({ work }) {
   const cardRef = useRef(null);
@@ -217,29 +217,28 @@ function SchoolCard({ work }) {
     const targets = [details, ...parts];
 
     const ctx = gsap.context(() => {
-      // Resting cards keep no room for the description, so the row reads as
-      // covers and titles; the card grows as the text arrives and folds back
-      // up when the pointer leaves.
-      gsap.set(details, { height: 0, opacity: 0 });
-      gsap.set(parts, { opacity: 0, y: 12 });
+      // The description hangs under the card as its own panel, so opening it
+      // never changes the height of the card or of the rows around it.
+      gsap.set(details, { opacity: 0, y: 10 });
+      gsap.set(parts, { opacity: 0, y: 8 });
 
       const show = () => {
         gsap.killTweensOf(targets);
-        gsap.to(details, { height: 'auto', opacity: 1, duration: 0.5, ease: 'power3.out' });
+        gsap.to(details, { opacity: 1, y: 0, duration: 0.34, ease: 'power3.out' });
         gsap.to(parts, {
           opacity: 1,
           y: 0,
-          duration: 0.4,
+          duration: 0.36,
           ease: 'power3.out',
           stagger: 0.05,
-          delay: 0.1,
+          delay: 0.06,
         });
       };
 
       const hide = () => {
         gsap.killTweensOf(targets);
-        gsap.to(parts, { opacity: 0, y: 12, duration: 0.2, ease: 'power2.in', stagger: 0.02 });
-        gsap.to(details, { height: 0, opacity: 0, duration: 0.34, ease: 'power2.inOut', delay: 0.06 });
+        gsap.to(parts, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in', stagger: 0.02 });
+        gsap.to(details, { opacity: 0, y: 10, duration: 0.24, ease: 'power2.inOut', delay: 0.04 });
       };
 
       card.addEventListener('mouseenter', show);
