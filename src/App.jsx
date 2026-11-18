@@ -50,7 +50,6 @@ export default function App() {
         <Projects data={data} />
         <Contributions contributions={data?.contributions ?? null} />
         <Contact />
-        <Marquee items={['Let’s build', 'Say hello', 'Ship it', 'React', 'Node.js']} reverse />
       </main>
 
       <Footer />
