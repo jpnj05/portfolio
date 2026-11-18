@@ -316,7 +316,11 @@ export default function Spaceship() {
         // Follow the hand, but averaged a little: raw pointer headings are noisy
         // at speed and would make the nose shiver. Time-based, so the smoothing
         // is the same whatever rate the pointer reports at.
-        if (moveSpeed > DRAG_LEAD) {
+        //
+        // Only once the press has travelled past the tap slop, though: a tap is
+        // a press with a few pixels of jitter, and letting that jitter set the
+        // heading spun the nose round before the launch.
+        if (state.travel > TAP_SLOP && moveSpeed > DRAG_LEAD) {
           if (state.dragHeading === null) {
             state.dragHeading = moveHeading;
             state.headAt = now;
