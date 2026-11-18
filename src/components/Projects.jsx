@@ -215,6 +215,7 @@ function SchoolCard({ work }) {
 
     const parts = details.querySelectorAll('[data-part]');
     const targets = [details, ...parts];
+    const section = card.closest('.section');
     let covered = [];
 
     const ctx = gsap.context(() => {
@@ -248,6 +249,9 @@ function SchoolCard({ work }) {
 
       const show = () => {
         gsap.killTweensOf(targets);
+        // The panel can reach past this section's bottom edge, where the next
+        // section's divider would otherwise cut straight across it.
+        section?.classList.add('section--over');
         shadeCovered();
         gsap.to(details, { opacity: 1, y: 0, duration: 0.34, ease: 'power3.out' });
         gsap.to(parts, {
@@ -262,6 +266,7 @@ function SchoolCard({ work }) {
 
       const hide = () => {
         gsap.killTweensOf(targets);
+        section?.classList.remove('section--over');
         liftCovered();
         gsap.to(parts, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in', stagger: 0.02 });
         gsap.to(details, { opacity: 0, y: 10, duration: 0.24, ease: 'power2.inOut', delay: 0.04 });
@@ -273,6 +278,7 @@ function SchoolCard({ work }) {
       card.addEventListener('focusout', hide);
 
       return () => {
+        section?.classList.remove('section--over');
         liftCovered();
         card.removeEventListener('mouseenter', show);
         card.removeEventListener('mouseleave', hide);

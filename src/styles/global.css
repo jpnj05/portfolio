@@ -156,6 +156,13 @@ button {
   border-top: 1px solid var(--line);
 }
 
+/* Sections sit at the same level, so the later one's divider paints over an
+   earlier one's content. While a coursework panel is open it reaches past the
+   section's edge, so that section steps above its neighbours. */
+.section--over {
+  z-index: 5;
+}
+
 .bg-canvas {
   position: fixed;
   inset: 0;
