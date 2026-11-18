@@ -216,6 +216,19 @@ export const site = {
       plainCover: true,
     },
     {
+      kind: 'Multimedia campaign',
+      when: '2026',
+      title: 'Tindahan Tycoon',
+      subtitle: 'A sari-sari store loyalty campaign, planned across all five multimedia elements',
+      blurb:
+        'The exercise was a 60-minute mashup: invent a campaign, plan it across text, graphics, audio, video and animation, then pitch it in 45 seconds. We took the sari-sari store, the shop the whole barangay already walks into, and gave it a loyalty program that needs nothing more than a notebook and a hand-painted tarpaulin: receipts printed with a rank instead of a total, a jingle the store already plays, a 15-second reel, and a badge that fills up on a phone.',
+      highlights: ['Audience targeting', 'Multimedia matrix', 'Copywriting', 'Pitch'],
+      preview: '/projects/tindahan-tycoon.webp',
+      coverAlt:
+        'Campaign plan cover: Tindahan Tycoon, a sari-sari store loyalty campaign, with its multimedia matrix.',
+      coverCrop: true,
+    },
+    {
       kind: 'Storyboard',
       title: 'Missed the Bus',
       subtitle: 'A short comic about the morning rush',

@@ -2330,6 +2330,13 @@ button {
   background: #ffffff;
 }
 
+/* A tall page, a poster or a plan, fills the slot from its header down
+   instead of floating as a narrow strip in the middle of it. */
+.school-cover.school-cover--crop img {
+  object-fit: cover;
+  object-position: top center;
+}
+
 .school-cover img {
   width: 100%;
   height: 100%;

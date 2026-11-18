@@ -47,7 +47,9 @@ const Chevron = () => (
  * card width.
  */
 function SchoolCover({ work }) {
-  const coverClass = work.plainCover ? 'school-cover school-cover--plain' : 'school-cover';
+  const coverClass = ['school-cover', work.plainCover && 'school-cover--plain', work.coverCrop && 'school-cover--crop']
+    .filter(Boolean)
+    .join(' ');
 
   if (work.preview) {
     return (
