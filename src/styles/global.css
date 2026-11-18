@@ -140,6 +140,13 @@ button {
   position: relative;
   z-index: 3;
   padding: clamp(72px, 11vw, 140px) 0;
+  /* Each section owns a full screen of the scroll: the short ones stretch to the
+     viewport and centre their content instead of letting the next section peek
+     in underneath. Sections with more content than a screen still grow. */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section + .section {
