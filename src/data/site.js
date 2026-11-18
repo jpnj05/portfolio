@@ -210,10 +210,9 @@ export const site = {
       blurb:
         'A listening exercise in why digital audio degrades the way it does. The same master was played back at 22.05 kHz, at 8 kHz and through an 8-bit reduction, and each stage took something specific: the top end first, then the body, then the dynamics. The written answers cover why a sample rate can only carry frequencies up to half of it, and why a low-pass filter sounds muffled where a bit crusher sounds crunchy.',
       highlights: ['Audio sampling', 'Bit depth', 'Filters', 'Critical listening'],
-      preview: '/projects/bandlab-sampling.webp',
+      banner: 'audio',
       coverAlt:
         'Answer sheet: the listening test table comparing the original track, 22.05 kHz, 8 kHz and 8-bit reduction.',
-      plainCover: true,
     },
     {
       kind: 'Multimedia campaign',

@@ -41,6 +41,67 @@ const Chevron = () => (
   </svg>
 );
 
+/* The sampling lab reads as a document rather than a cover, so its preview is
+   drawn like the CashFlow one: a flat plate behind, the artwork in viewBox
+   units on top, so it holds its proportions at any card width. */
+const WAVE_BARS = Array.from({ length: 40 }, (_, i) =>
+  Math.round(14 + 44 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.6)))
+);
+
+function AudioBanner({ label }) {
+  return (
+    <>
+      <svg
+        className="school-banner-bg"
+        viewBox="0 0 792 370"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="au-base" x1="0" y1="0" x2="0.6" y2="1">
+            <stop offset="0%" stopColor="#0f1b21" />
+            <stop offset="100%" stopColor="#1c2f36" />
+          </linearGradient>
+        </defs>
+        <rect width="792" height="370" fill="url(#au-base)" />
+        <path className="au-sheen" d="M-40 -20L214 -20L60 392L-40 392Z" />
+      </svg>
+
+      <svg className="school-banner" viewBox="0 0 792 370" role="img" aria-label={label}>
+        <defs>
+          <linearGradient id="au-wave" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#6ee7a8" />
+            <stop offset="100%" stopColor="#5b8cff" />
+          </linearGradient>
+        </defs>
+
+        <text className="au-mark" x="72" y="148">
+          BandLab
+        </text>
+        <text className="au-line" x="72" y="198">
+          Sampling rate, bit depth
+        </text>
+        <text className="au-line" x="72" y="236">
+          and what each stage loses
+        </text>
+
+        <line className="au-baseline" x1="72" y1="316" x2="720" y2="316" />
+        {WAVE_BARS.map((height, index) => (
+          <rect
+            key={index}
+            className="au-wave"
+            x={72 + index * 16.2}
+            y={316 - height / 2}
+            width="7"
+            height={height}
+            rx="3.5"
+          />
+        ))}
+      </svg>
+    </>
+  );
+}
+
 /**
  * Preview slot for a school work. A real screenshot wins; without one the card
  * carries the project's own banner, drawn in vectors so it stays sharp at any
@@ -55,6 +116,14 @@ function SchoolCover({ work }) {
     return (
       <div className={coverClass}>
         <img src={work.preview} alt={work.coverAlt || ''} loading="lazy" decoding="async" />
+      </div>
+    );
+  }
+
+  if (work.banner === 'audio') {
+    return (
+      <div className={coverClass}>
+        <AudioBanner label={work.coverAlt} />
       </div>
     );
   }

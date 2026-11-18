@@ -2407,6 +2407,37 @@ button {
   stroke-linecap: round;
 }
 
+/* BandLab banner: a studio-dark plate, the wordmark top-left, the waveform
+   running along the bottom in the same green-to-blue as the CashFlow mark. */
+.au-sheen {
+  fill: rgba(255, 255, 255, 0.06);
+}
+
+.school-banner .au-mark,
+.school-banner .au-line {
+  fill: #eaf6f1;
+}
+
+.au-mark {
+  font-size: 96px;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+
+.au-line {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.au-wave {
+  fill: url(#au-wave);
+}
+
+.au-baseline {
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 2;
+}
+
 .school-body {
   display: flex;
   flex-direction: column;
