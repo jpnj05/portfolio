@@ -49,6 +49,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Anchor jumps (and anything without Lenis, e.g. reduced motion) land the
+     section below the floating nav instead of under it. */
+  scroll-padding-top: calc(var(--nav-h) + 18px);
   -webkit-text-size-adjust: 100%;
   /* The page scrolls, the scrollbar stays out of the way. */
   scrollbar-width: none;
@@ -2772,7 +2775,7 @@ button {
   }
 
   .hero {
-    min-height: auto;
+    min-height: 100svh;
     padding-top: calc(var(--nav-h) + 34px);
     padding-bottom: 40px;
   }
