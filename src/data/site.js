@@ -180,6 +180,19 @@ export const site = {
    */
   schoolWorks: [
     {
+      kind: 'Brand identity',
+      when: '2026',
+      title: 'Brand Identity & Logo Design',
+      subtitle: 'The CashFlow name, mark and palette, made for our IT research project',
+      blurb:
+        'Branding is usually the last thing a student research project gets, which is why so many of them look unfinished next to the work inside. This activity asked for a real identity for our own project: a brand name, a logo, a colour system and typography, gathered into a mini brand style guide. I built it around CashFlow, the forecaster my team was already building.',
+      highlights: ['Logo design', 'Brand naming', 'Colour theory', 'Typography', 'Style guide'],
+      team: 'Pison · Fiesta · Mercado · Visitacion · Herrera',
+      preview: '/projects/cashflow-logo.webp',
+      coverAlt: 'The CashFlow logo: a blue-to-green gradient C with a matching F nested inside it.',
+      plainCover: true,
+    },
+    {
       kind: 'Infographic',
       when: '2026',
       title: 'CashFlow AI',

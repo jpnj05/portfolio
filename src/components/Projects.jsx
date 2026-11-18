@@ -47,16 +47,18 @@ const Chevron = () => (
  * card width.
  */
 function SchoolCover({ work }) {
+  const coverClass = work.plainCover ? 'school-cover school-cover--plain' : 'school-cover';
+
   if (work.preview) {
     return (
-      <div className="school-cover">
+      <div className={coverClass}>
         <img src={work.preview} alt={work.coverAlt || ''} loading="lazy" decoding="async" />
       </div>
     );
   }
 
   return (
-    <div className="school-cover">
+    <div className={coverClass}>
       {/* Backdrop only. It is abstract on purpose, so it can stretch to fill
           whatever width the card happens to be without distorting a shape. */}
       <svg
