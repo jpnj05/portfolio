@@ -197,10 +197,9 @@ function SchoolCover({ work }) {
 }
 
 /**
- * A coursework card. The description block is laid out but held at zero
- * opacity, and GSAP brings it in on hover or keyboard focus so the row reads
- * as titles first and opens up under the cursor. Coarse pointers and
- * reduced-motion never hide it in the first place.
+ * A coursework card. The description is folded to zero height until the card
+ * is hovered or focused, when GSAP unfolds it and lifts the text in. Coarse
+ * pointers and reduced-motion never hide it in the first place.
  */
 function SchoolCard({ work }) {
   const cardRef = useRef(null);
@@ -215,29 +214,33 @@ function SchoolCard({ work }) {
     if (!canHover || calm) return undefined;
 
     const parts = details.querySelectorAll('[data-part]');
+    const targets = [details, ...parts];
 
     const ctx = gsap.context(() => {
-      gsap.set(parts, { opacity: 0, y: 14 });
+      // Resting cards keep no room for the description, so the row reads as
+      // covers and titles; the card grows as the text arrives and folds back
+      // up when the pointer leaves.
+      gsap.set(details, { height: 0, opacity: 0 });
+      gsap.set(parts, { opacity: 0, y: 12 });
 
-      const show = () =>
+      const show = () => {
+        gsap.killTweensOf(targets);
+        gsap.to(details, { height: 'auto', opacity: 1, duration: 0.5, ease: 'power3.out' });
         gsap.to(parts, {
           opacity: 1,
           y: 0,
-          duration: 0.45,
+          duration: 0.4,
           ease: 'power3.out',
-          stagger: 0.06,
-          overwrite: true,
+          stagger: 0.05,
+          delay: 0.1,
         });
+      };
 
-      const hide = () =>
-        gsap.to(parts, {
-          opacity: 0,
-          y: 14,
-          duration: 0.26,
-          ease: 'power2.in',
-          stagger: 0.03,
-          overwrite: true,
-        });
+      const hide = () => {
+        gsap.killTweensOf(targets);
+        gsap.to(parts, { opacity: 0, y: 12, duration: 0.2, ease: 'power2.in', stagger: 0.02 });
+        gsap.to(details, { height: 0, opacity: 0, duration: 0.34, ease: 'power2.inOut', delay: 0.06 });
+      };
 
       card.addEventListener('mouseenter', show);
       card.addEventListener('mouseleave', hide);

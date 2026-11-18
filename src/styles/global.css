@@ -2276,6 +2276,9 @@ button {
 .school-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Cards sit at their own height rather than stretching to the tallest, so a
+     resting card has no empty panel under its title. */
+  align-items: start;
   gap: clamp(12px, 1.6vw, 16px);
   margin-top: 14px;
   animation: schoolListIn 0.35s var(--ease) both;
@@ -2501,6 +2504,11 @@ button {
   margin-top: -4px;
   font-size: 13px;
   color: var(--accent-soft);
+}
+
+/* The description is unfolded on hover; see SchoolCard. */
+.school-details {
+  overflow: hidden;
 }
 
 .school-blurb {
