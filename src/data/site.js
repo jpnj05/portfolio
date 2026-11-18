@@ -55,7 +55,7 @@ export const site = {
     },
     {
       group: 'Workflow',
-      items: ['Git', 'Vite', 'Vercel', 'Firebase', 'Figma'],
+      items: ['Git', 'Vite', 'Vercel', 'Supabase', 'Figma'],
     },
   ],
 
@@ -80,7 +80,7 @@ export const site = {
     Git: 'Version control, branches and a history I can read later.',
     Vite: 'Dev server and bundler this site is built with.',
     Vercel: 'Where the builds land and get served.',
-    Firebase: 'Auth and small realtime data when a whole backend is overkill.',
+    Supabase: 'Postgres, auth and realtime rows without standing up a server.',
     Figma: 'Where layouts get argued about before anyone writes code.',
     Responsive: 'Every layout holds from a phone up to a wide screen.',
     Accessibility: 'Keyboard paths, focus states and colour that stays readable.',
