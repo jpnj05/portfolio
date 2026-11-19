@@ -12,18 +12,28 @@ export function getLenis() {
 /**
  * Site-wide inertial scrolling. Native scroll stays the source of truth, so
  * `position: fixed`, IntersectionObserver and the reading-progress bar keep
- * working unchanged. Touch keeps its own momentum, and anyone who asks for
- * reduced motion gets the browser's plain scrolling with no rAF loop.
+ * working unchanged. Touch is smoothed too, so a drag on a phone glides the
+ * same way the wheel does instead of being handed back to the browser, and
+ * anyone who asks for reduced motion gets the browser's plain scrolling with
+ * no rAF loop.
  */
 export default function useSmoothScroll() {
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;    const lenis = new Lenis({
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const lenis = new Lenis({
       autoRaf: true,
-      lerp: 0.095,
+      /* How much of the remaining distance each frame covers. Lower glides
+         longer; below about 0.06 the content starts to trail the cursor. */
+      lerp: 0.08,
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1.6,
+      /* Touch scrolls through Lenis as well, so a flick carries and settles
+         instead of stopping dead where the finger left off. */
+      syncTouch: true,
+      syncTouchLerp: 0.09,
+      touchMultiplier: 1,
     });
     instance = lenis;
 
