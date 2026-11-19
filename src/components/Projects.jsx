@@ -220,21 +220,33 @@ function SchoolCard({ work }) {
 
     const ctx = gsap.context(() => {
       // The description hangs under the card as its own panel, so opening it
-      // never changes the height of the card or of the rows around it.
-      // The panel only fades. Moving it down and up again would open a gap at
-      // the join for the length of the tween, and the page would flash through
-      // it right where the card ends.
-      gsap.set(details, { opacity: 0 });
+      // never changes the height of the card or of the rows around it. It opens
+      // by rolling: the box grows from the join downwards and the text is
+      // clipped by the box, so no line and no squashed glyphs on the way.
+      gsap.set(details, { height: 0, opacity: 0 });
       gsap.set(parts, { opacity: 0, y: 8 });
+
+      /* The height the panel wants at its current width, read from `auto` and
+         handed straight back, so measuring never disturbs a closed box or one
+         caught halfway through a roll. */
+      const fullHeight = () => {
+        const previous = details.style.height;
+        details.style.height = 'auto';
+        const height = details.getBoundingClientRect().height;
+        details.style.height = previous;
+        return height;
+      };
 
       // Cards the open panel covers step back, so a title cut in half by the
       // panel never competes with the text in it.
       const shadeCovered = () => {
         const list = card.closest('.school-list');
         if (!list) return;
-        const top = card.getBoundingClientRect().top + details.offsetTop;
-        const bottom = top + details.offsetHeight;
         const box = card.getBoundingClientRect();
+        // The panel is rolled shut while this runs, so its reach comes from the
+        // height it is about to open to.
+        const top = box.top + details.offsetTop;
+        const bottom = top + fullHeight();
 
         covered = [...list.querySelectorAll('.school-card')].filter((other) => {
           if (other === card) return false;
@@ -257,7 +269,8 @@ function SchoolCard({ work }) {
         section?.classList.add('section--over');
         card.classList.add('is-panel');
         shadeCovered();
-        gsap.to(details, { opacity: 1, duration: 0.34, ease: 'power3.out' });
+        gsap.set(details, { opacity: 1 });
+        gsap.to(details, { height: fullHeight(), duration: 0.42, ease: 'power3.out' });
         gsap.to(parts, {
           opacity: 1,
           y: 0,
@@ -272,15 +285,17 @@ function SchoolCard({ work }) {
         gsap.killTweensOf(targets);
         section?.classList.remove('section--over');
         liftCovered();
-        gsap.to(parts, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in', stagger: 0.02 });
+        gsap.to(parts, { opacity: 0, y: 8, duration: 0.16, ease: 'power2.in', stagger: 0.02 });
         gsap.to(details, {
-          opacity: 0,
-          duration: 0.24,
+          height: 0,
+          duration: 0.3,
           ease: 'power2.inOut',
-          delay: 0.04,
-          // Only once the panel is out of sight does the card get its bottom
+          // Only once the panel has rolled away does the card get its bottom
           // edge back, so the two never show at the same time.
-          onComplete: () => card.classList.remove('is-panel'),
+          onComplete: () => {
+            card.classList.remove('is-panel');
+            gsap.set(details, { opacity: 0 });
+          },
         });
       };
 

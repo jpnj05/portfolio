@@ -2575,14 +2575,24 @@ button {
   z-index: 6;
   display: flex;
   flex-direction: column;
-  padding: 0 clamp(18px, 2vw, 24px) 20px;
+  padding: 0 clamp(18px, 2vw, 24px);
   border: 1px solid var(--line-strong);
   border-top: 0;
   border-radius: 0 0 var(--radius) var(--radius);
+  /* The panel rolls open by growing from nothing, so the text has to be cut by
+     the box instead of spilling over the join while it is short. */
+  overflow: hidden;
   background: var(--panel);
   /* Kept under the panel's own edge so it cannot smear across the join. */
   box-shadow: 0 22px 40px -20px rgba(0, 0, 0, 0.55);
   pointer-events: none;
+}
+
+/* The panel's bottom spacing is a flex item rather than padding: padding sets a
+   floor on the box, so the panel could never roll shut past a 20px lip. */
+.school-details::after {
+  content: '';
+  flex: 0 0 20px;
 }
 
 .school-blurb {
