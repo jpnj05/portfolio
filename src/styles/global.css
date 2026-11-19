@@ -1075,16 +1075,10 @@ button {
   container-type: inline-size;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  /* Each side is listed on its own because the bottom edge only moves once the
-     panel is out of the way: it eases back with the corner radii, so the card
-     settles into its rounded edge instead of snapping square to round. */
   transition:
     border-top-color 0.3s ease,
     border-right-color 0.3s ease,
     border-left-color 0.3s ease,
-    border-bottom-color 0.26s ease,
-    border-bottom-left-radius 0.26s ease,
-    border-bottom-right-radius 0.26s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2334,16 +2328,10 @@ button {
   background:
     radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
     var(--panel);
-  /* Each side is listed on its own because the bottom edge only moves once the
-     panel is out of the way: it eases back with the corner radii, so the card
-     settles into its rounded edge instead of snapping square to round. */
   transition:
     border-top-color 0.3s ease,
     border-right-color 0.3s ease,
     border-left-color 0.3s ease,
-    border-bottom-color 0.26s ease,
-    border-bottom-left-radius 0.26s ease,
-    border-bottom-right-radius 0.26s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2362,24 +2350,12 @@ button {
   border-left-color: var(--line-strong);
 }
 
-/* The open panel has to paint over the row underneath, and the card squares
-   off its bottom corners and drops its bottom edge, so nothing draws a line
-   where the panel picks up from the card. The class is set for the whole life
-   of the panel, not just while the pointer is on the card, so the edge does not
-   come back until the panel has finished fading out. */
+/* The open panel has to paint over the row underneath. The card itself keeps
+   its rounded bottom edge while the panel is out: the panel's background starts
+   a full radius above that edge, so it covers the corners instead of the card
+   having to square them off and snap back afterwards. */
 .school-card.is-panel {
   z-index: 4;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-color: transparent;
-  /* Square off and drop the edge on the spot, so the join starts clean; only
-     the return trip above is animated. */
-  transition-property:
-    border-top-color,
-    border-right-color,
-    border-left-color,
-    opacity,
-    filter;
 }
 
 /* ------------------------------------------------- school work preview */
@@ -2583,9 +2559,9 @@ button {
 .school-details {
   position: absolute;
   inset-inline: -1px;
-  /* Two pixels up so the panel covers the card's bottom edge outright, whatever
-     the subpixel rounding of the card's height does that frame. */
-  top: calc(100% - 2px);
+  /* A full radius up, so the panel's background covers the card's rounded
+     bottom corners outright instead of the card having to square them. */
+  top: calc(100% - var(--radius) - 1px);
   z-index: 6;
   display: flex;
   flex-direction: column;
@@ -2604,6 +2580,13 @@ button {
 
 /* The panel's bottom spacing is a flex item rather than padding: padding sets a
    floor on the box, so the panel could never roll shut past a 20px lip. */
+/* The panel's box now starts above its text, so the spacer puts the text back
+   where it would sit if the box still began at the card's edge. */
+.school-details::before {
+  content: '';
+  flex: 0 0 calc(var(--radius) - 2px);
+}
+
 .school-details::after {
   content: '';
   flex: 0 0 20px;
@@ -2631,8 +2614,10 @@ button {
   display: flex;
 }
 
-/* Inline, the card's own padding is the bottom spacing. */
-.school-card.is-inline .school-details::after {
+/* Inline, the card's own padding is the spacing, and there is no box to pad
+   the text away from. */
+.school-card.is-inline .school-details::after,
+.school-card.is-inline .school-details::before {
   display: none;
 }
 
@@ -2664,6 +2649,14 @@ button {
 .school-toggle:focus-visible {
   outline: 2px solid var(--accent-soft);
   outline-offset: 3px;
+}
+
+/* While the panel's bottom edge is passing the card's own edge it is crossing
+   the card's padding, so it carries no border or shadow there: one edge at a
+   time, never two hairlines a few pixels apart. */
+.school-details.is-crossing {
+  border-bottom-color: transparent;
+  box-shadow: none;
 }
 
 .school-blurb {

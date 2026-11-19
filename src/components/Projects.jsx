@@ -269,6 +269,13 @@ function SchoolCard({ work }) {
         covered.forEach((other) => other.classList.add('is-covered'));
       };
 
+      /* While the panel's bottom edge is still crossing the card's own bottom
+         edge, it drops its border and shadow, so no second hairline runs
+         through the card's padding on the way past. */
+      const markEdge = () => {
+        details.classList.toggle('is-crossing', details.getBoundingClientRect().height < 23);
+      };
+
       const liftCovered = () => {
         covered.forEach((other) => other.classList.remove('is-covered'));
         covered = [];
@@ -280,9 +287,15 @@ function SchoolCard({ work }) {
         // section's divider would otherwise cut straight across it.
         section?.classList.add('section--over');
         card.classList.add('is-panel');
+        markEdge();
         shadeCovered();
         gsap.set(details, { opacity: 1 });
-        gsap.to(details, { height: fullHeight(), duration: 0.42, ease: 'power3.out' });
+        gsap.to(details, {
+          height: fullHeight(),
+          duration: 0.42,
+          ease: 'power3.out',
+          onUpdate: markEdge,
+        });
         gsap.to(parts, {
           opacity: 1,
           y: 0,
@@ -302,6 +315,7 @@ function SchoolCard({ work }) {
           height: 0,
           duration: 0.3,
           ease: 'power2.inOut',
+          onUpdate: markEdge,
           // Only once the panel has rolled away does the card get its bottom
           // edge back, so the two never show at the same time.
           onComplete: () => {
