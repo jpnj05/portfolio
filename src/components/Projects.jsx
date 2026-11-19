@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { site } from '../data/site.js';
 import Reveal from './Reveal.jsx';
@@ -201,17 +201,29 @@ function SchoolCover({ work }) {
  * or focus, so the card keeps its resting height and nothing else moves.
  * Coarse pointers and reduced-motion get the panel open from the start.
  */
+/** True on phones and tablets, and for anyone who asked for less motion. */
+function prefersInlineReveal() {
+  if (typeof window === 'undefined') return false;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return !canHover || calm;
+}
+
 function SchoolCard({ work }) {
   const cardRef = useRef(null);
+  const panelId = useId();
+  /* A hover device rolls the description out from under the card. Everything
+     else opens it inside the card from a toggle, so opening it grows the row it
+     lives in instead of hanging it over the cards underneath. */
+  const [inline] = useState(prefersInlineReveal);
+  const [open, setOpen] = useState(false);
 
   useLayoutEffect(() => {
+    if (inline) return undefined;
+
     const card = cardRef.current;
     const details = card?.querySelector('.school-details');
     if (!card || !details) return undefined;
-
-    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!canHover || calm) return undefined;
 
     const parts = details.querySelectorAll('[data-part]');
     const targets = [details, ...parts];
@@ -316,10 +328,13 @@ function SchoolCard({ work }) {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [inline]);
 
   return (
-    <article className="school-card" ref={cardRef}>
+    <article
+      className={`school-card${inline ? ' is-inline' : ''}${open ? ' is-open' : ''}`}
+      ref={cardRef}
+    >
       <SchoolCover work={work} />
 
       <div className="school-body">
@@ -339,7 +354,7 @@ function SchoolCard({ work }) {
         </h4>
         {work.subtitle && <p className="school-sub">{work.subtitle}</p>}
 
-        <div className="school-details">
+        <div className="school-details" id={panelId}>
           <p className="school-blurb" data-part>
             {work.blurb}
           </p>
@@ -360,6 +375,21 @@ function SchoolCard({ work }) {
             </p>
           )}
         </div>
+
+        {inline && (
+          <button
+            type="button"
+            className="school-toggle"
+            aria-expanded={open}
+            aria-controls={panelId}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? 'Show less' : 'Read more'}
+            <svg className="school-toggle-mark" viewBox="0 0 10 6" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </button>
+        )}
       </div>
     </article>
   );
