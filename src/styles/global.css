@@ -152,13 +152,12 @@ button {
   justify-content: center;
 }
 
-.section + .section {
-  border-top: 1px solid var(--line);
-}
+/* No rule between sections: the screen of breathing room each one keeps is the
+   only separation they need. */
 
-/* Sections sit at the same level, so the later one's divider paints over an
-   earlier one's content. While a coursework panel is open it reaches past the
-   section's edge, so that section steps above its neighbours. */
+/* Sections sit at the same level, so a later one's content paints over an
+   earlier one's. While a coursework panel is open it reaches past the section's
+   edge, so that section steps above its neighbours. */
 .section--over {
   z-index: 5;
 }
