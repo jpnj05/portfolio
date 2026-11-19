@@ -1075,8 +1075,13 @@ button {
   container-type: inline-size;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  /* Each side is listed on its own because the bottom edge is deliberately
+     left out: it meets the description panel, so a colour fading there paints a
+     line straight through the panel for the length of the transition. */
   transition:
-    border-color 0.3s ease,
+    border-top-color 0.3s ease,
+    border-right-color 0.3s ease,
+    border-left-color 0.3s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2326,8 +2331,13 @@ button {
   background:
     radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
     var(--panel);
+  /* Each side is listed on its own because the bottom edge is deliberately
+     left out: it meets the description panel, so a colour fading there paints a
+     line straight through the panel for the length of the transition. */
   transition:
-    border-color 0.3s ease,
+    border-top-color 0.3s ease,
+    border-right-color 0.3s ease,
+    border-left-color 0.3s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2339,15 +2349,19 @@ button {
   filter: saturate(0.4);
 }
 
+/* Only the sides brighten on hover: the bottom edge belongs to the panel. */
 .school-card:hover {
-  border-color: var(--line-strong);
+  border-top-color: var(--line-strong);
+  border-right-color: var(--line-strong);
+  border-left-color: var(--line-strong);
 }
 
 /* The open panel has to paint over the row underneath, and the card squares
    off its bottom corners and drops its bottom edge, so nothing draws a line
-   where the panel picks up from the card. */
-.school-card:hover,
-.school-card:focus-within {
+   where the panel picks up from the card. The class is set for the whole life
+   of the panel, not just while the pointer is on the card, so the edge does not
+   come back until the panel has finished fading out. */
+.school-card.is-panel {
   z-index: 4;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;

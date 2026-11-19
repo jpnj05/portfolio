@@ -221,7 +221,10 @@ function SchoolCard({ work }) {
     const ctx = gsap.context(() => {
       // The description hangs under the card as its own panel, so opening it
       // never changes the height of the card or of the rows around it.
-      gsap.set(details, { opacity: 0, y: 10 });
+      // The panel only fades. Moving it down and up again would open a gap at
+      // the join for the length of the tween, and the page would flash through
+      // it right where the card ends.
+      gsap.set(details, { opacity: 0 });
       gsap.set(parts, { opacity: 0, y: 8 });
 
       // Cards the open panel covers step back, so a title cut in half by the
@@ -252,8 +255,9 @@ function SchoolCard({ work }) {
         // The panel can reach past this section's bottom edge, where the next
         // section's divider would otherwise cut straight across it.
         section?.classList.add('section--over');
+        card.classList.add('is-panel');
         shadeCovered();
-        gsap.to(details, { opacity: 1, y: 0, duration: 0.34, ease: 'power3.out' });
+        gsap.to(details, { opacity: 1, duration: 0.34, ease: 'power3.out' });
         gsap.to(parts, {
           opacity: 1,
           y: 0,
@@ -269,7 +273,15 @@ function SchoolCard({ work }) {
         section?.classList.remove('section--over');
         liftCovered();
         gsap.to(parts, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in', stagger: 0.02 });
-        gsap.to(details, { opacity: 0, y: 10, duration: 0.24, ease: 'power2.inOut', delay: 0.04 });
+        gsap.to(details, {
+          opacity: 0,
+          duration: 0.24,
+          ease: 'power2.inOut',
+          delay: 0.04,
+          // Only once the panel is out of sight does the card get its bottom
+          // edge back, so the two never show at the same time.
+          onComplete: () => card.classList.remove('is-panel'),
+        });
       };
 
       card.addEventListener('mouseenter', show);
@@ -279,6 +291,7 @@ function SchoolCard({ work }) {
 
       return () => {
         section?.classList.remove('section--over');
+        card.classList.remove('is-panel');
         liftCovered();
         card.removeEventListener('mouseenter', show);
         card.removeEventListener('mouseleave', hide);
