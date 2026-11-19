@@ -2574,8 +2574,10 @@ button {
      the box instead of spilling over the join while it is short. */
   overflow: hidden;
   background: var(--panel);
-  /* Kept under the panel's own edge so it cannot smear across the join. */
-  box-shadow: 0 22px 40px -20px rgba(0, 0, 0, 0.55);
+  /* Offset far enough that the blur starts below the panel's top edge: a
+     shadow that fades upwards darkens the card's last 20px and stops dead at
+     the join, which reads as a hairline drawn across the card. */
+  box-shadow: 0 54px 32px -12px rgba(0, 0, 0, 0.55);
   pointer-events: none;
 }
 
