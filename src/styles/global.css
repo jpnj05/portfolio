@@ -1075,13 +1075,16 @@ button {
   container-type: inline-size;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
-  /* Each side is listed on its own because the bottom edge is deliberately
-     left out: it meets the description panel, so a colour fading there paints a
-     line straight through the panel for the length of the transition. */
+  /* Each side is listed on its own because the bottom edge only moves once the
+     panel is out of the way: it eases back with the corner radii, so the card
+     settles into its rounded edge instead of snapping square to round. */
   transition:
     border-top-color 0.3s ease,
     border-right-color 0.3s ease,
     border-left-color 0.3s ease,
+    border-bottom-color 0.26s ease,
+    border-bottom-left-radius 0.26s ease,
+    border-bottom-right-radius 0.26s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2331,13 +2334,16 @@ button {
   background:
     radial-gradient(120% 150% at 88% -25%, rgba(var(--accent-rgb), 0.09), transparent 62%),
     var(--panel);
-  /* Each side is listed on its own because the bottom edge is deliberately
-     left out: it meets the description panel, so a colour fading there paints a
-     line straight through the panel for the length of the transition. */
+  /* Each side is listed on its own because the bottom edge only moves once the
+     panel is out of the way: it eases back with the corner radii, so the card
+     settles into its rounded edge instead of snapping square to round. */
   transition:
     border-top-color 0.3s ease,
     border-right-color 0.3s ease,
     border-left-color 0.3s ease,
+    border-bottom-color 0.26s ease,
+    border-bottom-left-radius 0.26s ease,
+    border-bottom-right-radius 0.26s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
 }
@@ -2366,6 +2372,14 @@ button {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom-color: transparent;
+  /* Square off and drop the edge on the spot, so the join starts clean; only
+     the return trip above is animated. */
+  transition-property:
+    border-top-color,
+    border-right-color,
+    border-left-color,
+    opacity,
+    filter;
 }
 
 /* ------------------------------------------------- school work preview */
